@@ -390,7 +390,7 @@ Demo content only, replaceable without code changes. The full vehicle table is i
   - It deletes only vehicles carrying the demo marker.
   - It deletes make, model and equipment terms only if the seeder created them **and** no vehicle uses them any more.
   - It never deletes base vocabulary terms, terms that existed before seeding, or terms used by real vehicles. Enquiries are not deleted; they follow the retention policy.
-- **No images yet.** No featured images or gallery, no placeholder URLs, no network requests.
+- **No images yet.** No featured images or gallery, no placeholder URLs, no network requests. The image contract for the next phase (75 images: 15 × hero/rear/cockpit/interior/detail, 3:2, 2400 × 1600) is in [VEHICLE-IMAGE-ROADMAP.md](VEHICLE-IMAGE-ROADMAP.md), with the machine-readable manifest in `demo/image-roadmap.json` (validate with `php tests/image-roadmap-test.php`).
 - **Site identity on the demo site:** the title "Aurelis Motors" and tagline "Premium pre-owned automobiles" were set as normal WordPress options (Settings → General) on the local demo install only. They are never hard-coded in the theme or set by the seeder. Phone, WhatsApp and enquiry email stay empty until safe fictional contact data is approved.
 - **Term language:** make, model and equipment term names are English for now. Translating database terms is deferred; the theme UI is NL/FR-ready.
 - **Packaging:** `demo/` stays in the development repository. Showcase/demo builds may include the demo tooling. Production/client release packages may exclude `demo/` (seeder and dataset) when a clean install is required; the theme does not depend on it at runtime. Packaging rules are not changed yet.

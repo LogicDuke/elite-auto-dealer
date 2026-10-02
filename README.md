@@ -25,6 +25,9 @@ wp eval-file wp-content/themes/elite-auto-dealer/tests/smoke-test.php
 wp eval-file wp-content/themes/elite-auto-dealer/demo/seed.php
 wp eval-file wp-content/themes/elite-auto-dealer/tests/demo-test.php
 
+# Vehicle image roadmap / manifest (no WordPress needed, from the theme root)
+php tests/image-roadmap-test.php
+
 # Coding standards (requires PHPCS + WordPress Coding Standards installed globally)
 phpcs
 ```
