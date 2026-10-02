@@ -1,0 +1,90 @@
+/* Elite Auto Dealer: base styles only. Visual design comes in a later phase. */
+
+*,
+*::before,
+*::after {
+	box-sizing: border-box;
+}
+
+img {
+	max-width: 100%;
+	height: auto;
+}
+
+.screen-reader-text {
+	position: absolute;
+	width: 1px;
+	height: 1px;
+	overflow: hidden;
+	clip-path: inset(50%);
+	white-space: nowrap;
+}
+
+.skip-link:focus {
+	position: static;
+	width: auto;
+	height: auto;
+	clip-path: none;
+}
+
+/* Visible keyboard focus everywhere (project rule: never remove focus outlines). */
+:focus-visible {
+	outline: 2px solid currentColor;
+	outline-offset: 2px;
+}
+
+.breadcrumbs ol {
+	display: flex;
+	flex-wrap: wrap;
+	gap: 0.5em;
+	margin: 0;
+	padding: 0;
+	list-style: none;
+}
+
+/* Honeypot field: off-screen for people, still present for bots. */
+.enquiry-hp {
+	position: absolute;
+	left: -9999px;
+}
+
+/* Vehicle action bar: inline on large screens, pinned to the bottom on small ones. */
+.vehicle-action-bar ul {
+	display: flex;
+	gap: 0.5rem;
+	margin: 0;
+	padding: 0;
+	list-style: none;
+}
+
+.vehicle-action-bar a {
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	min-height: 48px;
+	padding: 0 1rem;
+}
+
+@media (max-width: 1023px) {
+	.vehicle-action-bar {
+		position: fixed;
+		inset: auto 0 0;
+		z-index: 10;
+		padding: 0.5rem 1rem calc(0.5rem + env(safe-area-inset-bottom));
+		background: #fff;
+		border-top: 1px solid #ddd;
+	}
+
+	.vehicle-action-bar li {
+		flex: 1;
+	}
+
+	/* Keep the footer and focused fields clear of the pinned bar. */
+	.single-vehicle .site-footer {
+		padding-bottom: 5rem;
+	}
+
+	html:has(.vehicle-action-bar) {
+		scroll-padding-bottom: 5rem;
+	}
+}

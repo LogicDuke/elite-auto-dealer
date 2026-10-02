@@ -1,0 +1,24 @@
+# Dependencies / build output
+node_modules/
+vendor/
+dist/
+*.zip
+
+# Secrets, dumps, backups
+.env
+*.sql
+*.sql.gz
+*.bak
+*.log
+
+# Tooling caches
+.phpcs-cache
+.phpunit.result.cache
+
+# OS / editor
+.DS_Store
+Thumbs.db
+desktop.ini
+.idea/
+.vscode/
+*.swp

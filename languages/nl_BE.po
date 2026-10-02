@@ -1,0 +1,682 @@
+msgid ""
+msgstr ""
+"Project-Id-Version: Elite Auto Dealer 0.1.0\n"
+"Language: nl_BE\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=2; plural=(n != 1);\n"
+"X-Domain: elite-auto-dealer\n"
+
+#. Theme Name of the theme
+#: style.css
+msgid "Elite Auto Dealer"
+msgstr "Elite Auto Dealer"
+
+#. Theme URI of the theme
+#: style.css
+msgid "https://elitedigitalservices.be/"
+msgstr "https://elitedigitalservices.be/"
+
+#. Description of the theme
+#: style.css
+msgid "Lightweight single-dealership used-car theme for Belgian and European car dealers."
+msgstr "Licht thema voor één autobedrijf met tweedehandswagens, voor Belgische en Europese autohandelaars."
+
+#. Author of the theme
+#: style.css
+msgid "Elite Digital Services"
+msgstr "Elite Digital Services"
+
+#: 404.php:12
+#: inc/template-tags.php:131
+msgid "Page not found"
+msgstr "Pagina niet gevonden"
+
+#: 404.php:14
+msgid "Browse our vehicles"
+msgstr "Bekijk ons aanbod"
+
+#: archive-vehicle.php:26
+#: inc/vehicle-post-type.php:44
+msgid "No vehicles found."
+msgstr "Geen wagens gevonden."
+
+#: footer.php:18
+msgid "Footer"
+msgstr "Voettekst"
+
+#: front-page.php:14
+msgid "View all vehicles"
+msgstr "Bekijk alle wagens"
+
+#: functions.php:39
+msgid "Primary menu"
+msgstr "Hoofdmenu"
+
+#: functions.php:40
+msgid "Footer menu"
+msgstr "Footermenu"
+
+#: header.php:19
+msgid "Skip to content"
+msgstr "Naar de inhoud"
+
+#: header.php:28
+msgid "Primary"
+msgstr "Hoofdnavigatie"
+
+#: inc/customizer.php:19
+msgid "Dealer contact"
+msgstr "Contactgegevens garage"
+
+#: inc/customizer.php:25
+msgid "Phone number"
+msgstr "Telefoonnummer"
+
+#: inc/customizer.php:26
+msgid "WhatsApp number"
+msgstr "WhatsApp-nummer"
+
+#: inc/customizer.php:26
+msgid "International format, e.g. +32 470 12 34 56. Leave empty to hide WhatsApp."
+msgstr "Internationaal formaat, bv. +32 470 12 34 56. Laat leeg om WhatsApp te verbergen."
+
+#: inc/customizer.php:27
+msgid "Enquiry email"
+msgstr "E-mailadres voor aanvragen"
+
+#: inc/customizer.php:27
+msgid "Receives enquiry notifications. Defaults to the site admin email."
+msgstr "Ontvangt meldingen van nieuwe aanvragen. Standaard het e-mailadres van de sitebeheerder."
+
+#: inc/enquiries.php:20
+msgid "General enquiry"
+msgstr "Algemene vraag"
+
+#: inc/enquiries.php:21
+msgid "Test drive"
+msgstr "Proefrit"
+
+#: inc/enquiries.php:22
+msgid "Finance"
+msgstr "Financiering"
+
+#: inc/enquiries.php:23
+msgid "Trade-in"
+msgstr "Inruil"
+
+#: inc/enquiries.php:34
+msgid "I agree that my details are used to answer this enquiry, as described in the privacy policy."
+msgstr "Ik ga ermee akkoord dat mijn gegevens gebruikt worden om deze aanvraag te beantwoorden, zoals beschreven in de privacyverklaring."
+
+#: inc/enquiries.php:45
+#: inc/enquiries.php:48
+msgid "Enquiries"
+msgstr "Aanvragen"
+
+#: inc/enquiries.php:46
+#: inc/enquiries.php:47
+msgid "Enquiry"
+msgstr "Aanvraag"
+
+#: inc/enquiries.php:49
+msgid "No enquiries yet."
+msgstr "Nog geen aanvragen."
+
+#. translators: 1: enquiry type, 2: customer name.
+#: inc/enquiries.php:113
+msgid "%1$s – %2$s"
+msgstr "%1$s – %2$s"
+
+#: inc/enquiries.php:141
+#: inc/enquiries.php:229
+#: inc/enquiry-privacy.php:130
+msgid "Type"
+msgstr "Type"
+
+#: inc/enquiries.php:142
+#: inc/enquiries.php:230
+#: inc/enquiry-privacy.php:131
+#: inc/vehicle-post-type.php:38
+msgid "Vehicle"
+msgstr "Wagen"
+
+#: inc/enquiries.php:143
+#: inc/enquiries.php:231
+#: inc/enquiry-privacy.php:132
+#: template-parts/enquiry-form.php:55
+msgid "Name"
+msgstr "Naam"
+
+#: inc/enquiries.php:144
+#: inc/enquiries.php:232
+#: inc/enquiry-privacy.php:133
+#: template-parts/enquiry-form.php:59
+msgid "Email"
+msgstr "E-mail"
+
+#: inc/enquiries.php:145
+#: inc/enquiries.php:233
+#: inc/enquiry-privacy.php:134
+msgid "Phone"
+msgstr "Telefoon"
+
+#. translators: 1: enquiry type, 2: site name.
+#: inc/enquiries.php:155
+msgid "New enquiry (%1$s) – %2$s"
+msgstr "Nieuwe aanvraag (%1$s) – %2$s"
+
+#: inc/enquiries.php:215
+msgid "Enquiry details"
+msgstr "Details van de aanvraag"
+
+#: inc/enquiries.php:228
+#: inc/enquiry-privacy.php:129
+msgid "Received"
+msgstr "Ontvangen"
+
+#: inc/enquiries.php:234
+#: inc/enquiry-privacy.php:135
+msgid "Message"
+msgstr "Bericht"
+
+#: inc/enquiries.php:235
+#: inc/enquiry-privacy.php:136
+msgid "Consent"
+msgstr "Toestemming"
+
+#: inc/enquiries.php:235
+#: inc/template-tags.php:44
+msgid "No"
+msgstr "Nee"
+
+#: inc/enquiries.php:245
+msgid "Open vehicle"
+msgstr "Wagen openen"
+
+#: inc/enquiry-privacy.php:141
+#: inc/enquiry-privacy.php:208
+#: inc/enquiry-privacy.php:223
+msgid "Vehicle enquiries"
+msgstr "Aanvragen over wagens"
+
+#: inc/enquiry-privacy.php:142
+msgid "Enquiries sent to the dealership through this website."
+msgstr "Aanvragen die via deze website naar de garage verstuurd zijn."
+
+#. translators: %s: enquiry type.
+#: inc/enquiry-privacy.php:184
+msgid "%s – anonymised"
+msgstr "%s – geanonimiseerd"
+
+#. translators: %d: number of enquiries.
+#: inc/enquiry-privacy.php:194
+msgid "%d enquiry anonymised. Its type, date and vehicle reference were kept."
+msgid_plural "%d enquiries anonymised. Their type, date and vehicle reference were kept."
+msgstr[0] "%d aanvraag geanonimiseerd. Het type, de datum en de wagenreferentie zijn bewaard."
+msgstr[1] "%d aanvragen geanonimiseerd. Het type, de datum en de wagenreferentie zijn bewaard."
+
+#. translators: %s: make, model, fuel type, etc. Example: "BMW vehicles".
+#: inc/seo.php:83
+msgctxt "inventory heading"
+msgid "%s vehicles"
+msgstr "Aanbod %s"
+
+#. translators: %s: formatted amount in euros.
+#: inc/template-tags.php:30
+msgctxt "price format"
+msgid "€ %s"
+msgstr "€ %s"
+
+#: inc/template-tags.php:44
+msgid "Yes"
+msgstr "Ja"
+
+#: inc/template-tags.php:107
+msgid "Home"
+msgstr "Home"
+
+#. translators: %s: search query.
+#: inc/template-tags.php:129
+#: index.php:17
+msgid "Search results for “%s”"
+msgstr "Zoekresultaten voor ‘%s’"
+
+#: inc/vehicle-meta.php:33
+msgid "Stock ID"
+msgstr "Referentie"
+
+#: inc/vehicle-meta.php:37
+msgid "Availability"
+msgstr "Beschikbaarheid"
+
+#: inc/vehicle-meta.php:39
+#: inc/vehicle-meta.php:154
+msgid "Available"
+msgstr "Beschikbaar"
+
+#: inc/vehicle-meta.php:40
+msgid "Reserved"
+msgstr "Gereserveerd"
+
+#: inc/vehicle-meta.php:41
+msgid "Sold"
+msgstr "Verkocht"
+
+#: inc/vehicle-meta.php:46
+msgid "Featured"
+msgstr "Uitgelicht"
+
+#: inc/vehicle-meta.php:50
+msgid "Variant / trim"
+msgstr "Uitvoering"
+
+#: inc/vehicle-meta.php:51
+msgid "e.g. 40 TFSI S line"
+msgstr "bv. 40 TFSI S line"
+
+#: inc/vehicle-meta.php:55
+msgid "Price"
+msgstr "Prijs"
+
+#: inc/vehicle-meta.php:60
+msgid "Finance example per month"
+msgstr "Financieringsvoorbeeld per maand"
+
+#: inc/vehicle-meta.php:65
+msgid "VAT regime"
+msgstr "Btw-regime"
+
+#: inc/vehicle-meta.php:67
+msgid "VAT deductible"
+msgstr "Btw aftrekbaar"
+
+#: inc/vehicle-meta.php:68
+msgid "Margin scheme (VAT not deductible)"
+msgstr "Margeregeling (btw niet aftrekbaar)"
+
+#: inc/vehicle-meta.php:73
+msgid "Year"
+msgstr "Bouwjaar"
+
+#: inc/vehicle-meta.php:78
+msgid "First registration"
+msgstr "Eerste inschrijving"
+
+#: inc/vehicle-meta.php:82
+msgid "Mileage"
+msgstr "Kilometerstand"
+
+#: inc/vehicle-meta.php:83
+#: inc/vehicle-meta.php:109
+msgctxt "unit"
+msgid "km"
+msgstr "km"
+
+#: inc/vehicle-meta.php:87
+msgid "Power (kW)"
+msgstr "Vermogen (kW)"
+
+#: inc/vehicle-meta.php:88
+msgctxt "unit"
+msgid "kW"
+msgstr "kW"
+
+#: inc/vehicle-meta.php:92
+msgid "Power (hp)"
+msgstr "Vermogen (pk)"
+
+#: inc/vehicle-meta.php:93
+msgctxt "unit"
+msgid "hp"
+msgstr "pk"
+
+#: inc/vehicle-meta.php:97
+msgid "Engine size"
+msgstr "Cilinderinhoud"
+
+#: inc/vehicle-meta.php:98
+msgctxt "unit"
+msgid "cc"
+msgstr "cm³"
+
+#: inc/vehicle-meta.php:103
+msgid "Battery capacity (EV)"
+msgstr "Batterijcapaciteit (EV)"
+
+#: inc/vehicle-meta.php:104
+msgctxt "unit"
+msgid "kWh"
+msgstr "kWh"
+
+#: inc/vehicle-meta.php:108
+msgid "Electric range (WLTP)"
+msgstr "Elektrisch rijbereik (WLTP)"
+
+#: inc/vehicle-meta.php:113
+msgid "Exterior colour"
+msgstr "Kleur koetswerk"
+
+#: inc/vehicle-meta.php:117
+msgid "Interior colour"
+msgstr "Kleur interieur"
+
+#: inc/vehicle-meta.php:121
+msgid "Doors"
+msgstr "Deuren"
+
+#: inc/vehicle-meta.php:125
+msgid "Seats"
+msgstr "Zitplaatsen"
+
+#: inc/vehicle-meta.php:129
+msgid "CO2 emissions (WLTP)"
+msgstr "CO2-uitstoot (WLTP)"
+
+#: inc/vehicle-meta.php:130
+msgctxt "unit"
+msgid "g/km"
+msgstr "g/km"
+
+#: inc/vehicle-meta.php:134
+msgid "Euro emissions standard"
+msgstr "Euronorm"
+
+#: inc/vehicle-meta.php:152
+msgid "Car-Pass"
+msgstr "Car-Pass"
+
+#: inc/vehicle-meta.php:155
+msgid "Pending"
+msgstr "In aanvraag"
+
+#: inc/vehicle-meta.php:156
+msgid "Not required"
+msgstr "Niet vereist"
+
+#: inc/vehicle-meta.php:161
+msgid "Warranty (months)"
+msgstr "Garantie (maanden)"
+
+#: inc/vehicle-meta.php:166
+msgid "VIN"
+msgstr "Chassisnummer (VIN)"
+
+#: inc/vehicle-meta.php:170
+msgid "Image gallery"
+msgstr "Fotogalerij"
+
+#: inc/vehicle-meta.php:250
+msgid "Vehicle details"
+msgstr "Wagengegevens"
+
+#: inc/vehicle-meta.php:285
+msgid "Select images"
+msgstr "Foto’s kiezen"
+
+#: inc/vehicle-post-type.php:37
+msgid "Vehicles"
+msgstr "Wagens"
+
+#: inc/vehicle-post-type.php:39
+msgid "Add new vehicle"
+msgstr "Nieuwe wagen toevoegen"
+
+#: inc/vehicle-post-type.php:40
+msgid "Edit vehicle"
+msgstr "Wagen bewerken"
+
+#: inc/vehicle-post-type.php:41
+msgid "New vehicle"
+msgstr "Nieuwe wagen"
+
+#: inc/vehicle-post-type.php:42
+msgid "View vehicle"
+msgstr "Wagen bekijken"
+
+#: inc/vehicle-post-type.php:43
+msgid "Search vehicles"
+msgstr "Wagens zoeken"
+
+#: inc/vehicle-post-type.php:45
+msgid "No vehicles found in Trash."
+msgstr "Geen wagens gevonden in de prullenbak."
+
+#: inc/vehicle-post-type.php:46
+msgid "All vehicles"
+msgstr "Alle wagens"
+
+#: inc/vehicle-taxonomies.php:24
+msgid "Makes"
+msgstr "Merken"
+
+#: inc/vehicle-taxonomies.php:24
+#: inc/vehicle-taxonomies.php:137
+#: inc/vehicle-taxonomies.php:152
+msgid "Make"
+msgstr "Merk"
+
+#: inc/vehicle-taxonomies.php:25
+msgid "Models"
+msgstr "Modellen"
+
+#: inc/vehicle-taxonomies.php:25
+msgid "Model"
+msgstr "Model"
+
+#: inc/vehicle-taxonomies.php:26
+msgid "Body types"
+msgstr "Carrosserietypes"
+
+#: inc/vehicle-taxonomies.php:26
+msgid "Body type"
+msgstr "Carrosserie"
+
+#: inc/vehicle-taxonomies.php:27
+msgid "Fuel types"
+msgstr "Brandstoffen"
+
+#: inc/vehicle-taxonomies.php:27
+msgid "Fuel type"
+msgstr "Brandstof"
+
+#: inc/vehicle-taxonomies.php:28
+msgid "Transmissions"
+msgstr "Transmissies"
+
+#: inc/vehicle-taxonomies.php:28
+msgid "Transmission"
+msgstr "Transmissie"
+
+#: inc/vehicle-taxonomies.php:29
+msgid "Conditions"
+msgstr "Staten"
+
+#: inc/vehicle-taxonomies.php:29
+msgid "Condition"
+msgstr "Staat"
+
+#: inc/vehicle-taxonomies.php:30
+#: single-vehicle.php:68
+msgid "Equipment"
+msgstr "Uitrusting"
+
+#: inc/vehicle-taxonomies.php:30
+msgid "Equipment item"
+msgstr "Uitrustingsoptie"
+
+#: inc/vehicle-taxonomies.php:84
+msgid "Hatchback"
+msgstr "Hatchback"
+
+#: inc/vehicle-taxonomies.php:85
+msgid "Sedan"
+msgstr "Sedan"
+
+#: inc/vehicle-taxonomies.php:86
+msgid "Estate"
+msgstr "Break"
+
+#: inc/vehicle-taxonomies.php:87
+msgid "SUV"
+msgstr "SUV"
+
+#: inc/vehicle-taxonomies.php:88
+msgid "Coupé"
+msgstr "Coupé"
+
+#: inc/vehicle-taxonomies.php:89
+msgid "Convertible"
+msgstr "Cabriolet"
+
+#: inc/vehicle-taxonomies.php:90
+msgid "MPV"
+msgstr "Monovolume"
+
+#: inc/vehicle-taxonomies.php:91
+msgid "Van"
+msgstr "Bestelwagen"
+
+#: inc/vehicle-taxonomies.php:92
+msgid "Pick-up"
+msgstr "Pick-up"
+
+#: inc/vehicle-taxonomies.php:95
+msgid "Petrol"
+msgstr "Benzine"
+
+#: inc/vehicle-taxonomies.php:96
+msgid "Diesel"
+msgstr "Diesel"
+
+#: inc/vehicle-taxonomies.php:97
+msgid "Hybrid"
+msgstr "Hybride"
+
+#: inc/vehicle-taxonomies.php:98
+msgid "Plug-in hybrid"
+msgstr "Plug-in hybride"
+
+#: inc/vehicle-taxonomies.php:99
+msgid "Electric"
+msgstr "Elektrisch"
+
+#: inc/vehicle-taxonomies.php:100
+msgid "LPG"
+msgstr "LPG"
+
+#: inc/vehicle-taxonomies.php:101
+msgid "CNG"
+msgstr "CNG"
+
+#: inc/vehicle-taxonomies.php:104
+msgid "Manual"
+msgstr "Manueel"
+
+#: inc/vehicle-taxonomies.php:105
+msgid "Automatic"
+msgstr "Automaat"
+
+#: inc/vehicle-taxonomies.php:108
+msgid "Used"
+msgstr "Tweedehands"
+
+#: inc/vehicle-taxonomies.php:109
+msgid "New"
+msgstr "Nieuw"
+
+#: inc/vehicle-taxonomies.php:110
+msgid "Demo"
+msgstr "Demo"
+
+#: inc/vehicle-taxonomies.php:127
+msgid "Models are model families only (e.g. A4, 3 Series, M4). Put trims and engine variants (e.g. 40 TFSI S line) in the vehicle's Variant / trim field."
+msgstr "Modellen zijn enkel modelfamilies (bv. A4, 3 Reeks, M4). Vul uitvoeringen en motorvarianten (bv. 40 TFSI S line) in bij het veld Uitvoering van de wagen."
+
+#: inc/vehicle-taxonomies.php:172
+msgid "— Select make —"
+msgstr "— Kies een merk —"
+
+#: index.php:36
+msgid "Nothing found."
+msgstr "Niets gevonden."
+
+#: single-vehicle.php:27
+#: template-parts/vehicle-card.php:31
+msgid "Price on request"
+msgstr "Prijs op aanvraag"
+
+#. translators: %s: monthly amount.
+#: single-vehicle.php:30
+msgid "or %s / month"
+msgstr "of %s / maand"
+
+#: single-vehicle.php:48
+msgid "Specifications"
+msgstr "Specificaties"
+
+#: template-parts/breadcrumbs.php:16
+msgid "Breadcrumb"
+msgstr "Kruimelpad"
+
+#: template-parts/enquiry-form.php:32
+msgid "Enquire about this vehicle"
+msgstr "Vraag info over deze wagen"
+
+#: template-parts/enquiry-form.php:32
+msgid "Contact us"
+msgstr "Contacteer ons"
+
+#: template-parts/enquiry-form.php:36
+msgid "Thank you. We have received your enquiry and will contact you soon."
+msgstr "Bedankt. We hebben uw aanvraag ontvangen en nemen snel contact met u op."
+
+#: template-parts/enquiry-form.php:38
+msgid "Your enquiry could not be sent. Please check your name, email and consent, then try again."
+msgstr "Uw aanvraag kon niet verstuurd worden. Controleer uw naam, e-mailadres en toestemming en probeer het opnieuw."
+
+#: template-parts/enquiry-form.php:47
+msgid "Subject"
+msgstr "Onderwerp"
+
+#: template-parts/enquiry-form.php:63
+msgid "Phone (optional)"
+msgstr "Telefoon (optioneel)"
+
+#: template-parts/enquiry-form.php:67
+msgid "Message (optional)"
+msgstr "Bericht (optioneel)"
+
+#: template-parts/enquiry-form.php:71
+msgid "Leave this field empty"
+msgstr "Laat dit veld leeg"
+
+#: template-parts/enquiry-form.php:79
+msgid "Privacy policy"
+msgstr "Privacyverklaring"
+
+#: template-parts/enquiry-form.php:83
+msgid "Send enquiry"
+msgstr "Aanvraag versturen"
+
+#. translators: 1: vehicle title, 2: vehicle URL.
+#: template-parts/vehicle-action-bar.php:20
+msgid "Hello, I am interested in %1$s (%2$s)"
+msgstr "Hallo, ik heb interesse in %1$s (%2$s)"
+
+#: template-parts/vehicle-action-bar.php:22
+msgid "Vehicle actions"
+msgstr "Acties voor deze wagen"
+
+#: template-parts/vehicle-action-bar.php:25
+msgid "Call"
+msgstr "Bellen"
+
+#: template-parts/vehicle-action-bar.php:28
+msgid "WhatsApp"
+msgstr "WhatsApp"
+
+#: template-parts/vehicle-action-bar.php:30
+msgid "Enquire"
+msgstr "Info aanvragen"

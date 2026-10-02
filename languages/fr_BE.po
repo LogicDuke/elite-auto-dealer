@@ -1,0 +1,682 @@
+msgid ""
+msgstr ""
+"Project-Id-Version: Elite Auto Dealer 0.1.0\n"
+"Language: fr_BE\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=2; plural=(n > 1);\n"
+"X-Domain: elite-auto-dealer\n"
+
+#. Theme Name of the theme
+#: style.css
+msgid "Elite Auto Dealer"
+msgstr "Elite Auto Dealer"
+
+#. Theme URI of the theme
+#: style.css
+msgid "https://elitedigitalservices.be/"
+msgstr "https://elitedigitalservices.be/"
+
+#. Description of the theme
+#: style.css
+msgid "Lightweight single-dealership used-car theme for Belgian and European car dealers."
+msgstr "Thème léger pour un seul garage de véhicules d’occasion, destiné aux négociants automobiles belges et européens."
+
+#. Author of the theme
+#: style.css
+msgid "Elite Digital Services"
+msgstr "Elite Digital Services"
+
+#: 404.php:12
+#: inc/template-tags.php:131
+msgid "Page not found"
+msgstr "Page introuvable"
+
+#: 404.php:14
+msgid "Browse our vehicles"
+msgstr "Découvrir nos véhicules"
+
+#: archive-vehicle.php:26
+#: inc/vehicle-post-type.php:44
+msgid "No vehicles found."
+msgstr "Aucun véhicule trouvé."
+
+#: footer.php:18
+msgid "Footer"
+msgstr "Pied de page"
+
+#: front-page.php:14
+msgid "View all vehicles"
+msgstr "Voir tous les véhicules"
+
+#: functions.php:39
+msgid "Primary menu"
+msgstr "Menu principal"
+
+#: functions.php:40
+msgid "Footer menu"
+msgstr "Menu du pied de page"
+
+#: header.php:19
+msgid "Skip to content"
+msgstr "Aller au contenu"
+
+#: header.php:28
+msgid "Primary"
+msgstr "Navigation principale"
+
+#: inc/customizer.php:19
+msgid "Dealer contact"
+msgstr "Coordonnées du garage"
+
+#: inc/customizer.php:25
+msgid "Phone number"
+msgstr "Numéro de téléphone"
+
+#: inc/customizer.php:26
+msgid "WhatsApp number"
+msgstr "Numéro WhatsApp"
+
+#: inc/customizer.php:26
+msgid "International format, e.g. +32 470 12 34 56. Leave empty to hide WhatsApp."
+msgstr "Format international, p. ex. +32 470 12 34 56. Laissez vide pour masquer WhatsApp."
+
+#: inc/customizer.php:27
+msgid "Enquiry email"
+msgstr "E-mail pour les demandes"
+
+#: inc/customizer.php:27
+msgid "Receives enquiry notifications. Defaults to the site admin email."
+msgstr "Reçoit les notifications des nouvelles demandes. Par défaut, l’e-mail de l’administrateur du site."
+
+#: inc/enquiries.php:20
+msgid "General enquiry"
+msgstr "Demande générale"
+
+#: inc/enquiries.php:21
+msgid "Test drive"
+msgstr "Essai routier"
+
+#: inc/enquiries.php:22
+msgid "Finance"
+msgstr "Financement"
+
+#: inc/enquiries.php:23
+msgid "Trade-in"
+msgstr "Reprise"
+
+#: inc/enquiries.php:34
+msgid "I agree that my details are used to answer this enquiry, as described in the privacy policy."
+msgstr "J’accepte que mes données soient utilisées pour répondre à cette demande, comme décrit dans la politique de confidentialité."
+
+#: inc/enquiries.php:45
+#: inc/enquiries.php:48
+msgid "Enquiries"
+msgstr "Demandes"
+
+#: inc/enquiries.php:46
+#: inc/enquiries.php:47
+msgid "Enquiry"
+msgstr "Demande"
+
+#: inc/enquiries.php:49
+msgid "No enquiries yet."
+msgstr "Aucune demande pour le moment."
+
+#. translators: 1: enquiry type, 2: customer name.
+#: inc/enquiries.php:113
+msgid "%1$s – %2$s"
+msgstr "%1$s – %2$s"
+
+#: inc/enquiries.php:141
+#: inc/enquiries.php:229
+#: inc/enquiry-privacy.php:130
+msgid "Type"
+msgstr "Type"
+
+#: inc/enquiries.php:142
+#: inc/enquiries.php:230
+#: inc/enquiry-privacy.php:131
+#: inc/vehicle-post-type.php:38
+msgid "Vehicle"
+msgstr "Véhicule"
+
+#: inc/enquiries.php:143
+#: inc/enquiries.php:231
+#: inc/enquiry-privacy.php:132
+#: template-parts/enquiry-form.php:55
+msgid "Name"
+msgstr "Nom"
+
+#: inc/enquiries.php:144
+#: inc/enquiries.php:232
+#: inc/enquiry-privacy.php:133
+#: template-parts/enquiry-form.php:59
+msgid "Email"
+msgstr "E-mail"
+
+#: inc/enquiries.php:145
+#: inc/enquiries.php:233
+#: inc/enquiry-privacy.php:134
+msgid "Phone"
+msgstr "Téléphone"
+
+#. translators: 1: enquiry type, 2: site name.
+#: inc/enquiries.php:155
+msgid "New enquiry (%1$s) – %2$s"
+msgstr "Nouvelle demande (%1$s) – %2$s"
+
+#: inc/enquiries.php:215
+msgid "Enquiry details"
+msgstr "Détails de la demande"
+
+#: inc/enquiries.php:228
+#: inc/enquiry-privacy.php:129
+msgid "Received"
+msgstr "Reçue le"
+
+#: inc/enquiries.php:234
+#: inc/enquiry-privacy.php:135
+msgid "Message"
+msgstr "Message"
+
+#: inc/enquiries.php:235
+#: inc/enquiry-privacy.php:136
+msgid "Consent"
+msgstr "Consentement"
+
+#: inc/enquiries.php:235
+#: inc/template-tags.php:44
+msgid "No"
+msgstr "Non"
+
+#: inc/enquiries.php:245
+msgid "Open vehicle"
+msgstr "Ouvrir le véhicule"
+
+#: inc/enquiry-privacy.php:141
+#: inc/enquiry-privacy.php:208
+#: inc/enquiry-privacy.php:223
+msgid "Vehicle enquiries"
+msgstr "Demandes concernant des véhicules"
+
+#: inc/enquiry-privacy.php:142
+msgid "Enquiries sent to the dealership through this website."
+msgstr "Demandes envoyées au garage via ce site web."
+
+#. translators: %s: enquiry type.
+#: inc/enquiry-privacy.php:184
+msgid "%s – anonymised"
+msgstr "%s – anonymisée"
+
+#. translators: %d: number of enquiries.
+#: inc/enquiry-privacy.php:194
+msgid "%d enquiry anonymised. Its type, date and vehicle reference were kept."
+msgid_plural "%d enquiries anonymised. Their type, date and vehicle reference were kept."
+msgstr[0] "%d demande anonymisée. Son type, sa date et la référence du véhicule ont été conservés."
+msgstr[1] "%d demandes anonymisées. Leur type, leur date et la référence du véhicule ont été conservés."
+
+#. translators: %s: make, model, fuel type, etc. Example: "BMW vehicles".
+#: inc/seo.php:83
+msgctxt "inventory heading"
+msgid "%s vehicles"
+msgstr "Véhicules : %s"
+
+#. translators: %s: formatted amount in euros.
+#: inc/template-tags.php:30
+msgctxt "price format"
+msgid "€ %s"
+msgstr "%s €"
+
+#: inc/template-tags.php:44
+msgid "Yes"
+msgstr "Oui"
+
+#: inc/template-tags.php:107
+msgid "Home"
+msgstr "Accueil"
+
+#. translators: %s: search query.
+#: inc/template-tags.php:129
+#: index.php:17
+msgid "Search results for “%s”"
+msgstr "Résultats de recherche pour « %s »"
+
+#: inc/vehicle-meta.php:33
+msgid "Stock ID"
+msgstr "Référence"
+
+#: inc/vehicle-meta.php:37
+msgid "Availability"
+msgstr "Disponibilité"
+
+#: inc/vehicle-meta.php:39
+#: inc/vehicle-meta.php:154
+msgid "Available"
+msgstr "Disponible"
+
+#: inc/vehicle-meta.php:40
+msgid "Reserved"
+msgstr "Réservé"
+
+#: inc/vehicle-meta.php:41
+msgid "Sold"
+msgstr "Vendu"
+
+#: inc/vehicle-meta.php:46
+msgid "Featured"
+msgstr "En vedette"
+
+#: inc/vehicle-meta.php:50
+msgid "Variant / trim"
+msgstr "Version / finition"
+
+#: inc/vehicle-meta.php:51
+msgid "e.g. 40 TFSI S line"
+msgstr "p. ex. 40 TFSI S line"
+
+#: inc/vehicle-meta.php:55
+msgid "Price"
+msgstr "Prix"
+
+#: inc/vehicle-meta.php:60
+msgid "Finance example per month"
+msgstr "Exemple de financement par mois"
+
+#: inc/vehicle-meta.php:65
+msgid "VAT regime"
+msgstr "Régime TVA"
+
+#: inc/vehicle-meta.php:67
+msgid "VAT deductible"
+msgstr "TVA déductible"
+
+#: inc/vehicle-meta.php:68
+msgid "Margin scheme (VAT not deductible)"
+msgstr "Régime de la marge (TVA non déductible)"
+
+#: inc/vehicle-meta.php:73
+msgid "Year"
+msgstr "Année"
+
+#: inc/vehicle-meta.php:78
+msgid "First registration"
+msgstr "Première immatriculation"
+
+#: inc/vehicle-meta.php:82
+msgid "Mileage"
+msgstr "Kilométrage"
+
+#: inc/vehicle-meta.php:83
+#: inc/vehicle-meta.php:109
+msgctxt "unit"
+msgid "km"
+msgstr "km"
+
+#: inc/vehicle-meta.php:87
+msgid "Power (kW)"
+msgstr "Puissance (kW)"
+
+#: inc/vehicle-meta.php:88
+msgctxt "unit"
+msgid "kW"
+msgstr "kW"
+
+#: inc/vehicle-meta.php:92
+msgid "Power (hp)"
+msgstr "Puissance (ch)"
+
+#: inc/vehicle-meta.php:93
+msgctxt "unit"
+msgid "hp"
+msgstr "ch"
+
+#: inc/vehicle-meta.php:97
+msgid "Engine size"
+msgstr "Cylindrée"
+
+#: inc/vehicle-meta.php:98
+msgctxt "unit"
+msgid "cc"
+msgstr "cm³"
+
+#: inc/vehicle-meta.php:103
+msgid "Battery capacity (EV)"
+msgstr "Capacité de la batterie (VE)"
+
+#: inc/vehicle-meta.php:104
+msgctxt "unit"
+msgid "kWh"
+msgstr "kWh"
+
+#: inc/vehicle-meta.php:108
+msgid "Electric range (WLTP)"
+msgstr "Autonomie électrique (WLTP)"
+
+#: inc/vehicle-meta.php:113
+msgid "Exterior colour"
+msgstr "Couleur extérieure"
+
+#: inc/vehicle-meta.php:117
+msgid "Interior colour"
+msgstr "Couleur intérieure"
+
+#: inc/vehicle-meta.php:121
+msgid "Doors"
+msgstr "Portes"
+
+#: inc/vehicle-meta.php:125
+msgid "Seats"
+msgstr "Places"
+
+#: inc/vehicle-meta.php:129
+msgid "CO2 emissions (WLTP)"
+msgstr "Émissions de CO2 (WLTP)"
+
+#: inc/vehicle-meta.php:130
+msgctxt "unit"
+msgid "g/km"
+msgstr "g/km"
+
+#: inc/vehicle-meta.php:134
+msgid "Euro emissions standard"
+msgstr "Norme Euro"
+
+#: inc/vehicle-meta.php:152
+msgid "Car-Pass"
+msgstr "Car-Pass"
+
+#: inc/vehicle-meta.php:155
+msgid "Pending"
+msgstr "En cours"
+
+#: inc/vehicle-meta.php:156
+msgid "Not required"
+msgstr "Non requis"
+
+#: inc/vehicle-meta.php:161
+msgid "Warranty (months)"
+msgstr "Garantie (mois)"
+
+#: inc/vehicle-meta.php:166
+msgid "VIN"
+msgstr "Numéro de châssis (VIN)"
+
+#: inc/vehicle-meta.php:170
+msgid "Image gallery"
+msgstr "Galerie photos"
+
+#: inc/vehicle-meta.php:250
+msgid "Vehicle details"
+msgstr "Caractéristiques du véhicule"
+
+#: inc/vehicle-meta.php:285
+msgid "Select images"
+msgstr "Choisir des photos"
+
+#: inc/vehicle-post-type.php:37
+msgid "Vehicles"
+msgstr "Véhicules"
+
+#: inc/vehicle-post-type.php:39
+msgid "Add new vehicle"
+msgstr "Ajouter un véhicule"
+
+#: inc/vehicle-post-type.php:40
+msgid "Edit vehicle"
+msgstr "Modifier le véhicule"
+
+#: inc/vehicle-post-type.php:41
+msgid "New vehicle"
+msgstr "Nouveau véhicule"
+
+#: inc/vehicle-post-type.php:42
+msgid "View vehicle"
+msgstr "Voir le véhicule"
+
+#: inc/vehicle-post-type.php:43
+msgid "Search vehicles"
+msgstr "Rechercher des véhicules"
+
+#: inc/vehicle-post-type.php:45
+msgid "No vehicles found in Trash."
+msgstr "Aucun véhicule dans la corbeille."
+
+#: inc/vehicle-post-type.php:46
+msgid "All vehicles"
+msgstr "Tous les véhicules"
+
+#: inc/vehicle-taxonomies.php:24
+msgid "Makes"
+msgstr "Marques"
+
+#: inc/vehicle-taxonomies.php:24
+#: inc/vehicle-taxonomies.php:137
+#: inc/vehicle-taxonomies.php:152
+msgid "Make"
+msgstr "Marque"
+
+#: inc/vehicle-taxonomies.php:25
+msgid "Models"
+msgstr "Modèles"
+
+#: inc/vehicle-taxonomies.php:25
+msgid "Model"
+msgstr "Modèle"
+
+#: inc/vehicle-taxonomies.php:26
+msgid "Body types"
+msgstr "Carrosseries"
+
+#: inc/vehicle-taxonomies.php:26
+msgid "Body type"
+msgstr "Carrosserie"
+
+#: inc/vehicle-taxonomies.php:27
+msgid "Fuel types"
+msgstr "Carburants"
+
+#: inc/vehicle-taxonomies.php:27
+msgid "Fuel type"
+msgstr "Carburant"
+
+#: inc/vehicle-taxonomies.php:28
+msgid "Transmissions"
+msgstr "Boîtes de vitesses"
+
+#: inc/vehicle-taxonomies.php:28
+msgid "Transmission"
+msgstr "Boîte de vitesses"
+
+#: inc/vehicle-taxonomies.php:29
+msgid "Conditions"
+msgstr "États"
+
+#: inc/vehicle-taxonomies.php:29
+msgid "Condition"
+msgstr "État"
+
+#: inc/vehicle-taxonomies.php:30
+#: single-vehicle.php:68
+msgid "Equipment"
+msgstr "Équipements"
+
+#: inc/vehicle-taxonomies.php:30
+msgid "Equipment item"
+msgstr "Équipement"
+
+#: inc/vehicle-taxonomies.php:84
+msgid "Hatchback"
+msgstr "Compacte"
+
+#: inc/vehicle-taxonomies.php:85
+msgid "Sedan"
+msgstr "Berline"
+
+#: inc/vehicle-taxonomies.php:86
+msgid "Estate"
+msgstr "Break"
+
+#: inc/vehicle-taxonomies.php:87
+msgid "SUV"
+msgstr "SUV"
+
+#: inc/vehicle-taxonomies.php:88
+msgid "Coupé"
+msgstr "Coupé"
+
+#: inc/vehicle-taxonomies.php:89
+msgid "Convertible"
+msgstr "Cabriolet"
+
+#: inc/vehicle-taxonomies.php:90
+msgid "MPV"
+msgstr "Monospace"
+
+#: inc/vehicle-taxonomies.php:91
+msgid "Van"
+msgstr "Utilitaire"
+
+#: inc/vehicle-taxonomies.php:92
+msgid "Pick-up"
+msgstr "Pick-up"
+
+#: inc/vehicle-taxonomies.php:95
+msgid "Petrol"
+msgstr "Essence"
+
+#: inc/vehicle-taxonomies.php:96
+msgid "Diesel"
+msgstr "Diesel"
+
+#: inc/vehicle-taxonomies.php:97
+msgid "Hybrid"
+msgstr "Hybride"
+
+#: inc/vehicle-taxonomies.php:98
+msgid "Plug-in hybrid"
+msgstr "Hybride rechargeable"
+
+#: inc/vehicle-taxonomies.php:99
+msgid "Electric"
+msgstr "Électrique"
+
+#: inc/vehicle-taxonomies.php:100
+msgid "LPG"
+msgstr "LPG"
+
+#: inc/vehicle-taxonomies.php:101
+msgid "CNG"
+msgstr "CNG"
+
+#: inc/vehicle-taxonomies.php:104
+msgid "Manual"
+msgstr "Manuelle"
+
+#: inc/vehicle-taxonomies.php:105
+msgid "Automatic"
+msgstr "Automatique"
+
+#: inc/vehicle-taxonomies.php:108
+msgid "Used"
+msgstr "Occasion"
+
+#: inc/vehicle-taxonomies.php:109
+msgid "New"
+msgstr "Neuf"
+
+#: inc/vehicle-taxonomies.php:110
+msgid "Demo"
+msgstr "Démo"
+
+#: inc/vehicle-taxonomies.php:127
+msgid "Models are model families only (e.g. A4, 3 Series, M4). Put trims and engine variants (e.g. 40 TFSI S line) in the vehicle's Variant / trim field."
+msgstr "Les modèles sont uniquement des familles de modèles (p. ex. A4, Série 3, M4). Indiquez les finitions et motorisations (p. ex. 40 TFSI S line) dans le champ Version / finition du véhicule."
+
+#: inc/vehicle-taxonomies.php:172
+msgid "— Select make —"
+msgstr "— Choisir une marque —"
+
+#: index.php:36
+msgid "Nothing found."
+msgstr "Aucun résultat."
+
+#: single-vehicle.php:27
+#: template-parts/vehicle-card.php:31
+msgid "Price on request"
+msgstr "Prix sur demande"
+
+#. translators: %s: monthly amount.
+#: single-vehicle.php:30
+msgid "or %s / month"
+msgstr "ou %s / mois"
+
+#: single-vehicle.php:48
+msgid "Specifications"
+msgstr "Caractéristiques"
+
+#: template-parts/breadcrumbs.php:16
+msgid "Breadcrumb"
+msgstr "Fil d’Ariane"
+
+#: template-parts/enquiry-form.php:32
+msgid "Enquire about this vehicle"
+msgstr "Demander des informations sur ce véhicule"
+
+#: template-parts/enquiry-form.php:32
+msgid "Contact us"
+msgstr "Contactez-nous"
+
+#: template-parts/enquiry-form.php:36
+msgid "Thank you. We have received your enquiry and will contact you soon."
+msgstr "Merci. Nous avons bien reçu votre demande et vous recontacterons rapidement."
+
+#: template-parts/enquiry-form.php:38
+msgid "Your enquiry could not be sent. Please check your name, email and consent, then try again."
+msgstr "Votre demande n’a pas pu être envoyée. Vérifiez votre nom, votre e-mail et votre consentement, puis réessayez."
+
+#: template-parts/enquiry-form.php:47
+msgid "Subject"
+msgstr "Objet"
+
+#: template-parts/enquiry-form.php:63
+msgid "Phone (optional)"
+msgstr "Téléphone (facultatif)"
+
+#: template-parts/enquiry-form.php:67
+msgid "Message (optional)"
+msgstr "Message (facultatif)"
+
+#: template-parts/enquiry-form.php:71
+msgid "Leave this field empty"
+msgstr "Laissez ce champ vide"
+
+#: template-parts/enquiry-form.php:79
+msgid "Privacy policy"
+msgstr "Politique de confidentialité"
+
+#: template-parts/enquiry-form.php:83
+msgid "Send enquiry"
+msgstr "Envoyer la demande"
+
+#. translators: 1: vehicle title, 2: vehicle URL.
+#: template-parts/vehicle-action-bar.php:20
+msgid "Hello, I am interested in %1$s (%2$s)"
+msgstr "Bonjour, je suis intéressé(e) par %1$s (%2$s)"
+
+#: template-parts/vehicle-action-bar.php:22
+msgid "Vehicle actions"
+msgstr "Actions pour ce véhicule"
+
+#: template-parts/vehicle-action-bar.php:25
+msgid "Call"
+msgstr "Appeler"
+
+#: template-parts/vehicle-action-bar.php:28
+msgid "WhatsApp"
+msgstr "WhatsApp"
+
+#: template-parts/vehicle-action-bar.php:30
+msgid "Enquire"
+msgstr "Demander des infos"
