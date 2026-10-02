@@ -12,6 +12,8 @@ dist/
 *.log
 
 # Tooling caches
+__pycache__/
+*.pyc
 .phpcs-cache
 .phpunit.result.cache
 

@@ -319,7 +319,8 @@ function eda_demo_seed( array $data ) {
 
 /**
  * Remove demo vehicles, then demo-created make/model/equipment terms that no vehicle uses any more.
- * Seeded base terms (fuel, body, …), terms that existed before seeding and terms still in use stay.
+ * Seeded base terms (fuel, body, …), catalogue terms, terms that existed before seeding and terms
+ * still in use stay.
  * Enquiries are never deleted here (they follow the retention policy).
  *
  * @param string $dataset Dataset id.
@@ -355,6 +356,10 @@ function eda_demo_cleanup( $dataset ) {
 			)
 		);
 		foreach ( $terms as $term ) {
+			// Catalogue terms belong to the product, not the demo: never delete them.
+			if ( get_term_meta( $term->term_id, '_eda_catalogue', true ) ) {
+				continue;
+			}
 			$in_use = get_objects_in_term( $term->term_id, $taxonomy );
 			if ( ! $in_use && ! is_wp_error( wp_delete_term( $term->term_id, $taxonomy ) ) ) {
 				++$removed['terms'];

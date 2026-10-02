@@ -260,6 +260,7 @@ add_action( 'add_meta_boxes_vehicle', 'eda_add_vehicle_meta_box' );
 function eda_render_vehicle_meta_box( $post ) {
 	wp_nonce_field( 'eda_save_vehicle', 'eda_vehicle_nonce' );
 	echo '<table class="form-table" role="presentation"><tbody>';
+	eda_render_make_model_rows( $post );
 
 	foreach ( eda_vehicle_meta_fields() as $key => $field ) {
 		$id    = 'eda-meta-' . $key;
@@ -318,6 +319,60 @@ function eda_render_vehicle_meta_box( $post ) {
 }
 
 /**
+ * Make → Model rows: the full catalogue (term IDs), models filtered to the chosen make by
+ * assets/js/make-model.js. Variant / trim stays a separate text field below.
+ *
+ * @param WP_Post $post Vehicle.
+ */
+function eda_render_make_model_rows( $post ) {
+	$data  = eda_make_model_data( false, 'term_id' );
+	$make  = wp_get_object_terms( $post->ID, 'vehicle_make', array( 'fields' => 'ids' ) );
+	$model = wp_get_object_terms( $post->ID, 'vehicle_model', array( 'fields' => 'ids' ) );
+	$make  = $make ? (string) $make[0] : '';
+	$model = $model ? (string) $model[0] : '';
+	$link  = static fn( $taxonomy ) => admin_url( 'edit-tags.php?taxonomy=' . $taxonomy . '&post_type=vehicle' );
+
+	echo '<tr><th scope="row"><label for="eda-vehicle-make">' . esc_html__( 'Make', 'elite-auto-dealer' ) . '</label></th><td data-make-model>';
+	echo '<select id="eda-vehicle-make" name="eda_vehicle_make" data-role="make"><option value="">' . esc_html__( '— Select make —', 'elite-auto-dealer' ) . '</option>';
+	foreach ( $data['makes'] as $value => $label ) {
+		echo '<option value="' . esc_attr( $value ) . '"' . selected( $make, (string) $value, false ) . '>' . esc_html( $label ) . '</option>';
+	}
+	echo '</select> ';
+	echo '<label class="screen-reader-text" for="eda-vehicle-model">' . esc_html__( 'Model', 'elite-auto-dealer' ) . '</label>';
+	// Admin: no model list until a make is chosen (the full catalogue would be hundreds of models).
+	echo '<select id="eda-vehicle-model" name="eda_vehicle_model" data-role="model" data-require-make data-options="' . esc_attr( wp_json_encode( $data['models'] ) ) . '"><option value="">' . esc_html__( '— Select model —', 'elite-auto-dealer' ) . '</option>';
+	if ( '' !== $make ) {
+		eda_model_options( $data['models'], $make, $model );
+	}
+	echo '</select>';
+	printf(
+		'<p class="description">%1$s <a href="%2$s">%3$s</a> · <a href="%4$s">%5$s</a></p>',
+		esc_html__( 'Missing from the list?', 'elite-auto-dealer' ),
+		esc_url( $link( 'vehicle_make' ) ),
+		esc_html__( 'Add a make', 'elite-auto-dealer' ),
+		esc_url( $link( 'vehicle_model' ) ),
+		esc_html__( 'Add a model (choose its make there)', 'elite-auto-dealer' )
+	);
+	echo '</td></tr>';
+}
+
+/**
+ * Save the make/model pair. The model is only stored when it belongs to the chosen make.
+ *
+ * @param int $post_id  Vehicle ID.
+ * @param int $make_id  Submitted make term ID (0 = none).
+ * @param int $model_id Submitted model term ID (0 = none).
+ */
+function eda_save_make_model( $post_id, $make_id, $model_id ) {
+	$make_ok  = $make_id && get_term( $make_id, 'vehicle_make' ) instanceof WP_Term;
+	$model_ok = $make_ok && $model_id && get_term( $model_id, 'vehicle_model' ) instanceof WP_Term
+		&& (int) get_term_meta( $model_id, 'eda_make', true ) === $make_id;
+
+	wp_set_object_terms( $post_id, $make_ok ? array( $make_id ) : array(), 'vehicle_make' );
+	wp_set_object_terms( $post_id, $model_ok ? array( $model_id ) : array(), 'vehicle_model' );
+}
+
+/**
  * Save meta box input. Values pass through the registered sanitize callbacks
  * in update_post_meta(); empty values delete the key so "not set" is never stored.
  *
@@ -333,6 +388,10 @@ function eda_save_vehicle_meta( $post_id ) {
 
 	// phpcs:ignore WordPress.Security.ValidatedSanitizedInput.InputNotSanitized -- sanitised per field below.
 	$input = isset( $_POST['eda_meta'] ) && is_array( $_POST['eda_meta'] ) ? wp_unslash( $_POST['eda_meta'] ) : array();
+
+	if ( isset( $_POST['eda_vehicle_make'] ) ) {
+		eda_save_make_model( $post_id, absint( $_POST['eda_vehicle_make'] ), absint( $_POST['eda_vehicle_model'] ?? 0 ) );
+	}
 
 	foreach ( eda_vehicle_meta_fields() as $key => $field ) {
 		$value = eda_sanitize_vehicle_meta_value( $input[ $key ] ?? '', $field );
@@ -357,5 +416,6 @@ function eda_enqueue_vehicle_admin_assets( $hook ) {
 	}
 	wp_enqueue_media();
 	wp_enqueue_script( 'eda-admin-vehicle', EDA_URI . '/assets/js/admin-vehicle.js', array(), eda_asset_version( 'assets/js/admin-vehicle.js' ), true );
+	wp_enqueue_script( 'eda-make-model', EDA_URI . '/assets/js/make-model.js', array(), eda_asset_version( 'assets/js/make-model.js' ), true );
 }
 add_action( 'admin_enqueue_scripts', 'eda_enqueue_vehicle_admin_assets' );

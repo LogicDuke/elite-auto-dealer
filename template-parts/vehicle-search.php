@@ -9,58 +9,50 @@
 defined( 'ABSPATH' ) || exit;
 
 $eda_context = $args['context'] ?? 'home';
-// phpcs:disable WordPress.Security.NonceVerification.Recommended -- prefilling a public GET form.
-$eda_current = array(
-	'make'      => isset( $_GET['make'] ) ? sanitize_title( wp_unslash( $_GET['make'] ) ) : '',
-	'model'     => isset( $_GET['model'] ) ? sanitize_title( wp_unslash( $_GET['model'] ) ) : '',
-	'fuel'      => isset( $_GET['fuel'] ) ? sanitize_title( wp_unslash( $_GET['fuel'] ) ) : '',
-	'price_max' => isset( $_GET['price_max'] ) ? absint( $_GET['price_max'] ) : 0,
-	'sort'      => isset( $_GET['sort'] ) ? sanitize_key( $_GET['sort'] ) : '',
-);
-// phpcs:enable
+// phpcs:ignore WordPress.Security.NonceVerification.Recommended -- prefilling a public GET form.
+$eda_params = wp_unslash( $_GET );
 
-// A real term archive (e.g. /vehicles/fuel/electric/) preselects its own term.
+// A real term archive (e.g. /vehicles/make/bmw/) preselects its own term.
 if ( eda_is_vehicle_term_landing() ) {
 	$eda_term = get_queried_object();
 	$eda_base = eda_vehicle_taxonomy_definitions()[ $eda_term->taxonomy ][2] ?? '';
-	if ( isset( $eda_current[ $eda_base ] ) ) {
-		$eda_current[ $eda_base ] = $eda_term->slug;
+	if ( $eda_base ) {
+		$eda_params[ $eda_base ] = $eda_term->slug;
 	}
 }
 
-$eda_makes  = get_terms( array( 'taxonomy' => 'vehicle_make' ) );
-$eda_models = get_terms( array( 'taxonomy' => 'vehicle_model' ) );
-$eda_fuels  = get_terms( array( 'taxonomy' => 'vehicle_fuel_type' ) );
-$eda_groups = array();
-foreach ( $eda_models as $eda_model ) {
-	$eda_make_term              = get_term( (int) get_term_meta( $eda_model->term_id, 'eda_make', true ) );
-	$eda_group                  = $eda_make_term instanceof WP_Term ? $eda_make_term->name : '';
-	$eda_groups[ $eda_group ][] = $eda_model;
-}
-ksort( $eda_groups );
-$eda_id = 'vehicle-search-' . $eda_context;
+// Only makes/models with vehicles in stock; an unknown make or a model of another make is reset.
+$eda_current = eda_vehicle_search_state( $eda_params );
+$eda_data    = eda_make_model_data( true );
+$eda_fuels   = get_terms( array( 'taxonomy' => 'vehicle_fuel_type' ) );
+$eda_id      = 'vehicle-search-' . $eda_context;
+
+wp_enqueue_script(
+	'eda-make-model',
+	EDA_URI . '/assets/js/make-model.js',
+	array(),
+	eda_asset_version( 'assets/js/make-model.js' ),
+	array(
+		'strategy'  => 'defer',
+		'in_footer' => true,
+	)
+);
 ?>
-<form class="vehicle-search vehicle-search--<?php echo esc_attr( $eda_context ); ?>" method="get" action="<?php echo esc_url( get_post_type_archive_link( 'vehicle' ) ); ?>" role="search" aria-label="<?php esc_attr_e( 'Search vehicles', 'elite-auto-dealer' ); ?>" data-clean-get>
+<form class="vehicle-search vehicle-search--<?php echo esc_attr( $eda_context ); ?>" method="get" action="<?php echo esc_url( get_post_type_archive_link( 'vehicle' ) ); ?>" role="search" aria-label="<?php esc_attr_e( 'Search vehicles', 'elite-auto-dealer' ); ?>" data-clean-get data-make-model>
 	<div class="vehicle-search__field">
 		<label for="<?php echo esc_attr( $eda_id ); ?>-make"><?php echo esc_html( get_taxonomy( 'vehicle_make' )->labels->singular_name ); ?></label>
-		<select id="<?php echo esc_attr( $eda_id ); ?>-make" name="make">
+		<select id="<?php echo esc_attr( $eda_id ); ?>-make" name="make" data-role="make">
 			<option value=""><?php esc_html_e( 'All makes', 'elite-auto-dealer' ); ?></option>
-			<?php foreach ( $eda_makes as $eda_term ) : ?>
-				<option value="<?php echo esc_attr( $eda_term->slug ); ?>" <?php selected( $eda_current['make'], $eda_term->slug ); ?>><?php echo esc_html( $eda_term->name ); ?></option>
+			<?php foreach ( $eda_data['makes'] as $eda_value => $eda_label ) : ?>
+				<option value="<?php echo esc_attr( $eda_value ); ?>" <?php selected( $eda_current['make'], (string) $eda_value ); ?>><?php echo esc_html( $eda_label ); ?></option>
 			<?php endforeach; ?>
 		</select>
 	</div>
 	<div class="vehicle-search__field">
 		<label for="<?php echo esc_attr( $eda_id ); ?>-model"><?php echo esc_html( get_taxonomy( 'vehicle_model' )->labels->singular_name ); ?></label>
-		<select id="<?php echo esc_attr( $eda_id ); ?>-model" name="model">
+		<select id="<?php echo esc_attr( $eda_id ); ?>-model" name="model" data-role="model" data-options="<?php echo esc_attr( wp_json_encode( $eda_data['models'] ) ); ?>">
 			<option value=""><?php esc_html_e( 'All models', 'elite-auto-dealer' ); ?></option>
-			<?php foreach ( $eda_groups as $eda_group => $eda_list ) : ?>
-				<optgroup label="<?php echo esc_attr( $eda_group ); ?>">
-					<?php foreach ( $eda_list as $eda_term ) : ?>
-						<option value="<?php echo esc_attr( $eda_term->slug ); ?>" <?php selected( $eda_current['model'], $eda_term->slug ); ?>><?php echo esc_html( $eda_term->name ); ?></option>
-					<?php endforeach; ?>
-				</optgroup>
-			<?php endforeach; ?>
+			<?php eda_model_options( $eda_data['models'], $eda_current['make'], $eda_current['model'] ); ?>
 		</select>
 	</div>
 	<div class="vehicle-search__field">

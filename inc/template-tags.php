@@ -309,3 +309,24 @@ function eda_vehicle_subtitle( $post_id = 0 ) {
 	$variant = (string) eda_vehicle_meta( 'variant', $post_id );
 	return '' === $variant || false !== stripos( get_the_title( $post_id ? $post_id : get_the_ID() ), $variant ) ? '' : $variant;
 }
+
+/**
+ * Print <option>s for a model select: the models of $make, or all models grouped by make.
+ * assets/js/make-model.js rebuilds the same structure in the browser when the make changes.
+ *
+ * @param array  $models   Models from eda_make_model_data().
+ * @param string $make     Selected make value ('' = all).
+ * @param string $selected Selected model value.
+ */
+function eda_model_options( array $models, $make, $selected ) {
+	$group = null;
+	foreach ( eda_models_for_make( $models, (string) $make ) as $model ) {
+		if ( '' === (string) $make && $model['g'] !== $group ) {
+			echo null === $group ? '' : '</optgroup>';
+			$group = $model['g'];
+			echo '<optgroup label="' . esc_attr( '' !== $group ? $group : __( 'Other', 'elite-auto-dealer' ) ) . '">';
+		}
+		echo '<option value="' . esc_attr( $model['v'] ) . '"' . selected( (string) $selected, $model['v'], false ) . '>' . esc_html( $model['l'] ) . '</option>';
+	}
+	echo null === $group ? '' : '</optgroup>';
+}

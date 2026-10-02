@@ -25,6 +25,13 @@ wp eval-file wp-content/themes/elite-auto-dealer/tests/smoke-test.php
 wp eval-file wp-content/themes/elite-auto-dealer/demo/seed.php
 wp eval-file wp-content/themes/elite-auto-dealer/tests/demo-test.php
 
+# Make/Model catalogue (theme active)
+wp eval-file wp-content/themes/elite-auto-dealer/tests/catalogue-test.php
+
+# Catalogue source: regenerate data/vehicle-catalogue.json, or verify it is current
+python bin/build-vehicle-catalogue.py
+python bin/build-vehicle-catalogue.py --check
+
 # Vehicle image roadmap / manifest (no WordPress needed, from the theme root)
 php tests/image-roadmap-test.php
 
@@ -35,6 +42,7 @@ phpcs
 ## Docs
 
 - [docs/ARCHITECTURE.md](docs/ARCHITECTURE.md): file layout, vehicle data model, taxonomies, URLs, enquiries, SEO, multilingual readiness, filtering plan.
+- [docs/VEHICLE-CATALOGUE.md](docs/VEHICLE-CATALOGUE.md): Make/Model catalogue, generator, versioning, public filter rules.
 - [docs/PROJECT-RULES.md](docs/PROJECT-RULES.md): binding responsive, accessibility, performance, privacy and multilingual rules.
 - [docs/REFERENCE-AUDIT-POTENZA.md](docs/REFERENCE-AUDIT-POTENZA.md): reference audit (evidence for the rules).
 

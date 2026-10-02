@@ -135,7 +135,9 @@ function eda_vehicle_listing_url() {
  * @return array
  */
 function eda_vehicle_listing_robots( $robots ) {
-	if ( eda_is_vehicle_listing() && eda_request_is_filtered() ) {
+	// Filter combinations, and catalogue term archives without stock (e.g. /vehicles/make/abarth/),
+	// are kept out of the index.
+	if ( eda_is_vehicle_listing() && ( eda_request_is_filtered() || ! have_posts() ) ) {
 		$robots['noindex'] = true;
 		$robots['follow']  = true;
 	}
@@ -149,7 +151,7 @@ add_filter( 'wp_robots', 'eda_vehicle_listing_robots' );
  * Core already handles singular canonicals.
  */
 function eda_vehicle_listing_canonical() {
-	if ( eda_is_vehicle_listing() && ! eda_request_is_filtered() ) {
+	if ( eda_is_vehicle_listing() && ! eda_request_is_filtered() && have_posts() ) {
 		echo '<link rel="canonical" href="' . esc_url( eda_vehicle_listing_url() ) . '">' . "\n";
 	}
 }

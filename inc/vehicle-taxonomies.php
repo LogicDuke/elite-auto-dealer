@@ -40,17 +40,21 @@ function eda_register_vehicle_taxonomies() {
 			$taxonomy,
 			'vehicle',
 			array(
-				'labels'            => array(
+				'labels'             => array(
 					'name'          => $plural,
 					'singular_name' => $singular,
 					'menu_name'     => $plural,
 				),
-				'public'            => true,
-				'hierarchical'      => $hierarchical,
-				'show_in_rest'      => true,
-				'show_admin_column' => 'vehicle_equipment' !== $taxonomy,
-				'query_var'         => $base,
-				'rewrite'           => array(
+				'public'             => true,
+				'hierarchical'       => $hierarchical,
+				'show_in_rest'       => true,
+				'show_admin_column'  => 'vehicle_equipment' !== $taxonomy,
+				'query_var'          => $base,
+				// Make and model are chosen together in the "Vehicle details" box (make → model selector),
+				// so their free-text tag boxes and quick-edit fields are hidden.
+				'meta_box_cb'        => in_array( $taxonomy, array( 'vehicle_make', 'vehicle_model' ), true ) ? false : null,
+				'show_in_quick_edit' => ! in_array( $taxonomy, array( 'vehicle_make', 'vehicle_model' ), true ),
+				'rewrite'            => array(
 					'slug'       => eda_url_bases()['vehicles'] . '/' . $base,
 					'with_front' => false,
 				),
@@ -133,7 +137,7 @@ add_action( 'vehicle_model_pre_add_form', 'eda_model_family_notice' );
  */
 function eda_model_add_make_field() {
 	?>
-	<div class="form-field">
+	<div class="form-field form-required">
 		<label for="eda-make"><?php esc_html_e( 'Make', 'elite-auto-dealer' ); ?></label>
 		<?php eda_make_dropdown( 0 ); ?>
 	</div>
@@ -148,7 +152,7 @@ add_action( 'vehicle_model_add_form_fields', 'eda_model_add_make_field' );
  */
 function eda_model_edit_make_field( $term ) {
 	?>
-	<tr class="form-field">
+	<tr class="form-field form-required">
 		<th scope="row"><label for="eda-make"><?php esc_html_e( 'Make', 'elite-auto-dealer' ); ?></label></th>
 		<td><?php eda_make_dropdown( (int) get_term_meta( $term->term_id, 'eda_make', true ) ); ?></td>
 	</tr>
@@ -170,8 +174,9 @@ function eda_make_dropdown( $selected ) {
 			'selected'          => $selected,
 			'hide_empty'        => false,
 			'show_option_none'  => __( '— Select make —', 'elite-auto-dealer' ),
-			'option_none_value' => 0,
+			'option_none_value' => '',
 			'orderby'           => 'name',
+			'required'          => true,
 		)
 	);
 }
@@ -183,10 +188,77 @@ function eda_make_dropdown( $selected ) {
  */
 function eda_save_model_make( $term_id ) {
 	// phpcs:ignore WordPress.Security.NonceVerification.Missing -- verified by core term handlers.
-	if ( isset( $_POST['eda_make'] ) && current_user_can( 'edit_term', $term_id ) ) {
-		// phpcs:ignore WordPress.Security.NonceVerification.Missing -- verified by core term handlers.
-		update_term_meta( $term_id, 'eda_make', absint( $_POST['eda_make'] ) );
+	$make = isset( $_POST['eda_make'] ) ? absint( $_POST['eda_make'] ) : 0;
+	// Only a real make is saved; an empty choice never wipes an existing link.
+	if ( $make && current_user_can( 'edit_term', $term_id ) && get_term( $make, 'vehicle_make' ) instanceof WP_Term ) {
+		update_term_meta( $term_id, 'eda_make', $make );
 	}
 }
 add_action( 'created_vehicle_model', 'eda_save_model_make' );
 add_action( 'edited_vehicle_model', 'eda_save_model_make' );
+
+/**
+ * Models added on the Models admin screen must name their make (no accidental orphans).
+ * Programmatic inserts (catalogue, demo seeder) link the make themselves and are not affected.
+ *
+ * @param string|WP_Error $term     Term name.
+ * @param string          $taxonomy Taxonomy.
+ * @return string|WP_Error
+ */
+function eda_require_model_make( $term, $taxonomy ) {
+	// phpcs:disable WordPress.Security.NonceVerification.Missing -- core verifies the add-tag nonce.
+	$is_admin_form = wp_doing_ajax() && isset( $_POST['action'] ) && 'add-tag' === $_POST['action'];
+	$make          = isset( $_POST['eda_make'] ) ? absint( $_POST['eda_make'] ) : 0;
+	// phpcs:enable
+	if ( 'vehicle_model' === $taxonomy && $is_admin_form && ! ( $make && get_term( $make, 'vehicle_make' ) instanceof WP_Term ) ) {
+		return new WP_Error( 'eda_missing_make', __( 'Choose the make this model belongs to.', 'elite-auto-dealer' ) );
+	}
+	return $term;
+}
+add_filter( 'pre_insert_term', 'eda_require_model_make', 10, 2 );
+
+/**
+ * "Make" column on the Models list, so orphans and wrong links are visible at a glance.
+ *
+ * @param array $columns Columns.
+ * @return array
+ */
+function eda_model_columns( $columns ) {
+	return array_slice( $columns, 0, 2, true ) + array( 'eda_make' => __( 'Make', 'elite-auto-dealer' ) ) + array_slice( $columns, 2, null, true );
+}
+add_filter( 'manage_edit-vehicle_model_columns', 'eda_model_columns' );
+
+/**
+ * Make column content.
+ *
+ * @param string $content Column content.
+ * @param string $column  Column name.
+ * @param int    $term_id Model term ID.
+ * @return string
+ */
+function eda_model_column_content( $content, $column, $term_id ) {
+	if ( 'eda_make' !== $column ) {
+		return $content;
+	}
+	$make = get_term( (int) get_term_meta( $term_id, 'eda_make', true ), 'vehicle_make' );
+	return $make instanceof WP_Term ? esc_html( $make->name ) : '<strong>' . esc_html__( 'No make', 'elite-auto-dealer' ) . '</strong>';
+}
+add_filter( 'manage_vehicle_model_custom_column', 'eda_model_column_content', 10, 3 );
+
+/**
+ * Hide the Make / Model tag panels in the block editor (the Vehicle details box replaces them).
+ *
+ * @param WP_REST_Response $response Response.
+ * @param WP_Taxonomy      $taxonomy Taxonomy.
+ * @param WP_REST_Request  $request  Request.
+ * @return WP_REST_Response
+ */
+function eda_hide_make_model_panels( $response, $taxonomy, $request ) {
+	if ( in_array( $taxonomy->name, array( 'vehicle_make', 'vehicle_model' ), true ) && 'edit' === $request['context'] ) {
+		$data                          = $response->get_data();
+		$data['visibility']['show_ui'] = false;
+		$response->set_data( $data );
+	}
+	return $response;
+}
+add_filter( 'rest_prepare_taxonomy', 'eda_hide_make_model_panels', 10, 3 );

@@ -14,6 +14,7 @@ define( 'EDA_URI', get_template_directory_uri() );
 require EDA_DIR . '/inc/vehicle-post-type.php';
 require EDA_DIR . '/inc/vehicle-taxonomies.php';
 require EDA_DIR . '/inc/vehicle-meta.php';
+require EDA_DIR . '/inc/vehicle-catalogue.php';
 require EDA_DIR . '/inc/template-tags.php';
 require EDA_DIR . '/inc/seo.php';
 require EDA_DIR . '/inc/inventory-query.php';
@@ -90,6 +91,7 @@ function eda_activate() {
 	eda_register_vehicle_post_type();
 	eda_register_vehicle_taxonomies();
 	eda_seed_vehicle_terms();
+	eda_maybe_seed_catalogue();
 	flush_rewrite_rules();
 }
 add_action( 'after_switch_theme', 'eda_activate' );

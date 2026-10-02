@@ -143,7 +143,8 @@ $eda_check( array( 'AUR-26001' ) === $eda_blocked['skipped'] && 'Real dealership
 $eda_clean = eda_demo_cleanup( $eda_dataset );
 $eda_check( 15 === $eda_clean['vehicles'] && null !== get_post( $eda_real ), 'cleanup removes the 15 demo vehicles and keeps the real one' );
 $eda_check( get_term_by( 'slug', 'navigation', 'vehicle_equipment' ) && get_term_by( 'slug', 'bmw', 'vehicle_make' ), 'cleanup keeps demo-created terms still used by a real vehicle' );
-$eda_check( ! get_term_by( 'slug', 'sport-exhaust', 'vehicle_equipment' ) && ! get_term_by( 'slug', 'model-y', 'vehicle_model' ), 'cleanup removes unused demo-created terms' );
+$eda_check( ! get_term_by( 'slug', 'sport-exhaust', 'vehicle_equipment' ), 'cleanup removes unused demo-created terms' );
+$eda_check( get_term_by( 'slug', 'model-y', 'vehicle_model' ) && get_term_by( 'slug', 'tesla', 'vehicle_make' ), 'cleanup keeps catalogue makes/models even when unused' );
 $eda_check( get_term_by( 'slug', 'electric', 'vehicle_fuel_type' ) && get_term_by( 'slug', 'estate', 'vehicle_body_type' ), 'cleanup never removes base vocabulary terms' );
 wp_delete_post( $eda_real, true );
 

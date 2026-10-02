@@ -29,10 +29,11 @@ functions.php           Constants, textdomain, theme supports, menus, image size
 inc/
   vehicle-post-type.php   `vehicle` CPT, URL bases, term archives -> inventory template
   vehicle-taxonomies.php  7 taxonomies, model -> make link, default term seeding
-  vehicle-meta.php        Meta schema, registration, sanitising, admin meta box, gallery picker enqueue
+  vehicle-meta.php        Meta schema, registration, sanitising, admin meta box (incl. Make → Model selector), gallery picker enqueue
+  vehicle-catalogue.php   Make/Model catalogue seeding + versioned updates (data/vehicle-catalogue.json)
   template-tags.php       Meta access/formatting, price format, phone helpers, breadcrumb trail
   seo.php                 Vehicle + breadcrumb JSON-LD, listing canonical / robots
-  inventory-query.php     Inventory page size (12), price_max filter, sort options
+  inventory-query.php     Inventory page size (12), price_max filter, sort options, shared make/model data + search state
   enquiries.php           Enquiry types, private `eda_enquiry` CPT, validation, storage, email, handler, nonce refresh
   enquiry-privacy.php     Enquiry retention clean-up, personal-data exporter and eraser
   customizer.php          Dealer contact: phone, WhatsApp, enquiry email
@@ -48,12 +49,16 @@ assets/css/main.css     Design system: tokens, layout, header/drawer, cards, inv
 assets/js/admin-vehicle.js  Media picker for the gallery field
 assets/js/enquiry.js    Refreshes the enquiry nonce before submit (cache-safe forms)
 assets/js/navigation.js Mobile drawer (ESC, focus loop, scroll lock) + clean GET search URLs
+assets/js/make-model.js Shared Make → Model cascading (homepage search, inventory filter, admin selector)
+data/vehicle-catalogue.json  Default Make → Model family catalogue (49 makes, 428 models), generated
+bin/build-vehicle-catalogue.py  Catalogue source + generator (--check verifies the JSON); dev tool, not shipped
 languages/              elite-auto-dealer.pot + nl_BE / fr_BE .po/.mo (see "Multilingual")
 demo/vehicles.json      Canonical demo inventory (Aurelis Motors, 15 vehicles)
 demo/seed.php           Idempotent demo seeder / validator / cleanup (wp-cli)
 assets/img, assets/fonts   Empty, reserved
 tests/smoke-test.php    wp-cli smoke test (data model, sanitising, enquiries, SEO helpers)
 tests/demo-test.php     Demo dataset rules, seeded state, idempotency, cleanup safety drill
+tests/catalogue-test.php  Catalogue data, seeding/versioning, sold-only filter rule, admin selector, generator check
 ```
 
 Prefixes: functions `eda_`, constants `EDA_`, meta `_eda_`, image sizes `eda-`, text domain `elite-auto-dealer`.
@@ -99,6 +104,12 @@ Rule: **anything finite you filter or facet on is a taxonomy, not meta.** Term q
 - **Trims never go into the Model taxonomy.** Otherwise the model filter fragments ("A4", "A4 Prestige", "A4 40 TFSI"…), as seen in the reference audit. The Models admin screen shows this rule; the variant field has a placeholder example.
 - Model slugs are global, so name ambiguous models with the make prefix where needed (e.g. `mazda-3`).
 - Variant is shown as a subtitle under the H1 and emitted as `vehicleConfiguration` in JSON-LD. It is not a filter.
+- **Catalogue:** a bundled default catalogue (`data/vehicle-catalogue.json`, versioned) pre-fills makes and models on every install. Staff can still add their own.
+- **Admin:** the "Vehicle details" box replaces the free-text tag boxes with a Make → Model selector, and the Models screen requires a make.
+- **Public search:** shows only makes and models with **available or reserved** stock (sold-only terms are hidden), and models cascade from the selected make, both server-side and with JS.
+- **Generator:** the catalogue source is `bin/build-vehicle-catalogue.py`, which generates the JSON; see the version bump procedure in the catalogue doc.
+
+  Full details: [VEHICLE-CATALOGUE.md](VEHICLE-CATALOGUE.md).
 
 **One value per vehicle** (make, model, body, fuel, transmission, condition) is a convention; WordPress allows several. Not enforced yet.
 
@@ -299,6 +310,7 @@ Headings are never built from arbitrary filters. Selected filters will be shown 
 | `/vehicles/`, `/vehicles/page/N/` | index | self, parameters stripped |
 | `/vehicles/make/bmw/` (and other term archives, paged) | index | self, parameters stripped |
 | Listing + tracking params only (`?utm_source=…`) | index | clean URL |
+| Term archive with no vehicles (e.g. catalogue make `/vehicles/make/abarth/`) | **noindex, follow** | none |
 | Listing + any filter/sort param (`make`, `model`, `body`, `fuel`, `transmission`, `condition`, `equipment`, `price_min`, `price_max`, `year_min`, `year_max`, `km_max`, `sort`) | **noindex, follow** | none |
 | Search (`?s=`) | noindex (WordPress core) | — |
 

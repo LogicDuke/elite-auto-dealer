@@ -3,13 +3,13 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: Elite Auto Dealer 0.1.0\n"
-"Report-Msgid-Bugs-To: https://wordpress.org/support/theme/export2\n"
+"Report-Msgid-Bugs-To: https://wordpress.org/support/theme/elite-auto-dealer\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"POT-Creation-Date: 2026-10-02T23:39:43+00:00\n"
+"POT-Creation-Date: 2026-10-02T23:30:02+00:00\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "X-Generator: WP-CLI 2.12.0\n"
 "X-Domain: elite-auto-dealer\n"
@@ -109,8 +109,8 @@ msgstr ""
 
 #: front-page.php:45
 #: inc/vehicle-post-type.php:43
-#: template-parts/vehicle-search.php:43
-#: template-parts/vehicle-search.php:96
+#: template-parts/vehicle-search.php:41
+#: template-parts/vehicle-search.php:88
 msgid "Search vehicles"
 msgstr ""
 
@@ -190,11 +190,11 @@ msgstr ""
 msgid "Contact %s"
 msgstr ""
 
-#: functions.php:40
+#: functions.php:41
 msgid "Primary menu"
 msgstr ""
 
-#: functions.php:41
+#: functions.php:42
 msgid "Footer menu"
 msgstr ""
 
@@ -451,6 +451,10 @@ msgstr ""
 msgid "Photography in production"
 msgstr ""
 
+#: inc/template-tags.php:327
+msgid "Other"
+msgstr ""
+
 #: inc/vehicle-meta.php:33
 msgid "Stock ID"
 msgstr ""
@@ -615,8 +619,42 @@ msgstr ""
 msgid "Vehicle details"
 msgstr ""
 
-#: inc/vehicle-meta.php:286
+#: inc/vehicle-meta.php:287
 msgid "Select images"
+msgstr ""
+
+#: inc/vehicle-meta.php:335
+#: inc/vehicle-taxonomies.php:24
+#: inc/vehicle-taxonomies.php:141
+#: inc/vehicle-taxonomies.php:156
+#: inc/vehicle-taxonomies.php:227
+msgid "Make"
+msgstr ""
+
+#: inc/vehicle-meta.php:336
+#: inc/vehicle-taxonomies.php:176
+msgid "— Select make —"
+msgstr ""
+
+#: inc/vehicle-meta.php:341
+#: inc/vehicle-taxonomies.php:25
+msgid "Model"
+msgstr ""
+
+#: inc/vehicle-meta.php:343
+msgid "— Select model —"
+msgstr ""
+
+#: inc/vehicle-meta.php:350
+msgid "Missing from the list?"
+msgstr ""
+
+#: inc/vehicle-meta.php:352
+msgid "Add a make"
+msgstr ""
+
+#: inc/vehicle-meta.php:354
+msgid "Add a model (choose its make there)"
 msgstr ""
 
 #: inc/vehicle-post-type.php:37
@@ -656,18 +694,8 @@ msgstr ""
 msgid "Makes"
 msgstr ""
 
-#: inc/vehicle-taxonomies.php:24
-#: inc/vehicle-taxonomies.php:137
-#: inc/vehicle-taxonomies.php:152
-msgid "Make"
-msgstr ""
-
 #: inc/vehicle-taxonomies.php:25
 msgid "Models"
-msgstr ""
-
-#: inc/vehicle-taxonomies.php:25
-msgid "Model"
 msgstr ""
 
 #: inc/vehicle-taxonomies.php:26
@@ -711,96 +739,100 @@ msgstr ""
 msgid "Equipment item"
 msgstr ""
 
-#: inc/vehicle-taxonomies.php:84
+#: inc/vehicle-taxonomies.php:88
 msgid "Hatchback"
 msgstr ""
 
-#: inc/vehicle-taxonomies.php:85
+#: inc/vehicle-taxonomies.php:89
 msgid "Sedan"
 msgstr ""
 
-#: inc/vehicle-taxonomies.php:86
+#: inc/vehicle-taxonomies.php:90
 msgid "Estate"
 msgstr ""
 
-#: inc/vehicle-taxonomies.php:87
+#: inc/vehicle-taxonomies.php:91
 msgid "SUV"
 msgstr ""
 
-#: inc/vehicle-taxonomies.php:88
+#: inc/vehicle-taxonomies.php:92
 msgid "Coupé"
 msgstr ""
 
-#: inc/vehicle-taxonomies.php:89
+#: inc/vehicle-taxonomies.php:93
 msgid "Convertible"
 msgstr ""
 
-#: inc/vehicle-taxonomies.php:90
+#: inc/vehicle-taxonomies.php:94
 msgid "MPV"
 msgstr ""
 
-#: inc/vehicle-taxonomies.php:91
+#: inc/vehicle-taxonomies.php:95
 msgid "Van"
 msgstr ""
 
-#: inc/vehicle-taxonomies.php:92
+#: inc/vehicle-taxonomies.php:96
 msgid "Pick-up"
 msgstr ""
 
-#: inc/vehicle-taxonomies.php:95
+#: inc/vehicle-taxonomies.php:99
 msgid "Petrol"
 msgstr ""
 
-#: inc/vehicle-taxonomies.php:96
+#: inc/vehicle-taxonomies.php:100
 msgid "Diesel"
 msgstr ""
 
-#: inc/vehicle-taxonomies.php:97
+#: inc/vehicle-taxonomies.php:101
 msgid "Hybrid"
 msgstr ""
 
-#: inc/vehicle-taxonomies.php:98
+#: inc/vehicle-taxonomies.php:102
 msgid "Plug-in hybrid"
 msgstr ""
 
-#: inc/vehicle-taxonomies.php:99
+#: inc/vehicle-taxonomies.php:103
 msgid "Electric"
 msgstr ""
 
-#: inc/vehicle-taxonomies.php:100
+#: inc/vehicle-taxonomies.php:104
 msgid "LPG"
 msgstr ""
 
-#: inc/vehicle-taxonomies.php:101
+#: inc/vehicle-taxonomies.php:105
 msgid "CNG"
 msgstr ""
 
-#: inc/vehicle-taxonomies.php:104
+#: inc/vehicle-taxonomies.php:108
 msgid "Manual"
 msgstr ""
 
-#: inc/vehicle-taxonomies.php:105
+#: inc/vehicle-taxonomies.php:109
 msgid "Automatic"
 msgstr ""
 
-#: inc/vehicle-taxonomies.php:108
+#: inc/vehicle-taxonomies.php:112
 msgid "Used"
 msgstr ""
 
-#: inc/vehicle-taxonomies.php:109
+#: inc/vehicle-taxonomies.php:113
 msgid "New"
 msgstr ""
 
-#: inc/vehicle-taxonomies.php:110
+#: inc/vehicle-taxonomies.php:114
 msgid "Demo"
 msgstr ""
 
-#: inc/vehicle-taxonomies.php:127
+#: inc/vehicle-taxonomies.php:131
 msgid "Models are model families only (e.g. A4, 3 Series, M4). Put trims and engine variants (e.g. 40 TFSI S line) in the vehicle's Variant / trim field."
 msgstr ""
 
-#: inc/vehicle-taxonomies.php:172
-msgid "— Select make —"
+#: inc/vehicle-taxonomies.php:214
+msgid "Choose the make this model belongs to."
+msgstr ""
+
+#: inc/vehicle-taxonomies.php:244
+msgid "No make"
 msgstr ""
 
 #: index.php:37
@@ -909,36 +941,36 @@ msgstr ""
 msgid "Enquire"
 msgstr ""
 
-#: template-parts/vehicle-search.php:47
+#: template-parts/vehicle-search.php:45
 msgid "All makes"
 msgstr ""
 
-#: template-parts/vehicle-search.php:56
+#: template-parts/vehicle-search.php:54
 msgid "All models"
 msgstr ""
 
-#: template-parts/vehicle-search.php:69
+#: template-parts/vehicle-search.php:61
 msgid "All fuel types"
 msgstr ""
 
-#: template-parts/vehicle-search.php:76
+#: template-parts/vehicle-search.php:68
 msgid "Maximum price"
 msgstr ""
 
-#: template-parts/vehicle-search.php:78
+#: template-parts/vehicle-search.php:70
 msgid "Any price"
 msgstr ""
 
 #. translators: %s: formatted price.
-#: template-parts/vehicle-search.php:81
+#: template-parts/vehicle-search.php:73
 #, php-format
 msgid "Up to %s"
 msgstr ""
 
-#: template-parts/vehicle-search.php:87
+#: template-parts/vehicle-search.php:79
 msgid "Sort by"
 msgstr ""
 
-#: template-parts/vehicle-search.php:98
+#: template-parts/vehicle-search.php:90
 msgid "Clear filters"
 msgstr ""
