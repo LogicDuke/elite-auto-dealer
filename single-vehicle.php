@@ -13,7 +13,6 @@ get_template_part( 'template-parts/breadcrumbs' );
 while ( have_posts() ) :
 	the_post();
 	$eda_price   = eda_vehicle_meta( 'price' );
-	$eda_monthly = eda_vehicle_meta( 'finance_monthly' );
 	$eda_variant = eda_vehicle_meta( 'variant' );
 	$eda_gallery = eda_vehicle_meta( 'gallery' );
 	?>
@@ -25,11 +24,11 @@ while ( have_posts() ) :
 
 		<p class="vehicle-price">
 			<?php echo esc_html( '' !== $eda_price ? eda_format_price( $eda_price ) : __( 'Price on request', 'elite-auto-dealer' ) ); ?>
-			<?php if ( '' !== $eda_monthly ) : ?>
-				<?php /* translators: %s: monthly amount. */ ?>
-				<span><?php echo esc_html( sprintf( __( 'or %s / month', 'elite-auto-dealer' ), eda_format_price( $eda_monthly ) ) ); ?></span>
-			<?php endif; ?>
 		</p>
+		<?php
+		// finance_monthly is stored but deliberately not shown: a monthly amount may only be
+		// advertised together with a compliant representative credit example (see ARCHITECTURE).
+		?>
 
 		<?php get_template_part( 'template-parts/vehicle-action-bar' ); ?>
 

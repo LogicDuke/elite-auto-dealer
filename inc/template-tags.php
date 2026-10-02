@@ -42,6 +42,8 @@ function eda_format_vehicle_meta_value( $value, $field ) {
 		$value = $field['options'][ $value ] ?? $value;
 	} elseif ( 'boolean' === $field['type'] ) {
 		$value = $value ? __( 'Yes', 'elite-auto-dealer' ) : __( 'No', 'elite-auto-dealer' );
+	} elseif ( 'year' === ( $field['format'] ?? '' ) ) {
+		$value = (string) (int) $value;
 	} elseif ( 'integer' === $field['type'] ) {
 		$value = number_format_i18n( (int) $value );
 	} elseif ( 'number' === $field['type'] ) {

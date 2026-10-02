@@ -45,8 +45,11 @@ assets/css/main.css     Front-end CSS (base only for now)
 assets/js/admin-vehicle.js  Media picker for the gallery field
 assets/js/enquiry.js    Refreshes the enquiry nonce before submit (cache-safe forms)
 languages/              elite-auto-dealer.pot + nl_BE / fr_BE .po/.mo (see "Multilingual")
-assets/img, assets/fonts, page-templates/, demo/   Empty, reserved
+demo/vehicles.json      Canonical demo inventory (Aurelis Motors, 15 vehicles)
+demo/seed.php           Idempotent demo seeder / validator / cleanup (wp-cli)
+assets/img, assets/fonts, page-templates/   Empty, reserved
 tests/smoke-test.php    wp-cli smoke test (data model, sanitising, enquiries, SEO helpers)
+tests/demo-test.php     Demo dataset rules, seeded state, idempotency, cleanup safety drill
 ```
 
 Prefixes: functions `eda_`, constants `EDA_`, meta `_eda_`, image sizes `eda-`, text domain `elite-auto-dealer`.
@@ -126,7 +129,7 @@ Sanitising is explicit per type in `eda_sanitize_vehicle_meta_value()`. Invalid 
 | `featured` | bool | Stored `'1'` or absent |
 | `variant` | string | Trim / engine variant. See Make / Model / Variant |
 | `price` | int | Whole euros, VAT included for consumers. Empty = "price on request" |
-| `finance_monthly` | int | Whole euros per month (example only, see Decisions) |
+| `finance_monthly` | int | Whole euros per month. Stored, **not shown publicly** (see Design-phase requirements) |
 | `vat_regime` | enum | See VAT regime |
 | `year` | int | |
 | `first_registration` | date | `Y-m-d` |
@@ -355,6 +358,43 @@ If an SEO plugin is installed later, disable the overlapping output in `inc/seo.
   - add `hreflang` via the plugin;
   - enum labels and units come from the theme's `.po` files, not the database.
 
+## Demo inventory
+
+Demo content only, replaceable without code changes. The full vehicle table is in [DEMO-INVENTORY.md](DEMO-INVENTORY.md).
+
+- **Identity:** **Aurelis Motors**, a fictional independent dealership in Brussels: "Premium pre-owned automobiles". It is stored in the `dealership` block of `demo/vehicles.json`. The seeder does **not** change site options (title, tagline, Customizer contact details).
+- **Source:** `demo/vehicles.json` is the single source of truth: 15 vehicles plus the make, model and equipment vocabularies.
+  - Values are machine values: schema meta keys, enum values, term slugs. Display labels come from the theme and translations.
+  - Make, model and equipment names are the stored term names; brand names are not translated.
+- **Commands** (from the WordPress root, theme active):
+
+  ```sh
+  wp eval-file wp-content/themes/elite-auto-dealer/demo/seed.php            # import / update
+  wp eval-file wp-content/themes/elite-auto-dealer/demo/seed.php validate   # validate the JSON only
+  wp eval-file wp-content/themes/elite-auto-dealer/demo/seed.php cleanup    # remove the demo
+  wp eval-file wp-content/themes/elite-auto-dealer/tests/demo-test.php      # verify (leaves the demo seeded)
+  ```
+
+- **Validation first:** the JSON is checked against the theme schema and data rules before anything is written; any error aborts with nothing changed. Rules: 15 vehicles, unique stock IDs and VINs, known enum and term values, model ↔ make links, values that survive sanitising unchanged, EV fields only on EV/PHEV, no engine size, Euro norm or CO2 for EVs, kW ↔ hp consistency, year = first registration year, no "new" condition.
+- **Identity and idempotency:**
+  - Vehicles are matched by **stock ID** (`AUR-26001` … `AUR-26015`) **and** the demo marker `_eda_demo = aurelis-demo`.
+  - A match is updated in place; a missing one is created. Running twice gives 15 created, then 0 created / 15 updated.
+  - Every schema field except `gallery` is synced, so removing a value from the JSON removes it from the vehicle.
+  - Meta is written through `eda_sanitize_vehicle_meta_value()` and the registered sanitize callbacks; taxonomies are set by term ID.
+- **Real vehicles are never touched:** if a non-demo vehicle uses a demo stock ID, that record is skipped with a warning.
+- **Terms:**
+  - Missing makes, models (with their `eda_make` link) and equipment terms are created and marked `_eda_demo`.
+  - Existing terms are reused, never renamed.
+  - Base vocabularies (fuel, body, transmission, condition) must already exist; they are seeded on theme activation.
+- **Cleanup** (`cleanup` mode) is conservative:
+  - It deletes only vehicles carrying the demo marker.
+  - It deletes make, model and equipment terms only if the seeder created them **and** no vehicle uses them any more.
+  - It never deletes base vocabulary terms, terms that existed before seeding, or terms used by real vehicles. Enquiries are not deleted; they follow the retention policy.
+- **No images yet.** No featured images or gallery, no placeholder URLs, no network requests.
+- **Site identity on the demo site:** the title "Aurelis Motors" and tagline "Premium pre-owned automobiles" were set as normal WordPress options (Settings → General) on the local demo install only. They are never hard-coded in the theme or set by the seeder. Phone, WhatsApp and enquiry email stay empty until safe fictional contact data is approved.
+- **Term language:** make, model and equipment term names are English for now. Translating database terms is deferred; the theme UI is NL/FR-ready.
+- **Packaging:** `demo/` stays in the development repository. Showcase/demo builds may include the demo tooling. Production/client release packages may exclude `demo/` (seeder and dataset) when a clean install is required; the theme does not depend on it at runtime. Packaging rules are not changed yet.
+
 ## Future inventory filtering
 
 Planned approach, not built yet:
@@ -374,7 +414,20 @@ Planned approach, not built yet:
 - **`availability` enum instead of separate reserved/sold flags**, so a car can't be both.
 - **`vat_regime` enum instead of a VAT boolean**, extensible without a storage change.
 - **Prices are whole euros (integers).** Cents are not supported.
-- **Finance example**: Belgian consumer-credit rules require a representative example (APR, term, total payable) whenever a monthly amount is advertised. That text still needs designing alongside `finance_monthly`.
+- **Finance example**: Belgian consumer-credit rules require a representative example (APR, term, total payable) whenever a monthly amount is advertised. `finance_monthly` is therefore stored but not displayed (see Design-phase requirements).
+
+## Design-phase requirements
+
+Approved behaviour the visual design must implement:
+
+1. **Monthly finance amounts are hidden publicly.**
+   - `finance_monthly` stays in the data (admin and demo records) but is not output on cards, vehicle pages or in structured data.
+   - Public display may only be enabled together with a compliant representative credit example: lender, APR, term, total amount payable and the other legally required information.
+2. **Sold vehicles:**
+   - keep their price in the database;
+   - clearly show a SOLD status;
+   - hide actions that no longer make sense (the action bar is already not rendered for sold vehicles; the design must also handle enquiry and other purchase CTAs);
+   - never promote a monthly finance amount.
 - **Prefix `eda` / meta prefix `_eda_`.** WPCS flags 3-letter prefixes as collision-prone; kept for brevity and excluded in `phpcs.xml.dist`. Renaming later means migrating stored meta keys, so change it now or never.
 - **Classic theme with the block editor for vehicle descriptions.** Vehicle details use a classic meta box, which still works in the block editor.
 - **Enquiry form nonce is refreshed on submit** (see "Cache-safe nonce"), so vehicle pages can be fully page-cached.

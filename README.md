@@ -21,6 +21,10 @@ find . -name '*.php' -not -path './vendor/*' -exec php -l {} \;
 # Data-model smoke test (from the WordPress root, theme active)
 wp eval-file wp-content/themes/elite-auto-dealer/tests/smoke-test.php
 
+# Demo inventory (Aurelis Motors): seed, then verify
+wp eval-file wp-content/themes/elite-auto-dealer/demo/seed.php
+wp eval-file wp-content/themes/elite-auto-dealer/tests/demo-test.php
+
 # Coding standards (requires PHPCS + WordPress Coding Standards installed globally)
 phpcs
 ```

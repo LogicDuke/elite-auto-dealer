@@ -19,7 +19,7 @@ defined( 'ABSPATH' ) || exit;
  * - type: integer (whole, >= 0) | number (decimal, >= 0) | boolean | string | array (attachment IDs)
  * - label
  * - options: enum, machine value => translated label (stored value is the key)
- * - format: date | vin (string fields)
+ * - format: date | vin (string fields), year (integer shown without digit grouping)
  * - decimals: rounding for number fields
  * - unit: translated display unit
  * - placeholder: admin input hint
@@ -69,8 +69,9 @@ function eda_vehicle_meta_fields() {
 			),
 		),
 		'year'               => array(
-			'type'  => 'integer',
-			'label' => __( 'Year', 'elite-auto-dealer' ),
+			'type'   => 'integer',
+			'format' => 'year',
+			'label'  => __( 'Year', 'elite-auto-dealer' ),
 		),
 		'first_registration' => array(
 			'type'   => 'string',

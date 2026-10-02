@@ -29,7 +29,7 @@ msgid "Elite Digital Services"
 msgstr "Elite Digital Services"
 
 #: 404.php:12
-#: inc/template-tags.php:131
+#: inc/template-tags.php:133
 msgid "Page not found"
 msgstr "Page introuvable"
 
@@ -233,12 +233,12 @@ msgstr "%s €"
 msgid "Yes"
 msgstr "Oui"
 
-#: inc/template-tags.php:107
+#: inc/template-tags.php:109
 msgid "Home"
 msgstr "Accueil"
 
 #. translators: %s: search query.
-#: inc/template-tags.php:129
+#: inc/template-tags.php:131
 #: index.php:17
 msgid "Search results for “%s”"
 msgstr "Résultats de recherche pour « %s »"
@@ -252,7 +252,7 @@ msgid "Availability"
 msgstr "Disponibilité"
 
 #: inc/vehicle-meta.php:39
-#: inc/vehicle-meta.php:154
+#: inc/vehicle-meta.php:155
 msgid "Available"
 msgstr "Disponible"
 
@@ -296,122 +296,122 @@ msgstr "TVA déductible"
 msgid "Margin scheme (VAT not deductible)"
 msgstr "Régime de la marge (TVA non déductible)"
 
-#: inc/vehicle-meta.php:73
+#: inc/vehicle-meta.php:74
 msgid "Year"
 msgstr "Année"
 
-#: inc/vehicle-meta.php:78
+#: inc/vehicle-meta.php:79
 msgid "First registration"
 msgstr "Première immatriculation"
 
-#: inc/vehicle-meta.php:82
+#: inc/vehicle-meta.php:83
 msgid "Mileage"
 msgstr "Kilométrage"
 
-#: inc/vehicle-meta.php:83
-#: inc/vehicle-meta.php:109
+#: inc/vehicle-meta.php:84
+#: inc/vehicle-meta.php:110
 msgctxt "unit"
 msgid "km"
 msgstr "km"
 
-#: inc/vehicle-meta.php:87
+#: inc/vehicle-meta.php:88
 msgid "Power (kW)"
 msgstr "Puissance (kW)"
 
-#: inc/vehicle-meta.php:88
+#: inc/vehicle-meta.php:89
 msgctxt "unit"
 msgid "kW"
 msgstr "kW"
 
-#: inc/vehicle-meta.php:92
+#: inc/vehicle-meta.php:93
 msgid "Power (hp)"
 msgstr "Puissance (ch)"
 
-#: inc/vehicle-meta.php:93
+#: inc/vehicle-meta.php:94
 msgctxt "unit"
 msgid "hp"
 msgstr "ch"
 
-#: inc/vehicle-meta.php:97
+#: inc/vehicle-meta.php:98
 msgid "Engine size"
 msgstr "Cylindrée"
 
-#: inc/vehicle-meta.php:98
+#: inc/vehicle-meta.php:99
 msgctxt "unit"
 msgid "cc"
 msgstr "cm³"
 
-#: inc/vehicle-meta.php:103
+#: inc/vehicle-meta.php:104
 msgid "Battery capacity (EV)"
 msgstr "Capacité de la batterie (VE)"
 
-#: inc/vehicle-meta.php:104
+#: inc/vehicle-meta.php:105
 msgctxt "unit"
 msgid "kWh"
 msgstr "kWh"
 
-#: inc/vehicle-meta.php:108
+#: inc/vehicle-meta.php:109
 msgid "Electric range (WLTP)"
 msgstr "Autonomie électrique (WLTP)"
 
-#: inc/vehicle-meta.php:113
+#: inc/vehicle-meta.php:114
 msgid "Exterior colour"
 msgstr "Couleur extérieure"
 
-#: inc/vehicle-meta.php:117
+#: inc/vehicle-meta.php:118
 msgid "Interior colour"
 msgstr "Couleur intérieure"
 
-#: inc/vehicle-meta.php:121
+#: inc/vehicle-meta.php:122
 msgid "Doors"
 msgstr "Portes"
 
-#: inc/vehicle-meta.php:125
+#: inc/vehicle-meta.php:126
 msgid "Seats"
 msgstr "Places"
 
-#: inc/vehicle-meta.php:129
+#: inc/vehicle-meta.php:130
 msgid "CO2 emissions (WLTP)"
 msgstr "Émissions de CO2 (WLTP)"
 
-#: inc/vehicle-meta.php:130
+#: inc/vehicle-meta.php:131
 msgctxt "unit"
 msgid "g/km"
 msgstr "g/km"
 
-#: inc/vehicle-meta.php:134
+#: inc/vehicle-meta.php:135
 msgid "Euro emissions standard"
 msgstr "Norme Euro"
 
-#: inc/vehicle-meta.php:152
+#: inc/vehicle-meta.php:153
 msgid "Car-Pass"
 msgstr "Car-Pass"
 
-#: inc/vehicle-meta.php:155
+#: inc/vehicle-meta.php:156
 msgid "Pending"
 msgstr "En cours"
 
-#: inc/vehicle-meta.php:156
+#: inc/vehicle-meta.php:157
 msgid "Not required"
 msgstr "Non requis"
 
-#: inc/vehicle-meta.php:161
+#: inc/vehicle-meta.php:162
 msgid "Warranty (months)"
 msgstr "Garantie (mois)"
 
-#: inc/vehicle-meta.php:166
+#: inc/vehicle-meta.php:167
 msgid "VIN"
 msgstr "Numéro de châssis (VIN)"
 
-#: inc/vehicle-meta.php:170
+#: inc/vehicle-meta.php:171
 msgid "Image gallery"
 msgstr "Galerie photos"
 
-#: inc/vehicle-meta.php:250
+#: inc/vehicle-meta.php:251
 msgid "Vehicle details"
 msgstr "Caractéristiques du véhicule"
 
-#: inc/vehicle-meta.php:285
+#: inc/vehicle-meta.php:286
 msgid "Select images"
 msgstr "Choisir des photos"
 
@@ -498,7 +498,7 @@ msgid "Condition"
 msgstr "État"
 
 #: inc/vehicle-taxonomies.php:30
-#: single-vehicle.php:68
+#: single-vehicle.php:67
 msgid "Equipment"
 msgstr "Équipements"
 
@@ -602,17 +602,12 @@ msgstr "— Choisir une marque —"
 msgid "Nothing found."
 msgstr "Aucun résultat."
 
-#: single-vehicle.php:27
+#: single-vehicle.php:26
 #: template-parts/vehicle-card.php:31
 msgid "Price on request"
 msgstr "Prix sur demande"
 
-#. translators: %s: monthly amount.
-#: single-vehicle.php:30
-msgid "or %s / month"
-msgstr "ou %s / mois"
-
-#: single-vehicle.php:48
+#: single-vehicle.php:47
 msgid "Specifications"
 msgstr "Caractéristiques"
 

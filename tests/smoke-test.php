@@ -201,6 +201,8 @@ $eda_check( array( 5, 9 ) === eda_vehicle_meta( 'gallery', $eda_post_id ), 'gall
 $eda_check( 77.4 === (float) eda_vehicle_meta( 'battery_kwh', $eda_post_id ), 'decimal comma stored as 77.4' );
 $eda_specs = eda_vehicle_specs( $eda_post_id );
 $eda_check( isset( $eda_specs['Mileage'] ) && isset( $eda_specs['VAT regime'] ), 'spec table includes mileage and VAT regime' );
+$eda_check( '2024' === eda_format_vehicle_meta_value( '2024', $eda_fields['year'] ), 'year shown without digit grouping' );
+$eda_check( '86,000 km' === eda_format_vehicle_meta_value( '86000', $eda_fields['mileage'] ), 'mileage keeps digit grouping and unit' );
 $eda_check( ! isset( $eda_specs['Variant / trim'] ), 'variant shown as subtitle, not duplicated in specs' );
 
 $eda_schema = eda_vehicle_schema( $eda_post_id );
