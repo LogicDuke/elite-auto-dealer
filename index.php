@@ -8,6 +8,7 @@
 defined( 'ABSPATH' ) || exit;
 
 get_header();
+echo '<div class="container section-tight">';
 get_template_part( 'template-parts/breadcrumbs' );
 
 if ( is_home() ) {
@@ -19,7 +20,7 @@ if ( is_home() ) {
 	$eda_heading = wp_strip_all_tags( get_the_archive_title() );
 }
 ?>
-<h1><?php echo esc_html( $eda_heading ); ?></h1>
+<h1 class="page-title"><?php echo esc_html( $eda_heading ); ?></h1>
 <?php
 if ( have_posts() ) :
 	while ( have_posts() ) :
@@ -35,5 +36,6 @@ if ( have_posts() ) :
 else :
 	echo '<p>' . esc_html__( 'Nothing found.', 'elite-auto-dealer' ) . '</p>';
 endif;
+echo '</div>';
 
 get_footer();

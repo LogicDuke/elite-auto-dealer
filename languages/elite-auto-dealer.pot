@@ -3,13 +3,13 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: Elite Auto Dealer 0.1.0\n"
-"Report-Msgid-Bugs-To: https://wordpress.org/support/theme/elite-auto-dealer\n"
+"Report-Msgid-Bugs-To: https://wordpress.org/support/theme/export2\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"POT-Creation-Date: 2026-10-02T21:44:38+00:00\n"
+"POT-Creation-Date: 2026-10-02T23:39:43+00:00\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "X-Generator: WP-CLI 2.12.0\n"
 "X-Domain: elite-auto-dealer\n"
@@ -34,7 +34,7 @@ msgstr ""
 msgid "Elite Digital Services"
 msgstr ""
 
-#: 404.php:12
+#: 404.php:13
 #: inc/template-tags.php:133
 msgid "Page not found"
 msgstr ""
@@ -43,32 +43,170 @@ msgstr ""
 msgid "Browse our vehicles"
 msgstr ""
 
-#: archive-vehicle.php:26
-#: inc/vehicle-post-type.php:44
-msgid "No vehicles found."
+#: archive-vehicle.php:28
+msgid "Filter vehicles"
 msgstr ""
 
-#: footer.php:18
-msgid "Footer"
+#. translators: %s: number of vehicles.
+#: archive-vehicle.php:35
+#, php-format
+msgid "%s vehicle"
+msgid_plural "%s vehicles"
+msgstr[0] ""
+msgstr[1] ""
+
+#: archive-vehicle.php:51
+msgid "Previous"
 msgstr ""
 
-#: front-page.php:14
+#: archive-vehicle.php:52
+msgid "Next"
+msgstr ""
+
+#: archive-vehicle.php:58
+msgid "No vehicles match these filters"
+msgstr ""
+
+#: archive-vehicle.php:59
+msgid "Try a different make or price, or view the full collection."
+msgstr ""
+
+#: archive-vehicle.php:60
+#: front-page.php:57
+#: front-page.php:111
 msgid "View all vehicles"
 msgstr ""
 
-#: functions.php:39
-msgid "Primary menu"
+#: footer.php:26
+msgid "Footer"
+msgstr ""
+
+#: front-page.php:29
+msgid "Hero photography"
+msgstr ""
+
+#: front-page.php:35
+msgid "Exceptional cars."
+msgstr ""
+
+#: front-page.php:35
+msgid "Carefully selected."
+msgstr ""
+
+#: front-page.php:36
+msgid "A curated collection of premium pre-owned automobiles, selected for drivers who value quality, provenance and detail."
+msgstr ""
+
+#: front-page.php:38
+#: header.php:46
+msgid "View vehicles"
+msgstr ""
+
+#: front-page.php:39
+#: template-parts/enquiry-form.php:32
+msgid "Contact us"
+msgstr ""
+
+#: front-page.php:45
+#: inc/vehicle-post-type.php:43
+#: template-parts/vehicle-search.php:43
+#: template-parts/vehicle-search.php:96
+msgid "Search vehicles"
+msgstr ""
+
+#: front-page.php:54
+msgid "From the collection"
+msgstr ""
+
+#: front-page.php:55
+msgid "Featured vehicles"
+msgstr ""
+
+#: front-page.php:76
+msgid "Our approach"
+msgstr ""
+
+#. translators: %s: site name.
+#: front-page.php:78
+#, php-format
+msgid "Why %s"
+msgstr ""
+
+#: front-page.php:83
+msgid "Curated inventory"
+msgstr ""
+
+#: front-page.php:84
+msgid "Every car in the collection is selected individually for its specification and condition."
+msgstr ""
+
+#: front-page.php:87
+msgid "Transparent information"
+msgstr ""
+
+#: front-page.php:88
+msgid "Clear specifications, Car-Pass and VAT status are listed for every vehicle."
+msgstr ""
+
+#: front-page.php:91
+msgid "Personal service"
+msgstr ""
+
+#: front-page.php:92
+msgid "Speak directly with our team about any vehicle in the collection."
+msgstr ""
+
+#: front-page.php:95
+msgid "Trade-in enquiries"
+msgstr ""
+
+#: front-page.php:96
+msgid "Ask us for a trade-in valuation of your current car when you buy from us."
+msgstr ""
+
+#: front-page.php:105
+msgid "Explore the collection"
+msgstr ""
+
+#. translators: %s: number of vehicles.
+#: front-page.php:108
+#, php-format
+msgid "%s vehicle available now"
+msgid_plural "%s vehicles available now"
+msgstr[0] ""
+msgstr[1] ""
+
+#: front-page.php:118
+msgid "Showroom"
+msgstr ""
+
+#: front-page.php:125
+msgid "Arrange a viewing or ask about any vehicle in the collection. We will get back to you personally."
+msgstr ""
+
+#. translators: %s: site name.
+#: front-page.php:127
+#, php-format
+msgid "Contact %s"
 msgstr ""
 
 #: functions.php:40
+msgid "Primary menu"
+msgstr ""
+
+#: functions.php:41
 msgid "Footer menu"
 msgstr ""
 
-#: header.php:19
+#: header.php:21
 msgid "Skip to content"
 msgstr ""
 
-#: header.php:28
+#: header.php:29
+msgid "Menu"
+msgstr ""
+
+#: header.php:33
 msgid "Primary"
 msgstr ""
 
@@ -77,22 +215,34 @@ msgid "Dealer contact"
 msgstr ""
 
 #: inc/customizer.php:25
+msgid "City"
+msgstr ""
+
+#: inc/customizer.php:25
+msgid "Shown with the dealership name, e.g. Brussels."
+msgstr ""
+
+#: inc/customizer.php:26
+msgid "Country"
+msgstr ""
+
+#: inc/customizer.php:27
 msgid "Phone number"
 msgstr ""
 
-#: inc/customizer.php:26
+#: inc/customizer.php:28
 msgid "WhatsApp number"
 msgstr ""
 
-#: inc/customizer.php:26
+#: inc/customizer.php:28
 msgid "International format, e.g. +32 470 12 34 56. Leave empty to hide WhatsApp."
 msgstr ""
 
-#: inc/customizer.php:27
+#: inc/customizer.php:29
 msgid "Enquiry email"
 msgstr ""
 
-#: inc/customizer.php:27
+#: inc/customizer.php:29
 msgid "Receives enquiry notifications. Defaults to the site admin email."
 msgstr ""
 
@@ -227,6 +377,26 @@ msgid_plural "%d enquiries anonymised. Their type, date and vehicle reference we
 msgstr[0] ""
 msgstr[1] ""
 
+#: inc/inventory-query.php:19
+msgid "Newest first"
+msgstr ""
+
+#: inc/inventory-query.php:20
+msgid "Price: low to high"
+msgstr ""
+
+#: inc/inventory-query.php:21
+msgid "Price: high to low"
+msgstr ""
+
+#: inc/inventory-query.php:22
+msgid "Mileage: lowest first"
+msgstr ""
+
+#: inc/inventory-query.php:23
+msgid "Year: newest first"
+msgstr ""
+
 #. translators: %s: make, model, fuel type, etc. Example: "BMW vehicles".
 #: inc/seo.php:83
 #, php-format
@@ -246,14 +416,39 @@ msgid "Yes"
 msgstr ""
 
 #: inc/template-tags.php:109
+#: inc/template-tags.php:286
 msgid "Home"
 msgstr ""
 
 #. translators: %s: search query.
 #: inc/template-tags.php:131
-#: index.php:17
+#: index.php:18
 #, php-format
 msgid "Search results for “%s”"
+msgstr ""
+
+#: inc/template-tags.php:177
+#: inc/vehicle-meta.php:41
+msgid "Sold"
+msgstr ""
+
+#: inc/template-tags.php:180
+msgid "Price on request"
+msgstr ""
+
+#. translators: 1: power in kW, 2: power in hp.
+#: inc/template-tags.php:207
+#, php-format
+msgid "%1$s (%2$s)"
+msgstr ""
+
+#: inc/template-tags.php:216
+#: template-parts/vehicle-card.php:18
+msgid "Power"
+msgstr ""
+
+#: inc/template-tags.php:247
+msgid "Photography in production"
 msgstr ""
 
 #: inc/vehicle-meta.php:33
@@ -271,10 +466,6 @@ msgstr ""
 
 #: inc/vehicle-meta.php:40
 msgid "Reserved"
-msgstr ""
-
-#: inc/vehicle-meta.php:41
-msgid "Sold"
 msgstr ""
 
 #: inc/vehicle-meta.php:46
@@ -445,11 +636,12 @@ msgid "New vehicle"
 msgstr ""
 
 #: inc/vehicle-post-type.php:42
+#: template-parts/vehicle-card.php:42
 msgid "View vehicle"
 msgstr ""
 
-#: inc/vehicle-post-type.php:43
-msgid "Search vehicles"
+#: inc/vehicle-post-type.php:44
+msgid "No vehicles found."
 msgstr ""
 
 #: inc/vehicle-post-type.php:45
@@ -511,7 +703,7 @@ msgid "Condition"
 msgstr ""
 
 #: inc/vehicle-taxonomies.php:30
-#: single-vehicle.php:67
+#: single-vehicle.php:110
 msgid "Equipment"
 msgstr ""
 
@@ -611,17 +803,48 @@ msgstr ""
 msgid "— Select make —"
 msgstr ""
 
-#: index.php:36
+#: index.php:37
 msgid "Nothing found."
 msgstr ""
 
-#: single-vehicle.php:26
-#: template-parts/vehicle-card.php:31
-msgid "Price on request"
+#. Template Name of the theme
+msgid "Contact"
 msgstr ""
 
-#: single-vehicle.php:47
+#: single-vehicle.php:24
+msgid "Rear"
+msgstr ""
+
+#: single-vehicle.php:24
+msgid "Cockpit"
+msgstr ""
+
+#: single-vehicle.php:24
+msgid "Interior"
+msgstr ""
+
+#: single-vehicle.php:24
+msgid "Detail"
+msgstr ""
+
+#: single-vehicle.php:69
+msgid "This vehicle has been sold."
+msgstr ""
+
+#: single-vehicle.php:69
+msgid "Browse the cars currently available in our collection."
+msgstr ""
+
+#: single-vehicle.php:70
+msgid "View available vehicles"
+msgstr ""
+
+#: single-vehicle.php:81
 msgid "Specifications"
+msgstr ""
+
+#: single-vehicle.php:103
+msgid "Description"
 msgstr ""
 
 #: template-parts/breadcrumbs.php:16
@@ -630,10 +853,6 @@ msgstr ""
 
 #: template-parts/enquiry-form.php:32
 msgid "Enquire about this vehicle"
-msgstr ""
-
-#: template-parts/enquiry-form.php:32
-msgid "Contact us"
 msgstr ""
 
 #: template-parts/enquiry-form.php:36
@@ -688,4 +907,38 @@ msgstr ""
 
 #: template-parts/vehicle-action-bar.php:30
 msgid "Enquire"
+msgstr ""
+
+#: template-parts/vehicle-search.php:47
+msgid "All makes"
+msgstr ""
+
+#: template-parts/vehicle-search.php:56
+msgid "All models"
+msgstr ""
+
+#: template-parts/vehicle-search.php:69
+msgid "All fuel types"
+msgstr ""
+
+#: template-parts/vehicle-search.php:76
+msgid "Maximum price"
+msgstr ""
+
+#: template-parts/vehicle-search.php:78
+msgid "Any price"
+msgstr ""
+
+#. translators: %s: formatted price.
+#: template-parts/vehicle-search.php:81
+#, php-format
+msgid "Up to %s"
+msgstr ""
+
+#: template-parts/vehicle-search.php:87
+msgid "Sort by"
+msgstr ""
+
+#: template-parts/vehicle-search.php:98
+msgid "Clear filters"
 msgstr ""

@@ -16,6 +16,7 @@ require EDA_DIR . '/inc/vehicle-taxonomies.php';
 require EDA_DIR . '/inc/vehicle-meta.php';
 require EDA_DIR . '/inc/template-tags.php';
 require EDA_DIR . '/inc/seo.php';
+require EDA_DIR . '/inc/inventory-query.php';
 require EDA_DIR . '/inc/enquiries.php';
 require EDA_DIR . '/inc/enquiry-privacy.php';
 require EDA_DIR . '/inc/customizer.php';
@@ -65,8 +66,22 @@ function eda_asset_version( $path ) {
  */
 function eda_enqueue_assets() {
 	wp_enqueue_style( 'eda-main', EDA_URI . '/assets/css/main.css', array(), eda_asset_version( 'assets/css/main.css' ) );
+	wp_enqueue_script(
+		'eda-navigation',
+		EDA_URI . '/assets/js/navigation.js',
+		array(),
+		eda_asset_version( 'assets/js/navigation.js' ),
+		array(
+			'strategy'  => 'defer',
+			'in_footer' => true,
+		)
+	);
 }
 add_action( 'wp_enqueue_scripts', 'eda_enqueue_assets' );
+
+// Core emoji polyfill (~22 KB on every page): modern browsers render emoji natively.
+remove_action( 'wp_head', 'print_emoji_detection_script', 7 );
+remove_action( 'wp_print_styles', 'print_emoji_styles' );
 
 /**
  * On theme activation: register content types, seed fixed vocabularies, flush permalinks.

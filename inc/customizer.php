@@ -22,6 +22,8 @@ function eda_customize_register( $wp_customize ) {
 	);
 
 	$settings = array(
+		'eda_city'          => array( __( 'City', 'elite-auto-dealer' ), 'sanitize_text_field', 'text', __( 'Shown with the dealership name, e.g. Brussels.', 'elite-auto-dealer' ) ),
+		'eda_country'       => array( __( 'Country', 'elite-auto-dealer' ), 'sanitize_text_field', 'text', '' ),
 		'eda_phone'         => array( __( 'Phone number', 'elite-auto-dealer' ), 'eda_sanitize_phone', 'tel', '' ),
 		'eda_whatsapp'      => array( __( 'WhatsApp number', 'elite-auto-dealer' ), 'eda_sanitize_phone', 'tel', __( 'International format, e.g. +32 470 12 34 56. Leave empty to hide WhatsApp.', 'elite-auto-dealer' ) ),
 		'eda_enquiry_email' => array( __( 'Enquiry email', 'elite-auto-dealer' ), 'sanitize_email', 'email', __( 'Receives enquiry notifications. Defaults to the site admin email.', 'elite-auto-dealer' ) ),

@@ -32,6 +32,7 @@ inc/
   vehicle-meta.php        Meta schema, registration, sanitising, admin meta box, gallery picker enqueue
   template-tags.php       Meta access/formatting, price format, phone helpers, breadcrumb trail
   seo.php                 Vehicle + breadcrumb JSON-LD, listing canonical / robots
+  inventory-query.php     Inventory page size (12), price_max filter, sort options
   enquiries.php           Enquiry types, private `eda_enquiry` CPT, validation, storage, email, handler, nonce refresh
   enquiry-privacy.php     Enquiry retention clean-up, personal-data exporter and eraser
   customizer.php          Dealer contact: phone, WhatsApp, enquiry email
@@ -40,14 +41,17 @@ template-parts/
   vehicle-action-bar.php  Call / WhatsApp / Enquire (sticky on small screens)
   enquiry-form.php        The one reusable enquiry form
   breadcrumbs.php         Visible breadcrumb
+  vehicle-search.php      Search/filter GET form (homepage strip + inventory filter bar)
+page-templates/contact.php  "Contact" page template: page content + general enquiry form
 front-page.php, archive-vehicle.php, single-vehicle.php, page.php, index.php, 404.php, header.php, footer.php
-assets/css/main.css     Front-end CSS (base only for now)
+assets/css/main.css     Design system: tokens, layout, header/drawer, cards, inventory, vehicle page, forms
 assets/js/admin-vehicle.js  Media picker for the gallery field
 assets/js/enquiry.js    Refreshes the enquiry nonce before submit (cache-safe forms)
+assets/js/navigation.js Mobile drawer (ESC, focus loop, scroll lock) + clean GET search URLs
 languages/              elite-auto-dealer.pot + nl_BE / fr_BE .po/.mo (see "Multilingual")
 demo/vehicles.json      Canonical demo inventory (Aurelis Motors, 15 vehicles)
 demo/seed.php           Idempotent demo seeder / validator / cleanup (wp-cli)
-assets/img, assets/fonts, page-templates/   Empty, reserved
+assets/img, assets/fonts   Empty, reserved
 tests/smoke-test.php    wp-cli smoke test (data model, sanitising, enquiries, SEO helpers)
 tests/demo-test.php     Demo dataset rules, seeded state, idempotency, cleanup safety drill
 ```

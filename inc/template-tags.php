@@ -138,3 +138,174 @@ function eda_breadcrumb_trail() {
 	// A trail is only useful with at least Home + the current page.
 	return count( $trail ) > 1 ? $trail : array();
 }
+
+/**
+ * Availability of a vehicle ('available', 'reserved', 'sold' or '' when not stated).
+ *
+ * @param int $post_id Vehicle ID; defaults to the current post.
+ * @return string
+ */
+function eda_vehicle_status( $post_id = 0 ) {
+	return (string) eda_vehicle_meta( 'availability', $post_id );
+}
+
+/**
+ * Status badge for reserved / sold vehicles (available vehicles need no badge).
+ *
+ * @param int $post_id Vehicle ID; defaults to the current post.
+ */
+function eda_vehicle_status_badge( $post_id = 0 ) {
+	$status = eda_vehicle_status( $post_id );
+	if ( in_array( $status, array( 'reserved', 'sold' ), true ) ) {
+		printf(
+			'<span class="badge badge--%1$s">%2$s</span>',
+			esc_attr( $status ),
+			esc_html( eda_vehicle_meta_fields()['availability']['options'][ $status ] )
+		);
+	}
+}
+
+/**
+ * Display price: the price, "Price on request", or "Sold" for sold vehicles.
+ * Sold prices stay stored (and in structured data) but are not shown.
+ *
+ * @param int $post_id Vehicle ID; defaults to the current post.
+ * @return string
+ */
+function eda_vehicle_display_price( $post_id = 0 ) {
+	if ( 'sold' === eda_vehicle_status( $post_id ) ) {
+		return __( 'Sold', 'elite-auto-dealer' );
+	}
+	$price = eda_vehicle_meta( 'price', $post_id );
+	return '' !== $price ? eda_format_price( $price ) : __( 'Price on request', 'elite-auto-dealer' );
+}
+
+/**
+ * Name of the first term of a vehicle taxonomy, or ''.
+ *
+ * @param string $taxonomy Taxonomy.
+ * @param int    $post_id  Vehicle ID; defaults to the current post.
+ * @return string
+ */
+function eda_vehicle_term_name( $taxonomy, $post_id = 0 ) {
+	$terms = get_the_terms( $post_id ? $post_id : get_the_ID(), $taxonomy );
+	return $terms && ! is_wp_error( $terms ) ? $terms[0]->name : '';
+}
+
+/**
+ * Key facts for cards and the vehicle header: label => display value (empty values skipped).
+ *
+ * @param int $post_id Vehicle ID; defaults to the current post.
+ * @return array
+ */
+function eda_vehicle_key_facts( $post_id = 0 ) {
+	$fields = eda_vehicle_meta_fields();
+	$value  = static fn( $key ) => '' === eda_vehicle_meta( $key, $post_id ) ? '' : eda_format_vehicle_meta_value( eda_vehicle_meta( $key, $post_id ), $fields[ $key ] );
+	$power  = '';
+	if ( '' !== eda_vehicle_meta( 'power_kw', $post_id ) ) {
+		/* translators: 1: power in kW, 2: power in hp. */
+		$power = sprintf( __( '%1$s (%2$s)', 'elite-auto-dealer' ), $value( 'power_kw' ), $value( 'power_hp' ) );
+	}
+
+	return array_filter(
+		array(
+			$fields['year']['label']           => $value( 'year' ),
+			$fields['mileage']['label']        => $value( 'mileage' ),
+			get_taxonomy( 'vehicle_fuel_type' )->labels->singular_name => eda_vehicle_term_name( 'vehicle_fuel_type', $post_id ),
+			get_taxonomy( 'vehicle_transmission' )->labels->singular_name => eda_vehicle_term_name( 'vehicle_transmission', $post_id ),
+			__( 'Power', 'elite-auto-dealer' ) => $power,
+		)
+	);
+}
+
+/**
+ * Vehicle image: the real attachment when it exists, otherwise the 3:2 placeholder.
+ * Once images are imported, every template switches to real media automatically.
+ *
+ * @param int    $attachment_id Attachment ID (0 = none).
+ * @param string $size          Registered image size.
+ * @param string $sizes         `sizes` attribute for responsive images.
+ * @param string $label         Short placeholder label (e.g. "Rear").
+ * @param bool   $eager         True for the main above-the-fold image.
+ */
+function eda_vehicle_image( $attachment_id, $size, $sizes, $label = '', $eager = false ) {
+	if ( $attachment_id && wp_attachment_is_image( $attachment_id ) ) {
+		echo wp_get_attachment_image(
+			$attachment_id,
+			$size,
+			false,
+			array(
+				'class'         => 'vehicle-media',
+				'sizes'         => $sizes,
+				'loading'       => $eager ? 'eager' : 'lazy',
+				'fetchpriority' => $eager ? 'high' : 'auto',
+			)
+		);
+		return;
+	}
+	// Decorative stand-in: hidden from assistive tech, the vehicle title carries the meaning.
+	echo '<span class="media-placeholder" aria-hidden="true"><span class="media-placeholder__label">' . esc_html( $label ? $label : __( 'Photography in production', 'elite-auto-dealer' ) ) . '</span></span>';
+}
+
+/**
+ * Number of vehicles currently offered (published and not sold).
+ *
+ * @return int
+ */
+function eda_available_vehicle_count() {
+	$query = new WP_Query(
+		array(
+			'post_type'      => 'vehicle',
+			'post_status'    => 'publish',
+			'fields'         => 'ids',
+			'posts_per_page' => 1,
+			'meta_query'     => array( // phpcs:ignore WordPress.DB.SlowDBQuery.slow_db_query_meta_query -- single small count query.
+				'relation' => 'OR',
+				array(
+					'key'     => '_eda_availability',
+					'value'   => 'sold',
+					'compare' => '!=',
+				),
+				array(
+					'key'     => '_eda_availability',
+					'compare' => 'NOT EXISTS',
+				),
+			),
+		)
+	);
+	return (int) $query->found_posts;
+}
+
+/**
+ * Fallback primary navigation when no menu is assigned: Home and Vehicles only.
+ */
+function eda_primary_menu_fallback() {
+	printf(
+		'<ul class="site-nav__list"><li><a href="%1$s">%2$s</a></li><li><a href="%3$s">%4$s</a></li></ul>',
+		esc_url( home_url( '/' ) ),
+		esc_html__( 'Home', 'elite-auto-dealer' ),
+		esc_url( get_post_type_archive_link( 'vehicle' ) ),
+		esc_html( get_post_type_object( 'vehicle' )->labels->name )
+	);
+}
+
+/**
+ * Dealer location from the Customizer ("Brussels, Belgium"), or '' when not set.
+ *
+ * @return string
+ */
+function eda_dealer_location() {
+	return implode( ', ', array_filter( array( get_theme_mod( 'eda_city' ), get_theme_mod( 'eda_country' ) ) ) );
+}
+
+/**
+ * Variant shown under the title, unless the title already contains it
+ * ("Porsche 911 Carrera" + variant "Carrera" would repeat itself).
+ *
+ * @param int $post_id Vehicle ID; defaults to the current post.
+ * @return string
+ */
+function eda_vehicle_subtitle( $post_id = 0 ) {
+	$variant = (string) eda_vehicle_meta( 'variant', $post_id );
+	return '' === $variant || false !== stripos( get_the_title( $post_id ? $post_id : get_the_ID() ), $variant ) ? '' : $variant;
+}

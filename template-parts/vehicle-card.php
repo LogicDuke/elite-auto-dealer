@@ -1,33 +1,45 @@
 <?php
 /**
- * Vehicle card for listings. Expects to run inside the loop.
+ * Vehicle card. Runs inside the loop.
+ * Args: 'heading' => 'h2' | 'h3' (default h2; use h3 inside an H2 section).
+ *
+ * One link per card (the title), stretched over the card in CSS, so the whole card is
+ * clickable without duplicate links for screen readers.
  *
  * @package EliteAutoDealer
  */
 
 defined( 'ABSPATH' ) || exit;
 
-$eda_fields  = eda_vehicle_meta_fields();
-$eda_price   = eda_vehicle_meta( 'price' );
-$eda_mileage = eda_vehicle_meta( 'mileage' );
-$eda_fuel    = get_the_terms( get_the_ID(), 'vehicle_fuel_type' );
-$eda_summary = array_filter(
-	array(
-		eda_vehicle_meta( 'year' ),
-		'' !== $eda_mileage ? eda_format_vehicle_meta_value( $eda_mileage, $eda_fields['mileage'] ) : '',
-		$eda_fuel && ! is_wp_error( $eda_fuel ) ? $eda_fuel[0]->name : '',
-	)
-);
+$eda_heading = $args['heading'] ?? 'h2';
+$eda_heading = in_array( $eda_heading, array( 'h2', 'h3' ), true ) ? $eda_heading : 'h2';
+$eda_status  = eda_vehicle_status();
+$eda_facts   = eda_vehicle_key_facts();
+unset( $eda_facts[ __( 'Power', 'elite-auto-dealer' ) ] );
 ?>
-<article <?php post_class( 'vehicle-card' ); ?>>
-	<a href="<?php the_permalink(); ?>">
-		<?php the_post_thumbnail( 'eda-vehicle-card' ); ?>
-		<h2><?php the_title(); ?></h2>
-	</a>
-	<?php if ( $eda_summary ) : ?>
-		<p><?php echo esc_html( implode( ' · ', $eda_summary ) ); ?></p>
-	<?php endif; ?>
-	<p class="vehicle-price">
-		<?php echo esc_html( '' !== $eda_price ? eda_format_price( $eda_price ) : __( 'Price on request', 'elite-auto-dealer' ) ); ?>
-	</p>
+<article <?php post_class( array( 'vehicle-card', $eda_status ? 'vehicle-card--' . $eda_status : '' ) ); ?>>
+	<div class="vehicle-card__media">
+		<?php eda_vehicle_image( get_post_thumbnail_id(), 'eda-vehicle-medium', '(min-width: 1024px) 400px, (min-width: 640px) 50vw, 100vw' ); ?>
+		<?php eda_vehicle_status_badge(); ?>
+	</div>
+	<div class="vehicle-card__body">
+		<p class="vehicle-card__make"><?php echo esc_html( eda_vehicle_term_name( 'vehicle_make' ) ); ?></p>
+		<<?php echo tag_escape( $eda_heading ); ?> class="vehicle-card__title">
+			<a href="<?php the_permalink(); ?>"><?php the_title(); ?></a>
+		</<?php echo tag_escape( $eda_heading ); ?>>
+		<?php if ( eda_vehicle_subtitle() ) : ?>
+			<p class="vehicle-card__variant"><?php echo esc_html( eda_vehicle_subtitle() ); ?></p>
+		<?php endif; ?>
+		<?php if ( $eda_facts ) : ?>
+			<ul class="vehicle-card__facts">
+				<?php foreach ( $eda_facts as $eda_label => $eda_value ) : ?>
+					<li><span class="screen-reader-text"><?php echo esc_html( $eda_label ); ?>: </span><?php echo esc_html( $eda_value ); ?></li>
+				<?php endforeach; ?>
+			</ul>
+		<?php endif; ?>
+		<div class="vehicle-card__footer">
+			<p class="vehicle-card__price"><?php echo esc_html( eda_vehicle_display_price() ); ?></p>
+			<span class="vehicle-card__cta" aria-hidden="true"><?php esc_html_e( 'View vehicle', 'elite-auto-dealer' ); ?></span>
+		</div>
+	</div>
 </article>
