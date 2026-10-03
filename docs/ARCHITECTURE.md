@@ -452,7 +452,7 @@ Approved behaviour the visual design must implement:
 2. **Sold vehicles** (implemented in the first visual shell):
    - they stay published and listed, and their URLs keep working; the price stays in the database and in structured data;
    - the price slot shows **"Sold"**, with a smaller **"Last asking price € …"** line underneath (`eda_vehicle_last_asking_price()`), on cards and on the vehicle page;
-   - a SOLD badge is shown on the image, and the card image is dimmed;
+   - a SOLD badge is shown on the image; the photograph remains full strength with no greyscale or dimming;
    - no action bar, no enquiry form and no purchase CTA; a notice links back to the available collection;
    - a monthly finance amount is never shown.
 3. **Inventory order:** listings group vehicles as **available (and not stated) → reserved → sold**, and the visitor's sort (newest, price, mileage, year) applies inside each group (`eda_status_order` + `eda_inventory_status_order()`). A sold car's stored price can therefore never put it first under "price: low to high".
