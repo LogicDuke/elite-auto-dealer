@@ -22,7 +22,7 @@ All 75 images must look like the work of one dealership photographer at one loca
 
 - **Interiors:** photographed inside the real vehicle in soft daylight or soft dealership light, with the same grade as the exteriors. Materials must match the record exactly. **Left-hand drive in every vehicle.**
 - **Screens:** switched on to a calm, dark state (map, energy flow or home screen) with **no legible text**. If clean text isn't achievable, show a dark screen.
-- **Number plates:** blank white Belgian-format plate with thin red border and no characters (front and rear). No real-looking Belgian registration and no generated characters. A subtle fictional "AURELIS" plate is an option only if approved (see section 7).
+- **Number plates (decided):** blank white Belgian-format plate with thin red border and **no characters** (front and rear). No real-looking Belgian registration, no fictional registration, and no generated plate text.
 
 ## 2. Camera language
 
@@ -353,7 +353,7 @@ Any drift is a reject. Across vehicles, the colours stored in the data guarantee
 
 ## 8. Open decisions
 
-- **Plate treatment:** blank plate (default, reliable) or a subtle fictional "AURELIS" plate (only if text renders cleanly every time).
+- **Plate treatment (decided):** blank white Belgian-format plate with thin red border and no characters on every exterior image. Do not generate "AURELIS" or any other plate text.
 - **Generation tool and model,** and whether image-to-image reference passes are used to hold continuity within a vehicle.
 - **Who approves each image** against this contract, and the reject criteria for brand-detail accuracy (grille, lights, dashboard family).
 - **Storage (decided):** the approved 1536 × 1024 JPEGs are archived outside Git in Google Drive (`04_Vehicle_Images/Approved_Web_Images`). Git keeps the contract, manifest and importer. At 75 × 180–450 KB the full set is roughly 14–34 MB, so whether a copy ships inside a demo package is a packaging decision.
