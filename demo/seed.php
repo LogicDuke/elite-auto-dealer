@@ -49,6 +49,10 @@ function eda_demo_validate( array $data ) {
 	if ( empty( $data['dataset'] ) ) {
 		$errors[] = 'dataset id missing';
 	}
+	$orders = array_filter( array_column( $vehicles, 'featured_order' ) );
+	if ( count( $orders ) !== count( array_unique( $orders ) ) ) {
+		$errors[] = 'featured_order values must be unique';
+	}
 	if ( 15 !== count( $vehicles ) ) {
 		$errors[] = 'expected exactly 15 vehicles, found ' . count( $vehicles );
 	}
@@ -166,6 +170,12 @@ function eda_demo_validate( array $data ) {
 		if ( isset( $meta['first_registration'], $meta['year'] ) && (int) substr( $meta['first_registration'], 0, 4 ) !== $meta['year'] ) {
 			$err( 'year and first registration differ' );
 		}
+		$featured  = ! empty( $meta['featured'] );
+		$has_order = isset( $v['featured_order'] );
+		$order_ok  = $has_order && is_int( $v['featured_order'] ) && $v['featured_order'] >= 1;
+		if ( ( $featured && ! $order_ok ) || ( ! $featured && $has_order ) ) {
+			$err( 'featured vehicles need a positive featured_order, others none' );
+		}
 		if ( 'new' === ( $v['condition'] ?? '' ) ) {
 			$err( 'demo stock is used or ex-demo, never "new"' );
 		}
@@ -273,6 +283,7 @@ function eda_demo_seed( array $data ) {
 				'post_type'    => 'vehicle',
 				'post_status'  => 'publish',
 				'post_title'   => $v['title'],
+				'menu_order'   => (int) ( $v['featured_order'] ?? 0 ), // Curated featured order (0 = not ordered).
 				'post_excerpt' => $v['excerpt'],
 				'post_content' => $content,
 			),

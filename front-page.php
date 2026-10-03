@@ -14,6 +14,12 @@ $eda_featured = new WP_Query(
 		'post_type'      => 'vehicle',
 		'posts_per_page' => 6,
 		'no_found_rows'  => true,
+		// Curated merchandising order (vehicle "Order" attribute); status does not reorder it.
+		'orderby'        => array(
+			'menu_order' => 'ASC',
+			'date'       => 'DESC',
+		),
+
 		'meta_key'       => '_eda_featured', // phpcs:ignore WordPress.DB.SlowDBQuery.slow_db_query_meta_key -- small featured query.
 		'meta_value'     => '1', // phpcs:ignore WordPress.DB.SlowDBQuery.slow_db_query_meta_value -- small featured query.
 	)
@@ -26,7 +32,7 @@ $eda_place    = eda_dealer_location();
 ?>
 <section class="hero" aria-labelledby="hero-title">
 	<div class="hero__visual">
-		<?php eda_vehicle_image( 0, 'eda-vehicle-large', '100vw', __( 'Hero photography', 'elite-auto-dealer' ) ); ?>
+		<?php eda_vehicle_image( 0, 'eda-vehicle-large', '100vw' ); ?>
 	</div>
 	<div class="container hero__content">
 		<p class="eyebrow eyebrow--light">
@@ -99,7 +105,7 @@ $eda_place    = eda_dealer_location();
 	</div>
 </section>
 
-<section class="section section--dark" aria-labelledby="collection-title">
+<section class="section section--compact section--dark" aria-labelledby="collection-title">
 	<div class="container collection-cta">
 		<div>
 			<h2 id="collection-title" class="section-title"><?php esc_html_e( 'Explore the collection', 'elite-auto-dealer' ); ?></h2>
@@ -112,7 +118,7 @@ $eda_place    = eda_dealer_location();
 	</div>
 </section>
 
-<section class="section" id="contact" aria-labelledby="contact-title">
+<section class="section section--compact" id="contact" aria-labelledby="contact-title">
 	<div class="container showroom">
 		<div>
 			<p class="eyebrow"><?php esc_html_e( 'Showroom', 'elite-auto-dealer' ); ?></p>

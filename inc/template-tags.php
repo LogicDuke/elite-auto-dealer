@@ -181,6 +181,21 @@ function eda_vehicle_display_price( $post_id = 0 ) {
 }
 
 /**
+ * Secondary line for sold vehicles: "Last asking price € 27,450", or '' when not sold or no price.
+ *
+ * @param int $post_id Vehicle ID; defaults to the current post.
+ * @return string
+ */
+function eda_vehicle_last_asking_price( $post_id = 0 ) {
+	$price = eda_vehicle_meta( 'price', $post_id );
+	if ( 'sold' !== eda_vehicle_status( $post_id ) || '' === $price ) {
+		return '';
+	}
+	/* translators: %s: formatted price, e.g. "€ 27,450". */
+	return sprintf( __( 'Last asking price %s', 'elite-auto-dealer' ), eda_format_price( $price ) );
+}
+
+/**
  * Name of the first term of a vehicle taxonomy, or ''.
  *
  * @param string $taxonomy Taxonomy.
@@ -225,10 +240,9 @@ function eda_vehicle_key_facts( $post_id = 0 ) {
  * @param int    $attachment_id Attachment ID (0 = none).
  * @param string $size          Registered image size.
  * @param string $sizes         `sizes` attribute for responsive images.
- * @param string $label         Short placeholder label (e.g. "Rear").
  * @param bool   $eager         True for the main above-the-fold image.
  */
-function eda_vehicle_image( $attachment_id, $size, $sizes, $label = '', $eager = false ) {
+function eda_vehicle_image( $attachment_id, $size, $sizes, $eager = false ) {
 	if ( $attachment_id && wp_attachment_is_image( $attachment_id ) ) {
 		echo wp_get_attachment_image(
 			$attachment_id,
@@ -243,8 +257,9 @@ function eda_vehicle_image( $attachment_id, $size, $sizes, $label = '', $eager =
 		);
 		return;
 	}
-	// Decorative stand-in: hidden from assistive tech, the vehicle title carries the meaning.
-	echo '<span class="media-placeholder" aria-hidden="true"><span class="media-placeholder__label">' . esc_html( $label ? $label : __( 'Photography in production', 'elite-auto-dealer' ) ) . '</span></span>';
+	// Intentionally empty, decorative stand-in (no text): hidden from assistive tech, the vehicle
+	// title carries the meaning. Replaced automatically once the attachment exists.
+	echo '<span class="media-placeholder" aria-hidden="true"></span>';
 }
 
 /**
@@ -277,11 +292,13 @@ function eda_available_vehicle_count() {
 }
 
 /**
- * Fallback primary navigation when no menu is assigned: Home and Vehicles only.
+ * Fallback navigation when no menu is assigned: Home and Vehicles only.
+ *
+ * @param array $args wp_nav_menu() arguments (menu_class is respected).
  */
-function eda_primary_menu_fallback() {
+function eda_primary_menu_fallback( $args = array() ) {
 	printf(
-		'<ul class="site-nav__list"><li><a href="%1$s">%2$s</a></li><li><a href="%3$s">%4$s</a></li></ul>',
+		'<ul class="' . esc_attr( $args['menu_class'] ?? 'site-nav__list' ) . '"><li><a href="%1$s">%2$s</a></li><li><a href="%3$s">%4$s</a></li></ul>',
 		esc_url( home_url( '/' ) ),
 		esc_html__( 'Home', 'elite-auto-dealer' ),
 		esc_url( get_post_type_archive_link( 'vehicle' ) ),

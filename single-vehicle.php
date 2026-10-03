@@ -21,7 +21,6 @@ while ( have_posts() ) :
 	$eda_gallery = is_array( $eda_gallery ) ? array_values( $eda_gallery ) : array();
 	$eda_fields  = eda_vehicle_meta_fields();
 	$eda_vat     = eda_vehicle_meta( 'vat_regime' );
-	$eda_slots   = array( __( 'Rear', 'elite-auto-dealer' ), __( 'Cockpit', 'elite-auto-dealer' ), __( 'Interior', 'elite-auto-dealer' ), __( 'Detail', 'elite-auto-dealer' ) );
 	?>
 	<article <?php post_class( array( 'vehicle-single', $eda_status ? 'vehicle-single--' . $eda_status : '' ) ); ?>>
 		<div class="container">
@@ -31,13 +30,13 @@ while ( have_posts() ) :
 				<div class="vehicle-layout__media">
 					<div class="vehicle-gallery">
 						<div class="vehicle-gallery__main">
-							<?php eda_vehicle_image( get_post_thumbnail_id(), 'eda-vehicle-large', '(min-width: 1024px) 60vw, 100vw', '', true ); ?>
+							<?php eda_vehicle_image( get_post_thumbnail_id(), 'eda-vehicle-large', '(min-width: 1024px) 60vw, 100vw', true ); ?>
 							<?php eda_vehicle_status_badge(); ?>
 						</div>
 						<ul class="vehicle-gallery__thumbs">
-							<?php foreach ( $eda_slots as $eda_i => $eda_slot ) : ?>
-								<li><?php eda_vehicle_image( $eda_gallery[ $eda_i ] ?? 0, 'eda-vehicle-card', '(min-width: 1024px) 15vw, 25vw', $eda_slot ); ?></li>
-							<?php endforeach; ?>
+							<?php for ( $eda_i = 0; $eda_i < 4; $eda_i++ ) : // Gallery slots: rear, cockpit, interior, detail. ?>
+								<li><?php eda_vehicle_image( $eda_gallery[ $eda_i ] ?? 0, 'eda-vehicle-card', '(min-width: 1024px) 15vw, 25vw' ); ?></li>
+							<?php endfor; ?>
 						</ul>
 					</div>
 				</div>
@@ -51,6 +50,9 @@ while ( have_posts() ) :
 						<?php endif; ?>
 
 						<p class="vehicle-summary__price"><?php echo esc_html( eda_vehicle_display_price() ); ?></p>
+						<?php if ( eda_vehicle_last_asking_price() ) : ?>
+							<p class="price-note"><?php echo esc_html( eda_vehicle_last_asking_price() ); ?></p>
+						<?php endif; ?>
 						<?php if ( ! $eda_sold && '' !== $eda_vat ) : ?>
 							<p class="vehicle-summary__vat"><?php echo esc_html( $eda_fields['vat_regime']['options'][ $eda_vat ] ?? '' ); ?></p>
 						<?php endif; ?>
@@ -77,6 +79,7 @@ while ( have_posts() ) :
 			</div>
 
 			<div class="vehicle-details">
+				<div class="vehicle-details__main">
 				<section class="vehicle-details__block" aria-labelledby="specs-title">
 					<h2 id="specs-title" class="block-title"><?php esc_html_e( 'Specifications', 'elite-auto-dealer' ); ?></h2>
 					<dl class="spec-list">
@@ -116,10 +119,14 @@ while ( have_posts() ) :
 					</section>
 				<?php endif; ?>
 
+				</div>
+
 				<?php if ( ! $eda_sold ) : ?>
-					<div class="vehicle-details__block">
-						<?php get_template_part( 'template-parts/enquiry-form', null, array( 'vehicle_id' => get_the_ID() ) ); ?>
-					</div>
+					<aside class="vehicle-details__aside">
+						<div class="panel">
+							<?php get_template_part( 'template-parts/enquiry-form', null, array( 'vehicle_id' => get_the_ID() ) ); ?>
+						</div>
+					</aside>
 				<?php endif; ?>
 			</div>
 		</div>

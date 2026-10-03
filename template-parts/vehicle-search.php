@@ -86,7 +86,7 @@ wp_enqueue_script(
 	<?php endif; ?>
 	<div class="vehicle-search__actions">
 		<button type="submit" class="button button--primary"><?php esc_html_e( 'Search vehicles', 'elite-auto-dealer' ); ?></button>
-		<?php if ( 'inventory' === $eda_context && eda_request_is_filtered() ) : ?>
+		<?php if ( 'inventory' === $eda_context && eda_request_has_filters() ) : ?>
 			<a class="button button--quiet" href="<?php echo esc_url( get_post_type_archive_link( 'vehicle' ) ); ?>"><?php esc_html_e( 'Clear filters', 'elite-auto-dealer' ); ?></a>
 		<?php endif; ?>
 	</div>

@@ -40,7 +40,17 @@ function eda_is_filtered_request( array $params ) {
 }
 
 /**
- * Whether the current request carries filter/sort parameters.
+ * Whether the current request has at least one real inventory filter. Sorting alone is not a filter.
+ *
+ * @return bool
+ */
+function eda_request_has_filters() {
+	// phpcs:ignore WordPress.Security.NonceVerification.Recommended -- read-only check of parameter presence.
+	return eda_is_filtered_request( array_diff_key( wp_unslash( $_GET ), array( 'sort' => true ) ) );
+}
+
+/**
+ * Whether the current request carries filter or sort parameters (sorted views are noindex too).
  *
  * @return bool
  */

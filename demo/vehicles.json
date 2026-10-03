@@ -75,6 +75,7 @@
 	"vehicles": [
 		{
 			"stock_id": "AUR-26001",
+			"featured_order": 1,
 			"title": "BMW M4 Competition xDrive",
 			"make": "bmw",
 			"model": "m4",
@@ -157,6 +158,7 @@
 		},
 		{
 			"stock_id": "AUR-26003",
+			"featured_order": 4,
 			"title": "BMW i4 M50",
 			"make": "bmw",
 			"model": "i4",
@@ -167,7 +169,7 @@
 			"equipment": ["adaptive-cruise-control", "apple-carplay", "android-auto", "navigation", "digital-cockpit", "head-up-display", "heated-seats", "heated-steering-wheel", "sport-seats", "leather-interior", "reversing-camera", "parking-sensors", "blind-spot-monitoring", "lane-assist", "led-headlights", "harman-kardon", "keyless-entry", "keyless-start", "electric-tailgate", "adaptive-suspension", "wireless-charging", "heat-pump", "fast-charging"],
 			"meta": {
 				"availability": "available",
-				"featured": false,
+				"featured": true,
 				"variant": "M50",
 				"price": 52900,
 				"finance_monthly": 749,
@@ -321,6 +323,7 @@
 		},
 		{
 			"stock_id": "AUR-26007",
+			"featured_order": 2,
 			"title": "Audi RS6 Avant",
 			"make": "audi",
 			"model": "rs-6",
@@ -403,6 +406,7 @@
 		},
 		{
 			"stock_id": "AUR-26009",
+			"featured_order": 5,
 			"title": "Audi e-tron GT quattro",
 			"make": "audi",
 			"model": "e-tron-gt",
@@ -443,6 +447,7 @@
 		},
 		{
 			"stock_id": "AUR-26010",
+			"featured_order": 3,
 			"title": "Porsche 911 Carrera",
 			"make": "porsche",
 			"model": "911",
@@ -523,6 +528,7 @@
 		},
 		{
 			"stock_id": "AUR-26012",
+			"featured_order": 6,
 			"title": "Range Rover Sport P440e",
 			"make": "land-rover",
 			"model": "range-rover-sport",

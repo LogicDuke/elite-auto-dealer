@@ -392,6 +392,7 @@ Demo content only, replaceable without code changes. The full vehicle table is i
   ```
 
 - **Validation first:** the JSON is checked against the theme schema and data rules before anything is written; any error aborts with nothing changed. Rules: 15 vehicles, unique stock IDs and VINs, known enum and term values, model ↔ make links, values that survive sanitising unchanged, EV fields only on EV/PHEV, no engine size, Euro norm or CO2 for EVs, kW ↔ hp consistency, year = first registration year, no "new" condition.
+- **Featured order:** each featured record has `featured_order` (1–6), which the seeder writes to the vehicle's `menu_order`. Validation requires it on featured vehicles only, and the values must be unique.
 - **Identity and idempotency:**
   - Vehicles are matched by **stock ID** (`AUR-26001` … `AUR-26015`) **and** the demo marker `_eda_demo = aurelis-demo`.
   - A match is updated in place; a missing one is created. Running twice gives 15 created, then 0 created / 15 updated.
@@ -432,6 +433,11 @@ Planned approach, not built yet:
 - **Prices are whole euros (integers).** Cents are not supported.
 - **Finance example**: Belgian consumer-credit rules require a representative example (APR, term, total payable) whenever a monthly amount is advertised. `finance_monthly` is therefore stored but not displayed (see Design-phase requirements).
 
+- **Prefix `eda` / meta prefix `_eda_`.** WPCS flags 3-letter prefixes as collision-prone; kept for brevity and excluded in `phpcs.xml.dist`. Renaming later means migrating stored meta keys, so change it now or never.
+- **Classic theme with the block editor for vehicle descriptions.** Vehicle details use a classic meta box, which still works in the block editor.
+- **Enquiry form nonce is refreshed on submit** (see "Cache-safe nonce"), so vehicle pages can be fully page-cached.
+- **Enquiry retention is 12 months by default** and runs only while this theme is active (see "Retention").
+
 ## Design-phase requirements
 
 Approved behaviour the visual design must implement:
@@ -439,12 +445,13 @@ Approved behaviour the visual design must implement:
 1. **Monthly finance amounts are hidden publicly.**
    - `finance_monthly` stays in the data (admin and demo records) but is not output on cards, vehicle pages or in structured data.
    - Public display may only be enabled together with a compliant representative credit example: lender, APR, term, total amount payable and the other legally required information.
-2. **Sold vehicles:**
-   - keep their price in the database;
-   - clearly show a SOLD status;
-   - hide actions that no longer make sense (the action bar is already not rendered for sold vehicles; the design must also handle enquiry and other purchase CTAs);
-   - never promote a monthly finance amount.
-- **Prefix `eda` / meta prefix `_eda_`.** WPCS flags 3-letter prefixes as collision-prone; kept for brevity and excluded in `phpcs.xml.dist`. Renaming later means migrating stored meta keys, so change it now or never.
-- **Classic theme with the block editor for vehicle descriptions.** Vehicle details use a classic meta box, which still works in the block editor.
-- **Enquiry form nonce is refreshed on submit** (see "Cache-safe nonce"), so vehicle pages can be fully page-cached.
-- **Enquiry retention is 12 months by default** and runs only while this theme is active (see "Retention").
+2. **Sold vehicles** (implemented in the first visual shell):
+   - they stay published and listed, and their URLs keep working; the price stays in the database and in structured data;
+   - the price slot shows **"Sold"**, with a smaller **"Last asking price € …"** line underneath (`eda_vehicle_last_asking_price()`), on cards and on the vehicle page;
+   - a SOLD badge is shown on the image, and the card image is dimmed;
+   - no action bar, no enquiry form and no purchase CTA; a notice links back to the available collection;
+   - a monthly finance amount is never shown.
+3. **Inventory order:** listings group vehicles as **available (and not stated) → reserved → sold**, and the visitor's sort (newest, price, mileage, year) applies inside each group (`eda_status_order` + `eda_inventory_status_order()`). A sold car's stored price can therefore never put it first under "price: low to high".
+4. **Featured order (homepage):** a fixed, curated merchandising order taken from the vehicle's native **Order** attribute (`menu_order`, editable under the editor's page attributes; lower first). Status never reorders the featured row, but reserved and sold badges still show.
+5. **Sold card image:** shown as is, with no greyscale or dimming. The SOLD badge and the "Sold" price treatment communicate the state.
+6. **"Clear filters"** appears only when a real filter is active (`eda_request_has_filters()`). A sort on its own is not a filter. Sorted-only views remain `noindex` like any parameter view.

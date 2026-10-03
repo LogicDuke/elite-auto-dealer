@@ -38,7 +38,12 @@ unset( $eda_facts[ __( 'Power', 'elite-auto-dealer' ) ] );
 			</ul>
 		<?php endif; ?>
 		<div class="vehicle-card__footer">
-			<p class="vehicle-card__price"><?php echo esc_html( eda_vehicle_display_price() ); ?></p>
+			<div class="vehicle-card__pricing">
+				<p class="vehicle-card__price"><?php echo esc_html( eda_vehicle_display_price() ); ?></p>
+				<?php if ( eda_vehicle_last_asking_price() ) : ?>
+					<p class="price-note"><?php echo esc_html( eda_vehicle_last_asking_price() ); ?></p>
+				<?php endif; ?>
+			</div>
 			<span class="vehicle-card__cta" aria-hidden="true"><?php esc_html_e( 'View vehicle', 'elite-auto-dealer' ); ?></span>
 		</div>
 	</div>

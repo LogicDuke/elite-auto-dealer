@@ -2,13 +2,13 @@
 
 Generated from `demo/vehicles.json` (the canonical source). Fictional dealership: **Aurelis Motors**, premium pre-owned automobiles, Brussels. All VINs are fictional (`DEMAUR…`). See [ARCHITECTURE.md](ARCHITECTURE.md#demo-inventory) for seeding and cleanup.
 
-★ = featured. Monthly finance figures are stored but not displayed (see "Approved decisions").
+★ = featured. Homepage order: M4 Competition, RS6 Avant, 911 Carrera, i4 M50, e-tron GT, Range Rover Sport (`featured_order` 1–6). Monthly finance figures are stored but not displayed (see "Approved decisions").
 
 | Stock ID | Vehicle | Variant | First reg. | Mileage | Fuel | Power | Gearbox | Battery / EV range (WLTP) | Price | VAT | Availability | Condition |
 |---|---|---|---|---|---|---|---|---|---|---|---|---|
 | AUR-26001 | BMW M4 Competition xDrive | Competition xDrive | 2024-03 | 18.400 km | Petrol | 375 kW / 510 hp | automatic | — | € 84.900 | deductible | available ★ | used |
 | AUR-26002 | BMW 330e Touring | 330e Touring M Sport | 2023-05 | 54.800 km | Plug-in hybrid | 215 kW / 292 hp | automatic | 12.0 kWh / 56 km | € 36.950 | deductible | available | used |
-| AUR-26003 | BMW i4 M50 | M50 | 2024-02 | 21.300 km | Electric | 400 kW / 544 hp | automatic | 80.7 kWh / 497 km | € 52.900 | deductible | available | used |
+| AUR-26003 | BMW i4 M50 | M50 | 2024-02 | 21.300 km | Electric | 400 kW / 544 hp | automatic | 80.7 kWh / 497 km | € 52.900 | deductible | available ★ | used |
 | AUR-26004 | Mercedes-Benz GLE 450 4MATIC | 450 4MATIC AMG Line | 2022-04 | 67.200 km | Petrol | 270 kW / 367 hp | automatic | — | € 58.900 | margin | reserved | used |
 | AUR-26005 | Mercedes-Benz C300e Estate | C 300 e Estate AMG Line | 2025-06 | 9.400 km | Plug-in hybrid | 230 kW / 313 hp | automatic | 25.4 kWh / 108 km | € 58.950 | deductible | available | demo |
 | AUR-26006 | Mercedes-Benz A250e | A 250 e AMG Line | 2022-09 | 41.900 km | Plug-in hybrid | 160 kW / 218 hp | automatic | 15.6 kWh / 68 km | € 27.450 | margin | sold | used |

@@ -50,7 +50,8 @@ function eda_register_vehicle_post_type() {
 			'menu_position' => 5,
 			'menu_icon'     => 'dashicons-car',
 			// custom-fields is required for registered meta to appear in the REST API.
-			'supports'      => array( 'title', 'editor', 'excerpt', 'thumbnail', 'revisions', 'custom-fields' ),
+			// page-attributes adds the native "Order" field (menu_order): the curated featured order.
+			'supports'      => array( 'title', 'editor', 'excerpt', 'thumbnail', 'revisions', 'custom-fields', 'page-attributes' ),
 			'has_archive'   => eda_url_bases()['vehicles'],
 			'rewrite'       => array(
 				'slug'       => eda_url_bases()['vehicle'],

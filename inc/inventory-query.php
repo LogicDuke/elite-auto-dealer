@@ -67,35 +67,75 @@ function eda_inventory_query( $query ) {
 		);
 	}
 
-	$sorts = eda_inventory_sorts();
-	if ( ! empty( $sorts[ $sort ][1] ) ) {
-		// OR + NOT EXISTS keeps vehicles without the value (e.g. price on request) in the results.
-		$meta[] = array(
-			'relation'   => 'OR',
-			'sort_value' => array(
-				'key'     => $sorts[ $sort ][1],
-				'compare' => 'EXISTS',
-				'type'    => 'NUMERIC',
-			),
-			array(
-				'key'     => $sorts[ $sort ][1],
-				'compare' => 'NOT EXISTS',
-			),
-		);
-		$query->set(
-			'orderby',
-			array(
-				'sort_value' => $sorts[ $sort ][2],
-				'date'       => 'DESC',
-			)
-		);
+	$sort_args = eda_inventory_sort_args( $sort );
+	if ( isset( $sort_args['meta_query'] ) ) {
+		$meta = array_merge( $meta, $sort_args['meta_query'] );
 	}
-
+	if ( isset( $sort_args['orderby'] ) ) {
+		$query->set( 'orderby', $sort_args['orderby'] );
+	}
 	if ( $meta ) {
 		$query->set( 'meta_query', $meta ); // phpcs:ignore WordPress.DB.SlowDBQuery.slow_db_query_meta_query -- inventory filtering, small dataset.
 	}
+
+	// Available first, then reserved, then sold, whatever the chosen sort.
+	$query->set( 'eda_status_order', true );
 }
 add_action( 'pre_get_posts', 'eda_inventory_query' );
+
+/**
+ * Query args for a sort option: a named meta clause plus orderby (empty for "newest").
+ *
+ * @param string $sort Sort key from eda_inventory_sorts().
+ * @return array
+ */
+function eda_inventory_sort_args( $sort ) {
+	$sorts = eda_inventory_sorts();
+	if ( empty( $sorts[ $sort ][1] ) ) {
+		return array();
+	}
+	return array(
+		// OR + NOT EXISTS keeps vehicles without the value (e.g. price on request) in the results.
+		'meta_query' => array( // phpcs:ignore WordPress.DB.SlowDBQuery.slow_db_query_meta_query -- inventory sorting, small dataset.
+			array(
+				'relation'   => 'OR',
+				'sort_value' => array(
+					'key'     => $sorts[ $sort ][1],
+					'compare' => 'EXISTS',
+					'type'    => 'NUMERIC',
+				),
+				array(
+					'key'     => $sorts[ $sort ][1],
+					'compare' => 'NOT EXISTS',
+				),
+			),
+		),
+		'orderby'    => array(
+			'sort_value' => $sorts[ $sort ][2],
+			'date'       => 'DESC',
+		),
+	);
+}
+
+/**
+ * Status groups for queries flagged with `eda_status_order`: available (and not stated) first,
+ * reserved next, sold last. The chosen sort then applies inside each group, so a sold car's
+ * low stored price can never put it at the top of "price: low to high".
+ *
+ * @param array    $clauses SQL clauses.
+ * @param WP_Query $query   Query.
+ * @return array
+ */
+function eda_inventory_status_order( $clauses, $query ) {
+	if ( ! $query->get( 'eda_status_order' ) ) {
+		return $clauses;
+	}
+	global $wpdb;
+	$clauses['join']   .= " LEFT JOIN {$wpdb->postmeta} AS eda_status ON ( eda_status.post_id = {$wpdb->posts}.ID AND eda_status.meta_key = '_eda_availability' )";
+	$clauses['orderby'] = "CASE eda_status.meta_value WHEN 'sold' THEN 2 WHEN 'reserved' THEN 1 ELSE 0 END ASC" . ( $clauses['orderby'] ? ', ' . $clauses['orderby'] : '' );
+	return $clauses;
+}
+add_filter( 'posts_clauses', 'eda_inventory_status_order', 10, 2 );
 
 /**
  * Statuses that keep a make/model visible in the public filters. Sold vehicles stay published

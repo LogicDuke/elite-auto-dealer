@@ -45,7 +45,7 @@ $eda_check( 1 === ( $eda_avail['sold'] ?? 0 ) && in_array( $eda_avail['reserved'
 $eda_cond = $eda_counts( 'condition' );
 $eda_check( ! isset( $eda_cond['new'] ) && ( $eda_cond['used'] ?? 0 ) >= 12 && ( $eda_cond['demo'] ?? 0 ) >= 1, 'conditions: mostly used, some demo, no new' );
 $eda_featured = count( array_filter( $eda_column( 'featured' ) ) );
-$eda_check( $eda_featured >= 4 && $eda_featured <= 6, "about 5 featured ($eda_featured)" );
+$eda_check( 6 === $eda_featured, "exactly 6 featured (3 × 2 homepage grid): $eda_featured" );
 $eda_fuel = $eda_counts( 'fuel_type' );
 $eda_check( isset( $eda_fuel['petrol'], $eda_fuel['plug-in-hybrid'], $eda_fuel['electric'] ), 'fuel mix includes petrol, plug-in hybrid and electric' );
 $eda_check( isset( $eda_counts( 'transmission' )['manual'], $eda_counts( 'transmission' )['automatic'] ), 'manual and automatic both present' );
@@ -126,6 +126,102 @@ $eda_check( count( $eda_labels ) === count( array_unique( $eda_labels ) ), 'no d
 $eda_rerun = eda_demo_seed( $eda_data );
 $eda_check( 0 === $eda_rerun['created'] && 15 === $eda_rerun['updated'] && ! $eda_rerun['skipped'], 'second seed run: 0 created, 15 updated' );
 $eda_check( 1 === count( eda_demo_find( 'AUR-26001' ) ) && 15 === (int) wp_count_posts( 'vehicle' )->publish, 'still exactly 15 vehicles after re-run (no duplicates)' );
+
+// Inventory status ordering: available first, reserved next, sold last, for every sort.
+$eda_rank   = static fn( $id ) => array(
+	'available' => 0,
+	''          => 0,
+	'reserved'  => 1,
+	'sold'      => 2,
+)[ (string) get_post_meta( $id, '_eda_availability', true ) ];
+$eda_number = static fn( $id, $key ) => (int) get_post_meta( $id, '_eda_' . $key, true );
+foreach ( array(
+	''            => null,
+	'price_asc'   => array( 'price', 1 ),
+	'price_desc'  => array( 'price', -1 ),
+	'mileage_asc' => array( 'mileage', 1 ),
+	'year_desc'   => array( 'year', -1 ),
+) as $eda_sort => $eda_rule ) {
+	$eda_ordered = ( new WP_Query(
+		array(
+			'post_type'        => 'vehicle',
+			'posts_per_page'   => -1,
+			'fields'           => 'ids',
+			'eda_status_order' => true,
+		) + eda_inventory_sort_args( $eda_sort )
+	) )->posts;
+	$eda_ranks   = array_map( $eda_rank, $eda_ordered );
+	$eda_sorted  = $eda_ranks;
+	sort( $eda_sorted );
+	$eda_inside = true;
+	if ( $eda_rule ) {
+		$eda_total = count( $eda_ordered );
+		for ( $eda_i = 1; $eda_i < $eda_total; $eda_i++ ) {
+			if ( $eda_ranks[ $eda_i ] === $eda_ranks[ $eda_i - 1 ] ) {
+				$eda_delta  = $eda_number( $eda_ordered[ $eda_i ], $eda_rule[0] ) - $eda_number( $eda_ordered[ $eda_i - 1 ], $eda_rule[0] );
+				$eda_inside = $eda_inside && $eda_delta * $eda_rule[1] >= 0;
+			}
+		}
+	}
+	$eda_label = '' === $eda_sort ? 'newest' : $eda_sort;
+	$eda_check( 15 === count( $eda_ordered ) && $eda_ranks === $eda_sorted && 2 === end( $eda_ranks ), "sort $eda_label: available → reserved → sold (sold last)" );
+	if ( $eda_rule ) {
+		$eda_check( $eda_inside, "sort $eda_label: correct order inside each status group" );
+	}
+}
+$eda_asc = ( new WP_Query(
+	array(
+		'post_type'        => 'vehicle',
+		'posts_per_page'   => -1,
+		'fields'           => 'ids',
+		'eda_status_order' => true,
+	) + eda_inventory_sort_args( 'price_asc' )
+) )->posts;
+$eda_check( 'AUR-26014' === get_post_meta( $eda_asc[0], '_eda_stock_id', true ) && 'AUR-26006' === get_post_meta( end( $eda_asc ), '_eda_stock_id', true ), 'price low → high starts with the cheapest available car (Golf GTI), not the sold A250e' );
+
+// Sold presentation: "Sold" + last asking price; no enquiry form, no action bar.
+$eda_sold_id = eda_demo_find( 'AUR-26006' )[0];
+$eda_m4_id   = eda_demo_find( 'AUR-26001' )[0];
+$eda_check( 'Sold' === eda_vehicle_display_price( $eda_sold_id ) && 'Last asking price ' . eda_format_price( 27450 ) === eda_vehicle_last_asking_price( $eda_sold_id ), 'sold price: "Sold" + "Last asking price € 27,450"' );
+$eda_check( '' === eda_vehicle_last_asking_price( $eda_m4_id ) && eda_format_price( 84900 ) === eda_vehicle_display_price( $eda_m4_id ), 'available price unchanged, no last-asking line' );
+$eda_html = wp_remote_retrieve_body( wp_remote_get( get_permalink( $eda_sold_id ), array( 'timeout' => 20 ) ) );
+$eda_check( str_contains( $eda_html, 'Last asking price' ) && str_contains( $eda_html, 'badge--sold' ) && ! str_contains( $eda_html, 'enquiry-form' ) && ! str_contains( $eda_html, 'vehicle-action-bar' ) && ! str_contains( $eda_html, '/ month' ), 'sold page: badge, last asking price, no enquiry form, no action bar, no finance' );
+$eda_html = wp_remote_retrieve_body( wp_remote_get( get_permalink( $eda_m4_id ), array( 'timeout' => 20 ) ) );
+$eda_check( str_contains( $eda_html, 'enquiry-form' ) && str_contains( $eda_html, 'vehicle-action-bar' ) && ! str_contains( $eda_html, 'Last asking price' ), 'available page: enquiry form and action bar present' );
+$eda_check( ! str_contains( $eda_html, 'media-placeholder__label' ) && ! str_contains( $eda_html, 'Photography in production' ), 'placeholders carry no text' );
+
+// Curated featured order on the homepage (merchandising order, not status order).
+$eda_expected = array( 'BMW M4 Competition xDrive', 'Audi RS6 Avant', 'Porsche 911 Carrera', 'BMW i4 M50', 'Audi e-tron GT quattro', 'Range Rover Sport P440e' );
+$eda_seeded   = array();
+foreach ( $eda_vehicles as $eda_v ) {
+	if ( isset( $eda_v['featured_order'] ) ) {
+		$eda_seeded[ $eda_v['featured_order'] ] = (int) get_post_field( 'menu_order', eda_demo_find( $eda_v['stock_id'] )[0] );
+	}
+}
+ksort( $eda_seeded );
+$eda_check( array( 1, 2, 3, 4, 5, 6 ) === array_values( $eda_seeded ), 'featured_order seeded into the vehicle "Order" attribute (1–6)' );
+$eda_home = wp_remote_retrieve_body( wp_remote_get( home_url( '/' ), array( 'timeout' => 20 ) ) );
+$eda_grid = substr( $eda_home, (int) strpos( $eda_home, 'id="featured-title"' ) );
+$eda_grid = substr( $eda_grid, 0, (int) strpos( $eda_grid, '</section>' ) );
+preg_match_all( '#vehicle-card__title">\s*<a [^>]*>([^<]+)</a>#', $eda_grid, $eda_found );
+$eda_titles = array_map( 'html_entity_decode', $eda_found[1] );
+$eda_check( $eda_titles === $eda_expected, 'homepage featured cars in the curated order: ' . implode( ', ', $eda_titles ) );
+$eda_check( 1 === substr_count( $eda_grid, 'badge--reserved' ) && strpos( $eda_grid, 'badge--reserved' ) > strpos( $eda_grid, 'Audi RS6 Avant' ) && strpos( $eda_grid, 'badge--reserved' ) < strpos( $eda_grid, 'BMW i4 M50' ), 'reserved 911 keeps its curated 3rd position and shows its badge' );
+
+// "Clear filters": only for real filters, never for sorting alone.
+$eda_clear = static fn( $query ) => str_contains( wp_remote_retrieve_body( wp_remote_get( get_post_type_archive_link( 'vehicle' ) . $query, array( 'timeout' => 20 ) ) ), 'Clear filters' );
+$eda_check( ! $eda_clear( '' ) && ! $eda_clear( '?sort=price_asc' ), 'no "Clear filters" for the plain or sorted-only inventory' );
+$eda_check( $eda_clear( '?make=bmw' ) && $eda_clear( '?make=bmw&sort=price_asc' ) && $eda_clear( '?price_max=50000' ), '"Clear filters" shown when a real filter is active' );
+$eda_check( ! eda_is_filtered_request( array_diff_key( array( 'sort' => 'price_asc' ), array( 'sort' => true ) ) ) && eda_is_filtered_request( array( 'sort' => 'price_asc' ) ), 'sorting is not a filter for the button, but sorted views stay noindex' );
+
+// Inventory archive keeps availability ordering (the curated order is homepage-only).
+$eda_page2 = wp_remote_retrieve_body( wp_remote_get( get_post_type_archive_link( 'vehicle' ) . 'page/2/?sort=price_asc', array( 'timeout' => 20 ) ) );
+preg_match_all( '#<article class="([^"]*vehicle-card[^"]*)"#', $eda_page2, $eda_cards );
+$eda_check( $eda_cards[1] && str_contains( end( $eda_cards[1] ), 'vehicle-card--sold' ), 'inventory: sold car still last under price low → high' );
+
+// Sold cards: no greyscale / dimming of the photograph.
+$eda_css = file_get_contents( get_template_directory() . '/assets/css/main.css' );
+$eda_check( ! preg_match( '/vehicle-card--sold[^{]*\{[^}]*(grayscale|opacity)/', $eda_css ), 'sold card image is not greyed or dimmed' );
 
 // Safety drill: a real (non-demo) vehicle survives cleanup, keeps its terms, and blocks its stock ID.
 $eda_real = wp_insert_post(
