@@ -92,13 +92,15 @@ $eda_sizes = wp_get_registered_image_subsizes();
 foreach ( array(
 	'eda-vehicle-card'   => array( 640, 427 ),
 	'eda-vehicle-medium' => array( 960, 640 ),
-	'eda-vehicle-large'  => array( 1600, 1067 ),
+	'eda-vehicle-large'  => array( 1536, 1024 ),
 ) as $eda_size => list( $eda_w, $eda_h ) ) {
 	$eda_check( isset( $eda_sizes[ $eda_size ] ) && $eda_w === $eda_sizes[ $eda_size ]['width'] && $eda_h === $eda_sizes[ $eda_size ]['height'] && $eda_sizes[ $eda_size ]['crop'], "image size $eda_size {$eda_w}x{$eda_h} cropped" );
 }
+$eda_check( 1536 === $eda_sizes['eda-vehicle-large']['width'] && 0 === $eda_sizes['eda-vehicle-large']['width'] * 2 - $eda_sizes['eda-vehicle-large']['height'] * 3, 'largest vehicle size equals the 1536x1024 3:2 source contract (never above it)' );
+// A 1536x1024 upload: WordPress skips "large" (same size as the original) and lists the original itself.
 $eda_meta   = array(
-	'width'  => 3000,
-	'height' => 2000,
+	'width'  => 1536,
+	'height' => 1024,
 	'file'   => '2026/10/car.jpg',
 	'sizes'  => array(
 		'eda-vehicle-card'   => array(
@@ -111,15 +113,10 @@ $eda_meta   = array(
 			'width'  => 960,
 			'height' => 640,
 		),
-		'eda-vehicle-large'  => array(
-			'file'   => 'car-1600x1067.jpg',
-			'width'  => 1600,
-			'height' => 1067,
-		),
 	),
 );
 $eda_srcset = (string) wp_calculate_image_srcset( array( 640, 427 ), content_url( 'uploads/2026/10/car-640x427.jpg' ), $eda_meta );
-$eda_check( str_contains( $eda_srcset, '640w' ) && str_contains( $eda_srcset, '960w' ) && str_contains( $eda_srcset, '1600w' ), '3:2 sizes combine into one srcset' );
+$eda_check( str_contains( $eda_srcset, '640w' ) && str_contains( $eda_srcset, '960w' ) && str_contains( $eda_srcset, 'car.jpg 1536w' ) && ! preg_match( '/\b(1[6-9]\d\d|[2-9]\d{3})w\b/', $eda_srcset ), '3:2 sizes and the 1536 original combine into one srcset, nothing wider' );
 
 // Enquiry validation (pure).
 $eda_ok = eda_validate_enquiry(

@@ -36,6 +36,16 @@ $eda_check( 75 === count( array_unique( array_column( $eda_slots, 'filename' ) )
 $eda_check( 75 === count( array_unique( array_column( $eda_slots, 'path' ) ) ), 'paths unique' );
 $eda_check( ! preg_match( '#https?://|www\.#i', $eda_raw ), 'no remote URLs anywhere in the manifest' );
 
+// One canonical image contract for all 75 vehicle photographs (no per-slot copies that can drift).
+$eda_c = $eda_manifest['image_contract'] ?? array();
+$eda_check( 1536 === ( $eda_c['width'] ?? 0 ) && 1024 === ( $eda_c['height'] ?? 0 ), 'image_contract is exactly 1536 x 1024 px' );
+$eda_check( '3:2' === ( $eda_c['aspect_ratio'] ?? '' ) && 'landscape' === ( $eda_c['orientation'] ?? '' ) && $eda_c['width'] * 2 === $eda_c['height'] * 3, 'image_contract is exact 3:2 landscape' );
+$eda_check( 'jpeg' === ( $eda_c['format'] ?? '' ) && 'jpg' === ( $eda_c['extension'] ?? '' ) && 'sRGB' === ( $eda_c['color_space'] ?? '' ) && str_ends_with( $eda_manifest['directory_pattern'] ?? '', '.jpg' ), 'image_contract is JPEG (.jpg), sRGB' );
+$eda_w = $eda_c['weight_target_kb'] ?? array();
+$eda_check( 180 === ( $eda_w['min'] ?? 0 ) && 350 === ( $eda_w['max'] ?? 0 ) && 450 === ( $eda_c['weight_preferred_max_kb'] ?? 0 ), 'weight target 180–350 KB, preferred maximum 450 KB (declared; bytes are checked at import QA)' );
+$eda_check( 'never' === ( $eda_c['upscaling'] ?? '' ) && 'reject' === ( $eda_c['smaller_than_contract'] ?? '' ), 'no upscaling: smaller images are rejected' );
+$eda_check( ! isset( $eda_manifest['master'] ) && str_contains( $eda_doc, '1536 × 1024' ) && ! preg_match( '/2400\s*[×x]\s*1600/u', $eda_doc . $eda_raw ), 'roadmap doc and manifest carry no superseded 2400 x 1600 master' );
+
 $eda_by_vehicle = array();
 foreach ( $eda_slots as $eda_slot ) {
 	$eda_by_vehicle[ $eda_slot['stock_id'] ][] = $eda_slot;
@@ -68,11 +78,8 @@ foreach ( $eda_by_vehicle as $eda_id => $eda_list ) {
 		if ( preg_match( '/placeholder|todo|tbd|sample|example|dummy/i', $eda_slot['filename'] ) ) {
 			$eda_errors[] = 'placeholder filename';
 		}
-		if ( '3:2' !== $eda_slot['aspect_ratio'] || 2400 !== $eda_slot['target_width'] || 1600 !== $eda_slot['target_height'] || $eda_slot['target_width'] * 2 !== $eda_slot['target_height'] * 3 ) {
-			$eda_errors[] = "$eda_role not 2400x1600 3:2";
-		}
-		if ( 'jpg' !== $eda_slot['format'] || 'sRGB' !== $eda_slot['color_space'] ) {
-			$eda_errors[] = "$eda_role not sRGB jpg";
+		if ( array_intersect_key( $eda_slot, array_flip( array( 'aspect_ratio', 'target_width', 'target_height', 'width', 'height', 'format', 'color_space' ) ) ) ) {
+			$eda_errors[] = "$eda_role overrides the global image_contract";
 		}
 		if ( $eda_i + 1 !== $eda_slot['order'] || ( 'hero' === $eda_role ) !== $eda_slot['featured'] ) {
 			$eda_errors[] = "$eda_role order/featured";

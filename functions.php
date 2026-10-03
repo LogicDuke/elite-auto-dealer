@@ -43,11 +43,12 @@ function eda_setup() {
 		)
 	);
 
-	// Vehicle photos are 3:2, the usual dealer/portal camera ratio. All three sizes share
-	// that ratio, so wp_get_attachment_image() emits them together in one srcset.
+	// Vehicle photos are 3:2, delivered at 1536x1024 (docs/VEHICLE-IMAGE-ROADMAP.md). All three
+	// sizes share that ratio, so wp_get_attachment_image() emits them together in one srcset.
+	// None exceeds the source: "large" equals it, so WordPress serves the original, never an upscale.
 	add_image_size( 'eda-vehicle-card', 640, 427, true );
 	add_image_size( 'eda-vehicle-medium', 960, 640, true );
-	add_image_size( 'eda-vehicle-large', 1600, 1067, true );
+	add_image_size( 'eda-vehicle-large', 1536, 1024, true );
 }
 add_action( 'after_setup_theme', 'eda_setup' );
 

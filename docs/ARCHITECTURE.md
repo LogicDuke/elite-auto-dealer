@@ -196,9 +196,13 @@ All vehicle sizes are hard-cropped **3:2**:
 |---|---|---|
 | `eda-vehicle-card` | 640 × 427 | Listing cards, gallery thumbs |
 | `eda-vehicle-medium` | 960 × 640 | Cards on large/HiDPI screens, detail on tablets |
-| `eda-vehicle-large` | 1600 × 1067 | Detail / lightbox |
+| `eda-vehicle-large` | 1536 × 1024 | Detail main image / lightbox (equals the source, so the original file is served) |
 
 Because the ratios match, `wp_get_attachment_image()` / `the_post_thumbnail()` automatically emit all three in one `srcset` (verified in the smoke test). Templates only need to pass a correct `sizes` attribute once layouts exist. WordPress adds `loading="lazy"` and `decoding="async"` automatically; mark the single above-the-fold vehicle image `fetchpriority="high"` / not lazy when the gallery is built. Existing uploads need "Regenerate thumbnails" after size changes.
+
+**Source contract:** vehicle photos are uploaded at exactly **1536 × 1024 px**, 3:2, sRGB JPEG, 180–350 KB (preferred maximum 450 KB). See [VEHICLE-IMAGE-ROADMAP.md](VEHICLE-IMAGE-ROADMAP.md) §3 and `image_contract` in `demo/image-roadmap.json`. No registered vehicle size exceeds the source. WordPress never upscales, so a smaller upload would simply lack the larger derivatives; the import QA rejects such files instead of enlarging them. Byte size and dimensions are checked at import, and the theme ships no compression or optimisation code.
+
+**Homepage hero:** `front-page.php` currently renders a placeholder through `eda-vehicle-large`. The final hero is a separate art-directed asset (its own brief, crop and dimensions, still to be defined) and is **not** bound by the vehicle-photo contract.
 
 ## Enquiries
 
@@ -407,7 +411,7 @@ Demo content only, replaceable without code changes. The full vehicle table is i
   - It deletes only vehicles carrying the demo marker.
   - It deletes make, model and equipment terms only if the seeder created them **and** no vehicle uses them any more.
   - It never deletes base vocabulary terms, terms that existed before seeding, or terms used by real vehicles. Enquiries are not deleted; they follow the retention policy.
-- **No images yet.** No featured images or gallery, no placeholder URLs, no network requests. The image contract for the next phase (75 images: 15 × hero/rear/cockpit/interior/detail, 3:2, 2400 × 1600) is in [VEHICLE-IMAGE-ROADMAP.md](VEHICLE-IMAGE-ROADMAP.md), with the machine-readable manifest in `demo/image-roadmap.json` (validate with `php tests/image-roadmap-test.php`).
+- **No images yet.** No featured images or gallery, no placeholder URLs, no network requests. The image contract for the next phase (75 images: 15 × hero/rear/cockpit/interior/detail, exactly 1536 × 1024, 3:2, sRGB JPEG, 180–350 KB) is in [VEHICLE-IMAGE-ROADMAP.md](VEHICLE-IMAGE-ROADMAP.md), with the machine-readable manifest in `demo/image-roadmap.json` (validate with `php tests/image-roadmap-test.php`).
 - **Site identity on the demo site:** the title "Aurelis Motors" and tagline "Premium pre-owned automobiles" were set as normal WordPress options (Settings → General) on the local demo install only. They are never hard-coded in the theme or set by the seeder. Phone, WhatsApp and enquiry email stay empty until safe fictional contact data is approved.
 - **Term language:** make, model and equipment term names are English for now. Translating database terms is deferred; the theme UI is NL/FR-ready.
 - **Packaging:** `demo/` stays in the development repository. Showcase/demo builds may include the demo tooling. Production/client release packages may exclude `demo/` (seeder and dataset) when a clean install is required; the theme does not depend on it at runtime. Packaging rules are not changed yet.

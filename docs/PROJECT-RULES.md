@@ -58,7 +58,7 @@ The reference made 113 requests (homepage) and 137 (vehicle page), loading 47–
 6. **Native browser and WordPress features first:** `srcset`/`sizes`, `loading="lazy"`, `decoding="async"`, `fetchpriority`, `<dialog>`, `<details>`, CSS `position: sticky`, `:has()`, `scroll-snap`.
 7. **JS loaded only where needed.** Enqueue per template (gallery JS only on vehicle pages, filter JS only on listings), always with `defer`. No inline HTML for features that aren't shown (e.g. no hidden modal forms).
 8. **One main stylesheet**, small and cacheable. No per-widget CSS files. Inline only small critical CSS if measurement justifies it.
-9. **Responsive images everywhere** using the 3:2 `eda-vehicle-*` sizes; never serve a 1600 px image into a 360 px slot or a 265 px image into a 3× display.
+9. **Responsive images everywhere** using the 3:2 `eda-vehicle-*` sizes; never serve a 1536 px image into a 360 px slot or a 265 px image into a 3× display.
 10. **Maps and other heavy embeds load only on demand** (click or visibility), never on pages that don't show them.
 11. **Local/static assets:** self-hosted fonts (WOFF2, subset, `font-display: swap`, at most 2 families) and SVG icons inline or as a sprite instead of icon fonts.
 12. **No preloaders/splash screens.**

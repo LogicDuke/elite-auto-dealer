@@ -26,7 +26,7 @@ All 75 images must look like the work of one dealership photographer at one loca
 
 ## 2. Camera language
 
-- **Exteriors:** full-frame equivalent 35–50 mm. Camera slightly below eye level, natural perspective, verticals kept straight, no extreme wide-angle distortion. The whole car is in frame with **safe margins of about 8 % on every side**, so the 640×427, 960×640 and 1600×1067 derivatives never clip bumpers, mirrors or wheels.
+- **Exteriors:** full-frame equivalent 35–50 mm. Camera slightly below eye level, natural perspective, verticals kept straight, no extreme wide-angle distortion. The whole car is in frame with **safe margins of about 8 % on every side**, so the 640×427 and 960×640 derivatives and the full 1536×1024 file never clip bumpers, mirrors or wheels.
 - **Interiors:** 24–35 mm equivalent. No fisheye and no stretched cabins; realistic proportions.
 - **Varied per vehicle:** hero angle (front-left or front-right three-quarter), forecourt zone, focal length within the range, and the architecture framing. Every vehicle has its own row in the table below.
 
@@ -36,12 +36,14 @@ All 75 images must look like the work of one dealership photographer at one loca
 |---|---|
 | Images per vehicle | exactly 5 (`hero`, `rear`, `cockpit`, `interior`, `detail`) |
 | Total | 75 |
-| Master | 2400 × 1600 px minimum, **3:2 landscape**, high-quality JPG, sRGB |
+| Delivered file | **exactly 1536 × 1024 px**, **3:2 landscape**, high-quality JPEG (`.jpg`), sRGB. This is the final web master: produced directly at this size. No larger master, no PNG, no later bulk-resize phase |
 | Naming | `{stock-id-lowercase}-{role}.jpg`, e.g. `aur-26001-hero.jpg` |
 | Folder | `demo/images/{stock-id-lowercase}/` (5 approved files each) |
 | Featured image | `hero`; the other four form the gallery, in order rear → cockpit → interior → detail |
 | Alt text | `{Make} {Model/variant} — {view}`, e.g. "BMW M4 Competition xDrive — cockpit". No "image of" / "photo of" |
-| Compression | **not applied in this phase.** Later web target: about 250–450 KB per delivered image where quality allows; hero may be slightly larger. WordPress builds the responsive derivatives |
+| Weight | target **180–350 KB** per image; preferred maximum **450 KB**. Applies to every role, the `hero` included. Measured per file at import QA (section 7); the theme ships no compression code |
+| Smaller or off-contract files | **rejected, never upscaled.** Anything smaller than 1536 × 1024, not exactly 3:2 or not sRGB JPEG goes back to production for re-export at the contract; WordPress is never relied on to crop or enlarge it |
+| Scope | vehicle photographs only. The **homepage hero** is a separate art-directed asset with its own brief; its dimensions are not defined yet |
 | Source | **original generated demo imagery** from factual descriptions. No manufacturer website images, no other dealers' photography, no unlicensed stock |
 
 ## 4. Continuity contract (per vehicle)
@@ -339,6 +341,7 @@ Any drift is a reject. Across vehicles, the colours stored in the data guarantee
 
 1. Approved files go into `demo/images/{stock-id-lowercase}/` with the exact filenames above. The folder and file name identify the stock ID and role.
 2. The importer reads `demo/image-roadmap.json` and processes only slots whose file exists. It never fetches remote URLs.
+   **QA gate before any attachment is created:** the file must decode as a JPEG, be sRGB, measure exactly the `image_contract` 1536 × 1024 px and weigh at most the preferred 450 KB (180–350 KB expected). A failing file is reported and skipped, never resized, upscaled or recompressed.
 3. **Idempotent attachments:**
    - each attachment is tagged with post meta `_eda_demo_image = {filename}` (plus the dataset id);
    - on rerun, the existing attachment is reused, or replaced in place when the file checksum changed;
@@ -346,14 +349,14 @@ Any drift is a reject. Across vehicles, the colours stored in the data guarantee
 4. `hero` → featured image (`_thumbnail_id`). `rear`, `cockpit`, `interior`, `detail` → `_eda_gallery` in that order, written through the theme's schema sanitiser.
 5. Alt text from the manifest is stored as `_wp_attachment_image_alt`. The title is the alt text; the caption is empty.
 6. The attachments are parented to their vehicle. Demo cleanup is extended to remove only tagged demo attachments.
-7. WordPress generates the `eda-vehicle-card` / `-medium` / `-large` derivatives. No custom resizing.
+7. WordPress generates the `eda-vehicle-card` (640×427) and `eda-vehicle-medium` (960×640) derivatives. `eda-vehicle-large` (1536×1024) equals the source, so WordPress keeps the original for it, and core sizes at or above the source width (`1536x1536`, `2048x2048`) are skipped too. WordPress never upscales, and no derivative is larger than the source. No custom resizing.
 
 ## 8. Open decisions
 
 - **Plate treatment:** blank plate (default, reliable) or a subtle fictional "AURELIS" plate (only if text renders cleanly every time).
 - **Generation tool and model,** and whether image-to-image reference passes are used to hold continuity within a vehicle.
 - **Who approves each image** against this contract, and the reject criteria for brand-detail accuracy (grille, lights, dashboard family).
-- **Whether the masters live in Git** (75 × ~1–3 MB) or in external storage, with only the import manifest in the repository.
+- **Storage (decided):** the approved 1536 × 1024 JPEGs are archived outside Git in Google Drive (`04_Vehicle_Images/Approved_Web_Images`). Git keeps the contract, manifest and importer. At 75 × 180–450 KB the full set is roughly 14–34 MB, so whether a copy ships inside a demo package is a packaging decision.
 - **Alt-text language:** English for now (consistent with English term names), with nl/fr alt text deferred.
 - **Sold vehicle** (AUR-26006): it gets a full set here; whether sold vehicles keep their full gallery publicly is a design-phase decision.
 
