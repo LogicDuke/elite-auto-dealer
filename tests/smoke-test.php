@@ -39,7 +39,8 @@ $eda_check( in_array( $eda_rest->get_status(), array( 401, 403 ), true ), 'anony
 $eda_check( ! get_role( 'subscriber' )->has_cap( $eda_type->cap->create_posts ), 'subscribers cannot create vehicles' );
 $eda_public = array_filter(
 	array_keys( $GLOBALS['wp_filter'] ),
-	static fn( $hook ) => str_starts_with( $hook, 'admin_post_nopriv_' ) || str_starts_with( $hook, 'wp_ajax_nopriv_' )
+	// The theme's own (eda_*); plugins register theirs, e.g. Simply Static's nonce-checked background job.
+	static fn( $hook ) => str_starts_with( $hook, 'admin_post_nopriv_eda_' ) || str_starts_with( $hook, 'wp_ajax_nopriv_eda_' )
 );
 sort( $eda_public );
 $eda_check( array( 'admin_post_nopriv_eda_enquiry', 'wp_ajax_nopriv_eda_enquiry_nonce' ) === array_values( $eda_public ), 'public handlers: enquiry form (write) + nonce refresh (read-only) only' );
