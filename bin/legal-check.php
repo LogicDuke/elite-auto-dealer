@@ -3,8 +3,9 @@
  * Launch check: lists every unreplaced placeholder ("[Registered legal name]", "[VAT number]",
  * "[Date]", …) and the demo disclosure on the published legal pages and the Finance page, as
  * visitors see them (shortcodes rendered, so an unset Site Settings detail shows up too), links on
- * those pages that are root-relative or do not resolve to a published page, and a missing enquiry
- * email (without it enquiries are not emailed). Fails (exit 1) while anything is left. The demo
+ * those pages that are root-relative or do not resolve to a published page, a missing enquiry
+ * email (without it enquiries are not emailed), and translation text that does not match whether
+ * GTranslate is active. Fails (exit 1) while anything is left. The demo
  * intentionally fails it; a real dealership site must pass before launch. Nothing is replaced automatically.
  *
  * Run from the WordPress root:  wp eval-file wp-content/themes/elite-auto-dealer/bin/legal-check.php
@@ -29,6 +30,23 @@ $eda_found = 0;
 foreach ( array( 'Privacy Notice', 'Legal Notice', 'Cookie Policy' ) as $eda_required ) {
 	if ( empty( $eda_pages[ $eda_required ] ) || 'publish' !== get_post_status( $eda_pages[ $eda_required ] ) ) {
 		echo "MISSING  $eda_required is not published\n";
+		++$eda_found;
+	}
+}
+
+// Translation is described exactly when GTranslate runs (the optional consent category).
+$eda_translation = array(
+	'Privacy Notice' => 'Translation',
+	'Cookie Policy'  => 'Preferences: translation',
+);
+foreach ( $eda_translation as $eda_title => $eda_heading ) {
+	$eda_content = empty( $eda_pages[ $eda_title ] ) ? '' : (string) get_post_field( 'post_content', $eda_pages[ $eda_title ] );
+	$eda_has     = str_contains( $eda_content, '>' . $eda_heading . '</h2>' );
+	if ( class_exists( 'GTranslate' ) && ! $eda_has ) {
+		echo "MISSING  $eda_title: GTranslate is active but the \"$eda_heading\" section is missing\n";
+		++$eda_found;
+	} elseif ( ! class_exists( 'GTranslate' ) && ( $eda_has || str_contains( $eda_content, 'GTranslate' ) ) ) {
+		echo "STALE    $eda_title: describes GTranslate, which is not active (remove the translation text)\n";
 		++$eda_found;
 	}
 }

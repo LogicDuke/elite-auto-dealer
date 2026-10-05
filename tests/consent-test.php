@@ -40,8 +40,10 @@ add_filter( 'eda_consent_policy_version', static fn() => '2' );
 $eda_check( '2' === eda_consent_config()['version'], 'policy version can be bumped (eda_consent_policy_version)' );
 remove_all_filters( 'eda_consent_policy_version' );
 
-// ---------- Truthful: nothing optional today.
-$eda_check( array() === eda_consent_categories() && array() === $eda_config['categories'], 'no optional category is registered (none exists)' );
+// ---------- Truthful: without GTranslate (its category detached here; also run with the plugin inactive) nothing is optional.
+$eda_gt = class_exists( 'GTranslate' );
+remove_filter( 'eda_consent_categories', 'eda_consent_gtranslate' );
+$eda_check( array() === eda_consent_categories() && array() === eda_consent_config()['categories'], 'no GTranslate: no optional category (none invented)' );
 $eda_check( '' === $eda_capture( 'eda_consent_banner' ), 'no first-visit banner while nothing is optional' );
 $eda_panel = $eda_capture( 'eda_consent_panel' );
 $eda_check( str_contains( $eda_panel, '<dialog' ) && str_contains( $eda_panel, 'Necessary' ) && str_contains( $eda_panel, 'eda-consent-panel__close' ), 'necessary-only panel: native dialog, Necessary, close control' );
@@ -70,6 +72,41 @@ $eda_check( str_contains( $eda_tag, 'type="text/plain" data-eds-consent="maps"' 
 $eda_check( '<script src="a.js"></script>' === apply_filters( 'script_loader_tag', '<script src="a.js"></script>', 'eda-main', '' ), 'other scripts untouched' ); // phpcs:ignore WordPress.WP.EnqueuedResources -- tag string under test.
 wp_deregister_script( 'eda-test-optional' );
 remove_filter( 'eda_consent_categories', $eda_cat );
+add_filter( 'eda_consent_categories', 'eda_consent_gtranslate' );
+
+// ---------- GTranslate: the one real optional service, only while its plugin is active.
+$eda_cats = eda_consent_categories();
+if ( ! $eda_gt ) {
+	$eda_check( array() === $eda_cats && '' === $eda_capture( 'eda_consent_banner' ), 'GTranslate inactive: no Preferences category, banner dormant' );
+} else {
+	$eda_pref = $eda_cats['preferences'] ?? array();
+	$eda_check( array( 'preferences' ) === array_keys( $eda_cats ) && 'Preferences: translation' === ( $eda_pref['label'] ?? '' ), 'GTranslate active: exactly one category, preferences = "Preferences: translation"' );
+	$eda_check( str_contains( $eda_pref['description'], 'GTranslate' ) && str_contains( $eda_pref['description'], 'Google' ) && str_contains( $eda_pref['description'], 'IP address' ) && str_contains( $eda_pref['description'], 'outside your country' ), 'description: GTranslate / Google, page text, IP and browser details, outside your country' );
+	$eda_cfg = eda_consent_config();
+	$eda_check( array( '__GT_TRANSLATE_LANGS', 'gt_autoswitch' ) === $eda_cfg['cleanup']['localStorage']['preferences'] && array() === $eda_cfg['cleanup']['cookies']['preferences'], 'cleanup: the two GTranslate localStorage keys (no cookie is used)' );
+	$eda_check( ! preg_grep( '/eds-dps|eds-consent/', array_merge( ...array_values( $eda_cfg['cleanup']['localStorage'] ) ) ), 'cleanup never touches the palette or consent keys' );
+	$eda_check( '.menu-item-gtranslate' === $eda_cfg['placeholders']->preferences['selector'] && 'Language' === $eda_cfg['placeholders']->preferences['label'] && str_contains( $eda_cfg['placeholders']->preferences['hint'], 'needs your permission' ), 'footer placeholder: "Language" in .menu-item-gtranslate, with an explaining label' );
+	$eda_banner = $eda_capture( 'eda_consent_banner' );
+	$eda_check( str_contains( $eda_banner, '"reject"' ) && str_contains( $eda_banner, '"accept"' ) && str_contains( $eda_banner, '"manage"' ) && str_contains( $eda_banner, 'Necessary storage is always active' ) && str_contains( $eda_banner, 'GTranslate' ), 'banner active: Reject / Accept / Manage, necessary always on, GTranslate named' );
+	$eda_panel3 = $eda_capture( 'eda_consent_panel' );
+	$eda_check( str_contains( $eda_panel3, 'Preferences: translation' ) && str_contains( $eda_panel3, 'data-eds-consent-category="preferences"' ) && str_contains( $eda_panel3, '"save"' ), 'panel: Preferences: translation switch and Save preferences' );
+	$eda_check( ! preg_match( '/analytics|marketing|advertis|maps?\b|video/i', wp_strip_all_tags( $eda_panel3 . $eda_banner ) ), 'no analytics, marketing, maps or video invented' );
+	// Gating: a GTranslate widget handle, through GTranslate's own tag filter (priority 10) and ours.
+	$eda_handle = 'gt_widget_script_12345678';
+	wp_enqueue_script( $eda_handle, plugins_url( 'gtranslate/js/float.js' ), array(), '1', true );
+	eda_consent_gate_gtranslate();
+	$eda_src = plugins_url( 'gtranslate/js/float.js' );
+	$eda_tag = apply_filters( 'script_loader_tag', '<script id="' . $eda_handle . '-js-before">window.gtranslateSettings = {};</script><script src="' . $eda_src . '" id="' . $eda_handle . '-js"></script>', $eda_handle, $eda_src ); // phpcs:ignore WordPress.WP.EnqueuedResources -- tag string under test.
+	$eda_check( 'preferences' === wp_scripts()->get_data( $eda_handle, 'eda_consent' ), 'GTranslate handles are marked for Preferences (eda_consent_gate_gtranslate)' );
+	$eda_check( 1 === substr_count( $eda_tag, 'type="text/plain" data-eds-consent="preferences"' ) && ! preg_match( '/<script[^>]*\ssrc=/', $eda_tag ) && str_contains( $eda_tag, 'data-gt-widget-id="12345678"' ), 'widget script printed inert (data-src, widget id kept)' );
+	$eda_check( str_contains( $eda_tag, 'window.gtranslateSettings = {};' ), 'inline settings stay (data only: no request, no auto-switch)' );
+	$eda_check( str_contains( $eda_tag, 'data-gt-orig-url=' ) && ! str_contains( $eda_tag, 'data-gt-orig-domain' ) && ! str_contains( $eda_tag, wp_parse_url( site_url(), PHP_URL_HOST ) . '"' ), 'no data-gt-orig-domain: the install hostname stays out of the HTML and static exports' );
+	$eda_check( str_contains( eda_consent_config()['placeholders']->preferences['focus'], 'select.gt_selector' ), 'placeholder focus covers the dropdown look as well as float' );
+	wp_dequeue_script( $eda_handle );
+	wp_deregister_script( $eda_handle );
+	$eda_js = $eda_read( 'assets/js/consent.js' );
+	$eda_check( str_contains( $eda_js, 'data-eda-consent-placeholder' ) || str_contains( $eda_js, 'edaConsentPlaceholder' ), 'consent.js renders the placeholder and removes it once allowed' );
+}
 
 // ---------- EDS Consent plugin stand-down.
 if ( ! function_exists( 'eds_consent_enabled' ) ) {
@@ -138,7 +175,7 @@ add_filter( 'home_url', $eda_subdir );
 $eda_check( str_contains( do_shortcode( '[eda_detail field="legal"]' ), '/shop/legal-notice/' ) && str_contains( do_shortcode( '[eda_detail field="cookies"]' ), '/shop/cookie-policy/' ) && str_contains( eda_consent_links(), '/shop/privacy-policy/' ), 'subdirectory install (/shop): legal links follow the install path' );
 remove_filter( 'home_url', $eda_subdir );
 $eda_demo_html = $eda_read( 'demo/legal-notice.html' ) . $eda_read( 'demo/privacy-notice.html' ) . $eda_read( 'demo/cookie-policy.html' );
-$eda_check( ! preg_match( '#href="/(?!/)#', $eda_demo_html ) && ! preg_match( '#href="https?://#', preg_replace( '#href="https://(wa\.me)#', '', $eda_demo_html ) ), 'legal texts: no root-relative or hard-coded site links' );
+$eda_check( ! preg_match( '#href="/(?!/)#', $eda_demo_html ) && ! preg_match( '#href="https?://[^"]*(elite-auto-dealer|\.local|localhost)#', $eda_demo_html ), 'legal texts: no root-relative or hard-coded site links' );
 $eda_check( ! preg_match( '#href="/(?!/)#', implode( '', array_map( static fn( $id ) => do_shortcode( get_post_field( 'post_content', $id ) ), array_filter( array( (int) get_option( 'wp_page_for_privacy_policy' ), get_page_by_path( 'legal-notice' )->ID ?? 0, get_page_by_path( 'cookie-policy' )->ID ?? 0 ) ) ) ) ), 'seeded legal pages: no root-relative links' );
 
 // ---------- Enquiry email: never the WordPress admin address.

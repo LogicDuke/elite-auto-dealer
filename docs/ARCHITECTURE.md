@@ -503,25 +503,37 @@ Adapted from the Elite Nail Studio architecture (EDS Consent contract), but trut
 
 ### Browser storage and services inventory (public visitors)
 
-Audited in a real browser across the public pages: every request goes to the site itself (no external scripts, fonts, maps, video, analytics, translation or CAPTCHA), and visitors receive **no cookies**.
+Audited in a real browser across the public pages: every request goes to the site itself (no external scripts, fonts, maps, video, analytics or CAPTCHA), and visitors receive **no cookies**. The one optional third-party service is translation (GTranslate, below), and it stays inert until allowed.
 
 | Item | Kind | When | Category |
 |---|---|---|---|
 | `eds-dps:elite-auto-dealer` | localStorage | Demo sites only, when a palette is chosen in "Try Colors" (EDS Demo Palette Switcher); holds only the palette ID, never sent to the server, removed by Reset to Default | Necessary (demo preference) |
-| `eds-consent:elite-auto-dealer` | localStorage | Only once an optional category exists and the visitor decides; `{"v":1,"policy":"1","ts":…,"cats":{…}}` | Necessary |
+| `eds-consent:elite-auto-dealer` | localStorage | When the visitor decides (only while an optional category exists); `{"v":1,"policy":"1","ts":…,"cats":{"preferences":…}}` | Necessary |
+| `__GT_TRANSLATE_LANGS` | localStorage | GTranslate, after consent, when a page is translated: `{"srcLang","tgtLang"}` | Preferences |
+| `gt_autoswitch` | localStorage | GTranslate, after consent: the browser-language check has run | Preferences |
 | `wordpress_logged_in_*`, `wordpress_sec_*`, `wordpress_test_cookie`, `wp-settings-*` | cookies | Logged-in staff only | Necessary |
 
 `wpEmojiSettingsSupports` does not occur: `functions.php` removes the WordPress emoji script. The enquiry form makes one same-origin request just before submitting (nonce refresh, `admin-ajax.php`) and posts to `admin-post.php`; neither sets a cookie. Telephone and WhatsApp are plain `tel:` / `wa.me` links (shown only when configured) and load nothing.
 
 ### Consent layer (`inc/consent.php`, `assets/js/consent.js`)
 
-* **No optional category exists today**, so there is **no first-visit banner** and nothing is stored; "Cookie preferences" opens a necessary-only `<dialog>` (Necessary, the policy links, Close). Viewing or closing it stores no decision.
-* **Latent workflow:** registering a real service with the `eda_consent_categories` filter (`slug => label, description, cleanup`) automatically prints the first layer (bottom-left on desktop, inset on mobile; Reject and Accept equal, Manage preferences) and adds category switches and Reject / Accept / Save to the dialog. Scripts of that service are registered with `wp_script_add_data( $handle, 'eda_consent', '<slug>' )` and printed inert (`type="text/plain" data-eds-consent data-src`) until allowed. Withdrawal removes the category's `cleanup` storage and reloads. Never register a category for a service that does not exist.
+* **Without an optional category** (e.g. GTranslate inactive) there is **no first-visit banner** and nothing is stored; "Cookie preferences" opens a necessary-only `<dialog>` (Necessary, the policy links, Close). Viewing or closing it stores no decision.
+* **Workflow:** registering a real service with the `eda_consent_categories` filter (`slug => label, description, cleanup`) automatically prints the first layer (bottom-left on desktop, inset on mobile; Reject and Accept equal, Manage preferences) and adds category switches and Reject / Accept / Save to the dialog. Scripts of that service are registered with `wp_script_add_data( $handle, 'eda_consent', '<slug>' )` and printed inert (`type="text/plain" data-eds-consent data-src`) until allowed. Withdrawal removes the category's `cleanup` storage and reloads. Never register a category for a service that does not exist.
 * **Record:** `localStorage['eds-consent:elite-auto-dealer']`, policy version `1` (filter `eda_consent_policy_version`; bump after a material change), expiry 180 days. Corrupt, expired, other-version or unreadable records count as undecided.
 * **API (EDS contract):** `edsConsent.allowed(cat) · get() · set(cats) · acceptAll() · rejectAll() · open()` and the `eds:consent` event. Any `[data-eds-consent-open]` element or link to `#eds-consent` opens the dialog, also as a URL fragment on page load.
 * **Dialog:** native modal (focus containment, Escape), visible × and Close (44px), backdrop click closes without saving, focus returns to the opener. Styled with light-tone role tokens, so it stays readable under every palette and the demo palette preview.
 * **Stand-down:** when `eds_consent_enabled()` (EDS Consent plugin) returns true, the theme prints no banner, panel or script; the footer link `#eds-consent` is then the plugin's.
-* **Coexistence with the demo palette switcher:** separate keys; choosing a palette implies no consent, consent actions never touch `eds-dps:*`, and Reset to Default never touches `eds-consent:*`.
+* **Coexistence with the demo palette switcher:** separate keys; choosing a palette implies no consent, consent actions never touch `eds-dps:*`, and Reset to Default never touches `eds-consent:*`. The banner sits below the switcher (z-index 8000 vs 9000), and on phones above its floating button; it also steps aside while the mobile menu is open.
+
+### GTranslate (optional: "Preferences: translation")
+
+* **Detection:** `eda_consent_gtranslate()` registers the `preferences` category only while the GTranslate plugin is active (`class_exists( 'GTranslate' )`). Inactive or removed plugin: no category, the layer is dormant again, nothing else changes; `bin/legal-check.php` then flags translation text left in the Privacy Notice and Cookie Policy.
+* **What the plugin does (5.0.1, footer menu, dropdown look (float also handled), URL structure none, auto-switch on, CDN off):** prints an inline settings script (`window.gtranslateSettings`, data only) and the look's script (`wp-content/plugins/gtranslate/js/dropdown.js`, or `float.js`) as `gt_widget_script_<random id>` (enqueued while the footer menu renders), plus an empty `.menu-item-gtranslate` wrapper the script fills. The script loads `cdn.gtranslate.net/widgets/latest/lib.min.js` on hover/focus of the selector or for any translation, including the automatic switch to the browser language; the translation is a POST to `translate-pa.googleapis.com/v1/translateHtml`. Storage: `__GT_TRANSLATE_LANGS`, `gt_autoswitch` (no cookie). Observed live: an ungated French-language visit was translated, and Google contacted, on first load.
+* **Gating:** `eda_consent_gate_gtranslate()` (on `wp_print_scripts` / `wp_print_footer_scripts`, priority 1) adds `eda_consent = preferences` to every `gt_widget_script_*` handle, so `eda_consent_script_tag()` prints the widget script inert after GTranslate's own tag filter. The inline settings stay (data only). Before consent: no request to GTranslate or Google, no auto-switch, no GTranslate storage. The plugin is not modified.
+* **Language placeholder:** the category's `placeholder` makes `consent.js` put a local "Language" button (aria-label: translation needs your permission) in `.menu-item-gtranslate`; it opens the preferences. Once allowed it is removed and the real selector appears (the dropdown's native `<select>`, or the float look's toggle `.gt-selected`, a `<div>`, which is made keyboard-operable: `tabindex`, `role="button"`, Enter/Space) and receives focus when the visitor allowed translation from the placeholder.
+* **Withdrawal:** both GTranslate keys are removed and the page reloads in English (an executed script cannot be unloaded).
+* **Known plugin quirk:** the widget script uses its `load_tlib()` as a hover/focus listener, so after its library has loaded each further hover or focus logs "callback is not a function" (harmless; not fixable without changing the plugin).
+* **Static / Cloudflare:** the inert tag ships in the HTML; `eda_gtranslate_tag()` drops GTranslate's `data-gt-orig-domain` (the install hostname, read only by the sub-domain URL structure; the scripts fall back to `location.hostname`), so no development hostname reaches an export; activation is client-side from localStorage. GTranslate's markup carries a random widget id per request, so responses differ between requests but never between visitors.
 
 ### Legal pages (`demo/*.html`, seeded by `demo/seed.php`)
 

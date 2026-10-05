@@ -28,11 +28,14 @@ function eda_consent_active() {
 }
 
 /**
- * Optional categories. None today: the site loads no optional third-party service.
+ * Optional categories: only services that really run on the site (today: GTranslate, when its
+ * plugin is active; see eda_consent_gtranslate()). Without one, the layer is dormant.
  *
- * Shape: slug => array( 'label' => …, 'description' => …, 'cleanup' => array( 'localStorage' => [], 'cookies' => [] ) ).
- * Register only a service that really exists, and print its scripts with
- * wp_script_add_data( $handle, 'eda_consent', '<slug>' ) so they stay inert until allowed.
+ * Shape: slug => array( 'label' => …, 'description' => … (panel), 'notice' => … (banner sentence),
+ * 'cleanup' => array( 'localStorage' => [], 'cookies' => [] ), 'placeholder' => array( 'selector',
+ * 'label', 'hint', 'focus' ) (optional: a local button in place of the service's control until
+ * allowed)). Print the service's scripts with wp_script_add_data( $handle, 'eda_consent', '<slug>' )
+ * so they stay inert until allowed.
  *
  * @return array<string, array>
  */
@@ -57,14 +60,74 @@ function eda_consent_config() {
 		}
 	}
 	return array(
-		'key'        => 'eds-consent:elite-auto-dealer',
-		'version'    => (string) apply_filters( 'eda_consent_policy_version', '1' ),
-		'maxAgeDays' => 180,
-		'categories' => array_keys( eda_consent_categories() ),
+		'key'          => 'eds-consent:elite-auto-dealer',
+		'version'      => (string) apply_filters( 'eda_consent_policy_version', '1' ),
+		'maxAgeDays'   => 180,
+		'categories'   => array_keys( eda_consent_categories() ),
 		// Removed when a category is refused or withdrawn (scripts that already ran need a reload).
-		'cleanup'    => $cleanup,
+		'cleanup'      => $cleanup,
+		'placeholders' => (object) array_filter( wp_list_pluck( eda_consent_categories(), 'placeholder' ) ),
 	);
 }
+
+/**
+ * GTranslate, when its plugin is active: the "Preferences: translation" category. Its widget
+ * script (and with it the auto-switch to the browser language, which loads GTranslate's library
+ * from cdn.gtranslate.net and sends the page to translate-pa.googleapis.com) stays inert until
+ * allowed; until then the footer shows a local "Language" button that opens the preferences.
+ * Storage it creates (localStorage): __GT_TRANSLATE_LANGS, gt_autoswitch.
+ *
+ * @param array $categories Categories.
+ * @return array
+ */
+function eda_consent_gtranslate( $categories ) {
+	if ( ! class_exists( 'GTranslate' ) ) {
+		return $categories;
+	}
+	$categories['preferences'] = array(
+		'label'       => __( 'Preferences: translation', 'elite-auto-dealer' ),
+		'description' => __( 'Lets GTranslate translate pages with Google’s translation service: into the language you choose, or automatically into your browser’s language when it is one of those offered. GTranslate and Google then receive the page text and your IP address and browser details, and may process them outside your country. The language is remembered in your browser.', 'elite-auto-dealer' ),
+		'notice'      => __( 'With your permission, pages can be translated by GTranslate using Google’s translation service, which then receives the page text and your IP address and browser details, possibly outside your country. Translation stays off until you allow it.', 'elite-auto-dealer' ),
+		'cleanup'     => array( 'localStorage' => array( '__GT_TRANSLATE_LANGS', 'gt_autoswitch' ) ),
+		'placeholder' => array(
+			'selector' => '.menu-item-gtranslate',
+			'label'    => __( 'Language', 'elite-auto-dealer' ),
+			'hint'     => __( 'Language: translation needs your permission. Open privacy preferences', 'elite-auto-dealer' ),
+			'focus'    => '.menu-item-gtranslate .gt_float_switcher .gt-selected, .menu-item-gtranslate select.gt_selector',
+		),
+	);
+	return $categories;
+}
+add_filter( 'eda_consent_categories', 'eda_consent_gtranslate' );
+
+/**
+ * Mark GTranslate's widget scripts (handles gt_widget_script_<id>, enqueued while the menu
+ * renders) for the Preferences category just before they print, so eda_consent_script_tag()
+ * prints them inert. Its inline settings script only defines data and stays as it is.
+ */
+function eda_consent_gate_gtranslate() {
+	foreach ( wp_scripts()->queue as $handle ) {
+		if ( str_starts_with( $handle, 'gt_widget_script_' ) ) {
+			wp_script_add_data( $handle, 'eda_consent', 'preferences' );
+		}
+	}
+}
+add_action( 'wp_print_scripts', 'eda_consent_gate_gtranslate', 1 );
+add_action( 'wp_print_footer_scripts', 'eda_consent_gate_gtranslate', 1 );
+
+/**
+ * Drop GTranslate's data-gt-orig-domain (the install's hostname, e.g. a .local development host):
+ * its scripts fall back to location.hostname, and only the sub-domain URL structure reads it.
+ * Keeps the development hostname out of the HTML and static exports.
+ *
+ * @param string $tag    Script tag(s).
+ * @param string $handle Handle.
+ * @return string
+ */
+function eda_gtranslate_tag( $tag, $handle ) {
+	return str_starts_with( $handle, 'gt_widget_script_' ) ? (string) preg_replace( '/\sdata-gt-orig-domain="[^"]*"/', '', $tag ) : $tag;
+}
+add_filter( 'script_loader_tag', 'eda_gtranslate_tag', 15, 2 );
 
 /**
  * Print a script registered for an optional category inert, until the visitor allows it.
@@ -227,14 +290,18 @@ function eda_consent_banner() {
 	if ( ! eda_consent_active() || ! eda_consent_categories() ) {
 		return;
 	}
-	$labels = wp_list_pluck( eda_consent_categories(), 'label' );
+	$notices = array();
+	foreach ( eda_consent_categories() as $category ) {
+		/* translators: %s: optional service, e.g. "Maps". */
+		$notices[] = $category['notice'] ?? sprintf( __( 'With your permission the site can also use: %s.', 'elite-auto-dealer' ), $category['label'] );
+	}
 	?>
 	<section class="eda-consent" aria-labelledby="eda-consent-title" data-eda-consent-banner hidden>
 		<h2 class="eda-consent__title" id="eda-consent-title"><?php esc_html_e( 'Your privacy', 'elite-auto-dealer' ); ?></h2>
 		<p class="eda-consent__text">
 			<?php
-			/* translators: %s: optional services, e.g. "Maps". */
-			echo esc_html( sprintf( __( 'This site uses only the storage it needs to work. With your permission it can also use: %s. Nothing optional starts until you choose.', 'elite-auto-dealer' ), implode( ', ', $labels ) ) );
+			/* translators: %s: one sentence per optional service. */
+			echo esc_html( sprintf( __( 'Necessary storage is always active. %s Nothing optional starts until you choose, and you can change your mind at any time under “Cookie preferences”.', 'elite-auto-dealer' ), implode( ' ', $notices ) ) );
 			?>
 		</p>
 		<?php echo eda_consent_links(); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- escaped in eda_consent_links(). ?>
@@ -264,7 +331,7 @@ function eda_consent_panel() {
 			<?php
 			echo esc_html(
 				$categories
-					? __( 'Choose what you allow. Nothing optional is switched on until you choose it, and you can change your mind at any time under “Cookie preferences” in the footer.', 'elite-auto-dealer' )
+					? __( 'Choose what you allow. Necessary storage is always active; nothing optional is switched on until you choose it, and you can change your mind at any time under “Cookie preferences” in the footer.', 'elite-auto-dealer' )
 					: __( 'This website uses no analytics, advertising or other optional services, so there is nothing to accept or reject. It keeps only the small amount of browser storage described below.', 'elite-auto-dealer' )
 			);
 			?>
@@ -273,7 +340,7 @@ function eda_consent_panel() {
 			<li class="eda-consent__category">
 				<div>
 					<h3 class="eda-consent__category-title"><label for="eda-consent-necessary"><?php esc_html_e( 'Necessary', 'elite-auto-dealer' ); ?></label></h3>
-					<p class="eda-consent__category-text" id="eda-consent-necessary-desc"><?php esc_html_e( 'Keeps the website working. On demonstration sites it also remembers the colour palette you preview with “Try Colors” (stored only in your browser). Staff who log in receive WordPress login cookies. Always active.', 'elite-auto-dealer' ); ?></p>
+					<p class="eda-consent__category-text" id="eda-consent-necessary-desc"><?php esc_html_e( 'Keeps the website working and, once you have chosen, remembers your privacy choice. On demonstration sites it also remembers the colour palette you preview with “Try Colors” (stored only in your browser). Staff who log in receive WordPress login cookies. Always active.', 'elite-auto-dealer' ); ?></p>
 				</div>
 				<input class="eda-consent__switch" type="checkbox" role="switch" id="eda-consent-necessary" checked disabled aria-describedby="eda-consent-necessary-desc">
 			</li>

@@ -1842,6 +1842,26 @@ textarea {
 	list-style: none;
 }
 
+/* Stand-in for a service's control until its consent category is allowed (consent.js), e.g. the
+   footer "Language" button before translation is allowed: looks like the links around it. */
+.eda-consent-placeholder {
+	display: inline-flex;
+	align-items: center;
+	min-height: 2.75rem;
+	padding: 0;
+	border: 0;
+	background: none;
+	color: inherit;
+	font: inherit;
+	text-align: left;
+	cursor: pointer;
+}
+
+.eda-consent-placeholder:hover {
+	text-decoration: underline;
+	text-underline-offset: 0.25em;
+}
+
 /* ---------- Privacy preferences (inc/consent.php) ----------
    Light-tone role tokens, so every palette (all contrast-gated) keeps it readable. The first
    layer (.eda-consent) is printed only when an optional category exists. */
@@ -1858,7 +1878,7 @@ textarea {
 
 .eda-consent {
 	position: fixed;
-	z-index: 9500; /* Above the EDS demo switcher (9000), below EDS Consent's own layer. */
+	z-index: 8000; /* Above the theme (header 50, skip link 100); below the EDS demo switcher (9000), which visitors open on purpose, and EDS Consent's own layer. */
 	right: max(0.75rem, env(safe-area-inset-right));
 	bottom: max(0.75rem, env(safe-area-inset-bottom));
 	left: max(0.75rem, env(safe-area-inset-left));
@@ -1990,6 +2010,18 @@ textarea {
 	height: 1.5rem;
 	margin: 0.125rem 0 0;
 	accent-color: var(--eda-button-bg);
+}
+
+/* The open mobile menu is a deliberate choice: the banner steps aside until it closes. */
+.nav-open .eda-consent {
+	display: none;
+}
+
+/* Phones with the EDS demo switcher: its floating button (bottom right, 44px) stays reachable. */
+@media (max-width: 39.99em) {
+	body:has(.eds-dps:not([hidden])) .eda-consent {
+		bottom: calc(max(0.75rem, env(safe-area-inset-bottom)) + 3.5rem);
+	}
 }
 
 @media (min-width: 40em) {

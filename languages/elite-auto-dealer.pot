@@ -9,7 +9,7 @@ msgstr ""
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"POT-Creation-Date: 2026-10-05T06:08:03+00:00\n"
+"POT-Creation-Date: 2026-10-05T10:23:30+00:00\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "X-Generator: WP-CLI 2.12.0\n"
 "X-Domain: elite-auto-dealer\n"
@@ -724,85 +724,111 @@ msgstr ""
 msgid "The status could not be changed."
 msgstr ""
 
-#: inc/consent.php:125
+#: inc/consent.php:88
+msgid "Preferences: translation"
+msgstr ""
+
+#: inc/consent.php:89
+msgid "Lets GTranslate translate pages with Google’s translation service: into the language you choose, or automatically into your browser’s language when it is one of those offered. GTranslate and Google then receive the page text and your IP address and browser details, and may process them outside your country. The language is remembered in your browser."
+msgstr ""
+
+#: inc/consent.php:90
+msgid "With your permission, pages can be translated by GTranslate using Google’s translation service, which then receives the page text and your IP address and browser details, possibly outside your country. Translation stays off until you allow it."
+msgstr ""
+
+#: inc/consent.php:94
+msgid "Language"
+msgstr ""
+
+#: inc/consent.php:95
+msgid "Language: translation needs your permission. Open privacy preferences"
+msgstr ""
+
+#: inc/consent.php:174
 msgid "Cookie Policy"
 msgstr ""
 
-#: inc/consent.php:126
+#: inc/consent.php:175
 msgid "Privacy Notice"
 msgstr ""
 
-#: inc/consent.php:127
+#: inc/consent.php:176
 msgid "Legal Notice"
 msgstr ""
 
-#: inc/consent.php:176
+#: inc/consent.php:225
 msgid "Dealership address"
 msgstr ""
 
-#: inc/consent.php:179
+#: inc/consent.php:228
 msgid "Telephone"
 msgstr ""
 
-#: inc/consent.php:182
+#: inc/consent.php:231
 msgid "Email address"
 msgstr ""
 
-#: inc/consent.php:204
+#: inc/consent.php:253
 msgid "Cookie preferences"
 msgstr ""
 
-#: inc/consent.php:214
+#: inc/consent.php:263
 msgid "Reject optional"
 msgstr ""
 
-#: inc/consent.php:215
+#: inc/consent.php:264
 msgid "Accept optional"
 msgstr ""
 
-#: inc/consent.php:217
+#: inc/consent.php:266
 msgid "Save preferences"
 msgstr ""
 
-#: inc/consent.php:233
+#. translators: %s: optional service, e.g. "Maps".
+#: inc/consent.php:282
+#, php-format
+msgid "With your permission the site can also use: %s."
+msgstr ""
+
+#: inc/consent.php:286
 msgid "Your privacy"
 msgstr ""
 
-#. translators: %s: optional services, e.g. "Maps".
-#: inc/consent.php:237
+#. translators: %s: one sentence per optional service.
+#: inc/consent.php:290
 #, php-format
-msgid "This site uses only the storage it needs to work. With your permission it can also use: %s. Nothing optional starts until you choose."
+msgid "Necessary storage is always active. %s Nothing optional starts until you choose, and you can change your mind at any time under “Cookie preferences”."
 msgstr ""
 
-#: inc/consent.php:243
+#: inc/consent.php:296
 msgid "Manage preferences"
 msgstr ""
 
-#: inc/consent.php:261
+#: inc/consent.php:314
 msgid "Close without changes"
 msgstr ""
 
-#: inc/consent.php:262
+#: inc/consent.php:315
 msgid "Privacy preferences"
 msgstr ""
 
-#: inc/consent.php:267
-msgid "Choose what you allow. Nothing optional is switched on until you choose it, and you can change your mind at any time under “Cookie preferences” in the footer."
+#: inc/consent.php:320
+msgid "Choose what you allow. Necessary storage is always active; nothing optional is switched on until you choose it, and you can change your mind at any time under “Cookie preferences” in the footer."
 msgstr ""
 
-#: inc/consent.php:268
+#: inc/consent.php:321
 msgid "This website uses no analytics, advertising or other optional services, so there is nothing to accept or reject. It keeps only the small amount of browser storage described below."
 msgstr ""
 
-#: inc/consent.php:275
+#: inc/consent.php:328
 msgid "Necessary"
 msgstr ""
 
-#: inc/consent.php:276
-msgid "Keeps the website working. On demonstration sites it also remembers the colour palette you preview with “Try Colors” (stored only in your browser). Staff who log in receive WordPress login cookies. Always active."
+#: inc/consent.php:329
+msgid "Keeps the website working and, once you have chosen, remembers your privacy choice. On demonstration sites it also remembers the colour palette you preview with “Try Colors” (stored only in your browser). Staff who log in receive WordPress login cookies. Always active."
 msgstr ""
 
-#: inc/consent.php:295
+#: inc/consent.php:348
 msgid "Close"
 msgstr ""
 

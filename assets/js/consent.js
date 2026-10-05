@@ -4,6 +4,8 @@
  * Record (localStorage, key from edaConsentConfig): {"v":1,"policy":"1","ts":<unix s>,"cats":{"<slug>":bool}}.
  * Asked again after maxAgeDays or when the policy version changes. With no optional categories
  * nothing is ever stored: the panel is information only and the banner is not printed.
+ * A category may name a placeholder: until it is allowed, a local button stands in for the
+ * service's own control (e.g. the GTranslate selector) and opens the preferences.
  * API (EDS Consent contract): edsConsent.allowed(cat) · get() · set(cats) · acceptAll() · rejectAll() · open();
  * event `eds:consent` on document, detail { categories, previous, source }.
  */
@@ -61,7 +63,62 @@
 				}
 			} );
 			s.src = old.dataset.src;
+			// A category with a placeholder: once the service's control exists, make it keyboard-operable
+			// if it is not (e.g. GTranslate's float switcher is a <div>), and focus it when the visitor
+			// allowed the category from the placeholder.
+			const cat = old.dataset.edsConsent.split( ' ' ).find( ( c ) => cfg.placeholders[ c ] && cfg.placeholders[ c ].focus );
+			if ( cat ) {
+				const fromPlaceholder = !! ( returnFocus && returnFocus.dataset && cat === returnFocus.dataset.edaConsentPlaceholder );
+				s.addEventListener( 'load', () => {
+					let tries = 40;
+					const ready = () => {
+						const el = document.querySelector( cfg.placeholders[ cat ].focus );
+						if ( ! el ) {
+							return tries-- && setTimeout( ready, 50 );
+						}
+						if ( el.tabIndex < 0 ) {
+							el.tabIndex = 0;
+							el.setAttribute( 'role', 'button' );
+							el.setAttribute( 'aria-label', cfg.placeholders[ cat ].label + ': ' + el.textContent.trim() );
+							el.addEventListener( 'keydown', ( e ) => {
+								if ( 'Enter' === e.key || ' ' === e.key ) {
+									e.preventDefault();
+									el.click();
+								}
+							} );
+						}
+						if ( fromPlaceholder ) {
+							el.focus();
+						}
+					};
+					ready();
+				}, { once: true } );
+			}
 			old.replaceWith( s );
+		} );
+	};
+
+	// Until its category is allowed, a service's control is a local button that explains and asks.
+	const placeholders = () => {
+		Object.keys( cfg.placeholders ).forEach( ( cat ) => {
+			const ph = cfg.placeholders[ cat ];
+			document.querySelectorAll( ph.selector ).forEach( ( el ) => {
+				const button = el.querySelector( '[data-eda-consent-placeholder]' );
+				if ( allowed( cat ) ) {
+					return button && button.remove();
+				}
+				if ( button ) {
+					return;
+				}
+				const b = document.createElement( 'button' );
+				b.type = 'button';
+				b.className = 'eda-consent-placeholder';
+				b.dataset.edaConsentPlaceholder = cat;
+				b.dataset.edsConsentOpen = '';
+				b.textContent = ph.label;
+				b.setAttribute( 'aria-label', ph.hint );
+				el.append( b );
+			} );
 		} );
 	};
 
@@ -86,6 +143,7 @@
 			return;
 		}
 		activate();
+		placeholders();
 	};
 
 	const open = () => {
@@ -158,6 +216,7 @@
 	};
 
 	cleanup();
+	placeholders();
 	activate();
 	if ( ! record && banner ) {
 		banner.hidden = false;
