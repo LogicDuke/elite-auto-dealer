@@ -1,0 +1,1029 @@
+{
+	"_about": "Elite Auto Dealer palette library: Aurelis (the fixed default) then 40 automotive palettes, grouped by family (Dark & metallic, Blue, Green & teal, Warm neutral, Red & copper, Light & silver, Distinctive); the order here is the Customizer order. Each palette lists its name, family, five card swatches (ink, graphite-2, accent, accent-light, paper) and its twelve base slots. bin/palette-build.php derives the helper slots (accent-ink, on-accent, field-line, accent-card, accent-muted, accent-focus), gates every tone and writes inc/palette-registry.php. Aurelis must equal eda_palette_aurelis() byte for byte. Edit here, then run: php bin/palette-build.php",
+	"palettes": {
+		"aurelis": {
+			"name": "Aurelis",
+			"colors": [
+				"#121316",
+				"#2b2e33",
+				"#a88a55",
+				"#d2bd94",
+				"#f5f3ee"
+			],
+			"base": {
+				"ink": "#121316",
+				"graphite": "#1c1e22",
+				"graphite-2": "#2b2e33",
+				"paper": "#f5f3ee",
+				"paper-2": "#ebe7de",
+				"surface": "#ffffff",
+				"line": "#dfdad0",
+				"text": "#16171a",
+				"muted": "#5d5f64",
+				"muted-light": "#b8bbc1",
+				"accent": "#a88a55",
+				"accent-light": "#d2bd94"
+			}
+		},
+		"carbon-prestige": {
+			"name": "Carbon Prestige",
+			"family": "Dark & metallic",
+			"colors": [
+				"#101011",
+				"#2a2b2d",
+				"#c9cdd2",
+				"#dcdee2",
+				"#f3f3f4"
+			],
+			"base": {
+				"ink": "#101011",
+				"graphite": "#1c1d1e",
+				"graphite-2": "#2a2b2d",
+				"paper": "#f3f3f4",
+				"paper-2": "#e4e4e5",
+				"surface": "#ffffff",
+				"line": "#d5d5d6",
+				"text": "#161718",
+				"muted": "#616366",
+				"muted-light": "#b1b2b4",
+				"accent": "#c9cdd2",
+				"accent-light": "#dcdee2"
+			}
+		},
+		"midnight-titanium": {
+			"name": "Midnight Titanium",
+			"family": "Dark & metallic",
+			"colors": [
+				"#0c0e16",
+				"#212636",
+				"#a59f92",
+				"#c4c1b8",
+				"#f4f4f3"
+			],
+			"base": {
+				"ink": "#0c0e16",
+				"graphite": "#151925",
+				"graphite-2": "#212636",
+				"paper": "#f4f4f3",
+				"paper-2": "#e6e5e3",
+				"surface": "#ffffff",
+				"line": "#d8d6d3",
+				"text": "#10131e",
+				"muted": "#59627d",
+				"muted-light": "#a8adbd",
+				"accent": "#a59f92",
+				"accent-light": "#c4c1b8"
+			}
+		},
+		"gunmetal": {
+			"name": "Gunmetal",
+			"family": "Dark & metallic",
+			"colors": [
+				"#0f1113",
+				"#272c30",
+				"#4a6363",
+				"#899a9a",
+				"#f3f4f4"
+			],
+			"base": {
+				"ink": "#0f1113",
+				"graphite": "#1a1e20",
+				"graphite-2": "#272c30",
+				"paper": "#f3f4f4",
+				"paper-2": "#e2e5e6",
+				"surface": "#ffffff",
+				"line": "#d2d6d9",
+				"text": "#14171a",
+				"muted": "#5b6267",
+				"muted-light": "#aeb3b7",
+				"accent": "#4a6363",
+				"accent-light": "#899a9a"
+			}
+		},
+		"obsidian-gold": {
+			"name": "Obsidian Gold",
+			"family": "Dark & metallic",
+			"colors": [
+				"#14110e",
+				"#322d25",
+				"#c9a23a",
+				"#dcc37f",
+				"#f7f4f0"
+			],
+			"base": {
+				"ink": "#14110e",
+				"graphite": "#221f19",
+				"graphite-2": "#322d25",
+				"paper": "#f7f4f0",
+				"paper-2": "#ece6dc",
+				"surface": "#fdfcfb",
+				"line": "#e2d9c9",
+				"text": "#1b1813",
+				"muted": "#6a6357",
+				"muted-light": "#b9b4ac",
+				"accent": "#c9a23a",
+				"accent-light": "#dcc37f"
+			}
+		},
+		"volcanic-ash": {
+			"name": "Volcanic Ash",
+			"family": "Dark & metallic",
+			"colors": [
+				"#12100f",
+				"#2f2a28",
+				"#9e2b1f",
+				"#c98882",
+				"#f4f2f1"
+			],
+			"base": {
+				"ink": "#12100f",
+				"graphite": "#201c1b",
+				"graphite-2": "#2f2a28",
+				"paper": "#f4f2f1",
+				"paper-2": "#e5e1df",
+				"surface": "#ffffff",
+				"line": "#d9d3d0",
+				"text": "#191615",
+				"muted": "#665f5c",
+				"muted-light": "#b6b1af",
+				"accent": "#9e2b1f",
+				"accent-light": "#c98882"
+			}
+		},
+		"onyx-ivory": {
+			"name": "Onyx Ivory",
+			"family": "Dark & metallic",
+			"colors": [
+				"#11100e",
+				"#2d2b27",
+				"#e3d6bb",
+				"#ede4d3",
+				"#f8f4ef"
+			],
+			"base": {
+				"ink": "#11100e",
+				"graphite": "#1e1c1a",
+				"graphite-2": "#2d2b27",
+				"paper": "#f8f4ef",
+				"paper-2": "#efe6da",
+				"surface": "#fefcfa",
+				"line": "#e6d8c5",
+				"text": "#171614",
+				"muted": "#68645f",
+				"muted-light": "#b5b3b0",
+				"accent": "#e3d6bb",
+				"accent-light": "#ede4d3"
+			}
+		},
+		"shadow-line": {
+			"name": "Shadow Line",
+			"family": "Dark & metallic",
+			"colors": [
+				"#0b0d0e",
+				"#212327",
+				"#363a3f",
+				"#8e9193",
+				"#f3f3f4"
+			],
+			"base": {
+				"ink": "#0b0d0e",
+				"graphite": "#151719",
+				"graphite-2": "#212327",
+				"paper": "#f3f3f4",
+				"paper-2": "#e3e4e5",
+				"surface": "#ffffff",
+				"line": "#d4d5d7",
+				"text": "#111315",
+				"muted": "#5e6369",
+				"muted-light": "#afb2b6",
+				"accent": "#363a3f",
+				"accent-light": "#8e9193"
+			}
+		},
+		"satin-steel": {
+			"name": "Satin Steel",
+			"family": "Dark & metallic",
+			"colors": [
+				"#0e1113",
+				"#262c31",
+				"#8299ac",
+				"#aebdc9",
+				"#f2f4f5"
+			],
+			"base": {
+				"ink": "#0e1113",
+				"graphite": "#191e22",
+				"graphite-2": "#262c31",
+				"paper": "#f2f4f5",
+				"paper-2": "#e2e4e7",
+				"surface": "#ffffff",
+				"line": "#d1d6da",
+				"text": "#13171b",
+				"muted": "#5b646c",
+				"muted-light": "#adb3b8",
+				"accent": "#8299ac",
+				"accent-light": "#aebdc9"
+			}
+		},
+		"monaco-blue": {
+			"name": "Monaco Blue",
+			"family": "Blue",
+			"colors": [
+				"#080d19",
+				"#1a243d",
+				"#2f5bb7",
+				"#7894d0",
+				"#f1f3f6"
+			],
+			"base": {
+				"ink": "#080d19",
+				"graphite": "#10182b",
+				"graphite-2": "#1a243d",
+				"paper": "#f1f3f6",
+				"paper-2": "#dee2ea",
+				"surface": "#fbfcfd",
+				"line": "#ccd2df",
+				"text": "#0b1222",
+				"muted": "#4e5f89",
+				"muted-light": "#a1acc4",
+				"accent": "#2f5bb7",
+				"accent-light": "#7894d0"
+			}
+		},
+		"navy-heritage": {
+			"name": "Navy Heritage",
+			"family": "Blue",
+			"colors": [
+				"#070e1a",
+				"#18263e",
+				"#b4413c",
+				"#ce8480",
+				"#f7f5f0"
+			],
+			"base": {
+				"ink": "#070e1a",
+				"graphite": "#0f192c",
+				"graphite-2": "#18263e",
+				"paper": "#f7f5f0",
+				"paper-2": "#ece7dc",
+				"surface": "#fdfcfb",
+				"line": "#e2dbc9",
+				"text": "#0a1424",
+				"muted": "#4c658f",
+				"muted-light": "#a0adc5",
+				"accent": "#b4413c",
+				"accent-light": "#ce8480"
+			}
+		},
+		"glacier-blue": {
+			"name": "Glacier Blue",
+			"family": "Blue",
+			"colors": [
+				"#0b1217",
+				"#1f2d38",
+				"#8cc4dc",
+				"#b4d9e8",
+				"#f3f7fa"
+			],
+			"base": {
+				"ink": "#0b1217",
+				"graphite": "#141f27",
+				"graphite-2": "#1f2d38",
+				"paper": "#f3f7fa",
+				"paper-2": "#e1ebf2",
+				"surface": "#fafcfe",
+				"line": "#c9dbe8",
+				"text": "#0f181f",
+				"muted": "#52697a",
+				"muted-light": "#a6b5bf",
+				"accent": "#8cc4dc",
+				"accent-light": "#b4d9e8"
+			}
+		},
+		"estoril-blue": {
+			"name": "Estoril Blue",
+			"family": "Blue",
+			"colors": [
+				"#0d1014",
+				"#242a32",
+				"#4ea1ff",
+				"#8cc2ff",
+				"#f2f3f5"
+			],
+			"base": {
+				"ink": "#0d1014",
+				"graphite": "#181d23",
+				"graphite-2": "#242a32",
+				"paper": "#f2f3f5",
+				"paper-2": "#e2e4e7",
+				"surface": "#ffffff",
+				"line": "#d1d5da",
+				"text": "#12161c",
+				"muted": "#59626e",
+				"muted-light": "#acb2b9",
+				"accent": "#4ea1ff",
+				"accent-light": "#8cc2ff"
+			}
+		},
+		"storm-blue": {
+			"name": "Storm Blue",
+			"family": "Blue",
+			"colors": [
+				"#0c1116",
+				"#212b36",
+				"#456785",
+				"#869cb0",
+				"#f0f2f4"
+			],
+			"base": {
+				"ink": "#0c1116",
+				"graphite": "#151d25",
+				"graphite-2": "#212b36",
+				"paper": "#f0f2f4",
+				"paper-2": "#dde2e6",
+				"surface": "#fbfcfd",
+				"line": "#cdd4db",
+				"text": "#10171e",
+				"muted": "#536374",
+				"muted-light": "#a8b2bd",
+				"accent": "#456785",
+				"accent-light": "#869cb0"
+			}
+		},
+		"riviera-blue": {
+			"name": "Riviera Blue",
+			"family": "Blue",
+			"colors": [
+				"#080f19",
+				"#1a283d",
+				"#348ece",
+				"#7bb6df",
+				"#f8f5ef"
+			],
+			"base": {
+				"ink": "#080f19",
+				"graphite": "#101b2b",
+				"graphite-2": "#1a283d",
+				"paper": "#f8f5ef",
+				"paper-2": "#efe7da",
+				"surface": "#fefcfa",
+				"line": "#e6dac5",
+				"text": "#0b1522",
+				"muted": "#4e6689",
+				"muted-light": "#a1b0c4",
+				"accent": "#348ece",
+				"accent-light": "#7bb6df"
+			}
+		},
+		"british-racing": {
+			"name": "British Racing",
+			"family": "Green & teal",
+			"colors": [
+				"#091811",
+				"#1c3b2c",
+				"#2e6a4e",
+				"#8aac9c",
+				"#f7f5f0"
+			],
+			"base": {
+				"ink": "#091811",
+				"graphite": "#11291e",
+				"graphite-2": "#1c3b2c",
+				"paper": "#f7f5f0",
+				"paper-2": "#ede9db",
+				"surface": "#fefdfa",
+				"line": "#e4ddc7",
+				"text": "#0d2118",
+				"muted": "#436f5b",
+				"muted-light": "#a3c2b4",
+				"accent": "#2e6a4e",
+				"accent-light": "#8aac9c"
+			}
+		},
+		"petrol": {
+			"name": "Petrol",
+			"family": "Green & teal",
+			"colors": [
+				"#081619",
+				"#1a373d",
+				"#1d6c78",
+				"#7aa8af",
+				"#f1f5f6"
+			],
+			"base": {
+				"ink": "#081619",
+				"graphite": "#10262b",
+				"graphite-2": "#1a373d",
+				"paper": "#f1f5f6",
+				"paper-2": "#dfe8ea",
+				"surface": "#fbfdfd",
+				"line": "#cddbde",
+				"text": "#0b1f22",
+				"muted": "#416a72",
+				"muted-light": "#a1bec4",
+				"accent": "#1d6c78",
+				"accent-light": "#7aa8af"
+			}
+		},
+		"alpine-teal": {
+			"name": "Alpine Teal",
+			"family": "Green & teal",
+			"colors": [
+				"#0c1415",
+				"#223334",
+				"#2ab3a6",
+				"#75cec5",
+				"#f4f8f8"
+			],
+			"base": {
+				"ink": "#0c1415",
+				"graphite": "#162324",
+				"graphite-2": "#223334",
+				"paper": "#f4f8f8",
+				"paper-2": "#e3eced",
+				"surface": "#fbfdfd",
+				"line": "#d0dedf",
+				"text": "#111c1d",
+				"muted": "#516a6c",
+				"muted-light": "#aababb",
+				"accent": "#2ab3a6",
+				"accent-light": "#75cec5"
+			}
+		},
+		"moss-grey": {
+			"name": "Moss Grey",
+			"family": "Green & teal",
+			"colors": [
+				"#10140e",
+				"#2a3225",
+				"#8a9a5b",
+				"#b3bd94",
+				"#f6f6f1"
+			],
+			"base": {
+				"ink": "#10140e",
+				"graphite": "#1d2219",
+				"graphite-2": "#2a3225",
+				"paper": "#f6f6f1",
+				"paper-2": "#eaeadf",
+				"surface": "#fdfdfb",
+				"line": "#dedecd",
+				"text": "#161b13",
+				"muted": "#5f6a57",
+				"muted-light": "#b1b9ac",
+				"accent": "#8a9a5b",
+				"accent-light": "#b3bd94"
+			}
+		},
+		"emerald-touring": {
+			"name": "Emerald Touring",
+			"family": "Green & teal",
+			"colors": [
+				"#0b1612",
+				"#20362f",
+				"#20a16d",
+				"#6ec2a0",
+				"#f2f5f4"
+			],
+			"base": {
+				"ink": "#0b1612",
+				"graphite": "#152620",
+				"graphite-2": "#20362f",
+				"paper": "#f2f5f4",
+				"paper-2": "#e0e8e5",
+				"surface": "#ffffff",
+				"line": "#d0dbd7",
+				"text": "#101e19",
+				"muted": "#4a695e",
+				"muted-light": "#a7beb6",
+				"accent": "#20a16d",
+				"accent-light": "#6ec2a0"
+			}
+		},
+		"saddle-tan": {
+			"name": "Saddle Tan",
+			"family": "Warm neutral",
+			"colors": [
+				"#16100b",
+				"#362b20",
+				"#c49464",
+				"#d9b99a",
+				"#f8f3ef"
+			],
+			"base": {
+				"ink": "#16100b",
+				"graphite": "#261d15",
+				"graphite-2": "#362b20",
+				"paper": "#f8f3ef",
+				"paper-2": "#efe4da",
+				"surface": "#fefcfa",
+				"line": "#e6d4c5",
+				"text": "#1e1610",
+				"muted": "#726050",
+				"muted-light": "#beb2a7",
+				"accent": "#c49464",
+				"accent-light": "#d9b99a"
+			}
+		},
+		"espresso-cognac": {
+			"name": "Espresso Cognac",
+			"family": "Warm neutral",
+			"colors": [
+				"#150e09",
+				"#36261c",
+				"#8a4b25",
+				"#b68f78",
+				"#f7f3f0"
+			],
+			"base": {
+				"ink": "#150e09",
+				"graphite": "#241911",
+				"graphite-2": "#36261c",
+				"paper": "#f7f3f0",
+				"paper-2": "#ede2db",
+				"surface": "#fefcfa",
+				"line": "#e4d3c7",
+				"text": "#1e140d",
+				"muted": "#765d4c",
+				"muted-light": "#c0b0a5",
+				"accent": "#8a4b25",
+				"accent-light": "#b68f78"
+			}
+		},
+		"desert-sand": {
+			"name": "Desert Sand",
+			"family": "Warm neutral",
+			"colors": [
+				"#13110f",
+				"#302c27",
+				"#c9b28a",
+				"#dccdb3",
+				"#f8f4f0"
+			],
+			"base": {
+				"ink": "#13110f",
+				"graphite": "#201e1a",
+				"graphite-2": "#302c27",
+				"paper": "#f8f4f0",
+				"paper-2": "#eee7dd",
+				"surface": "#fefcfa",
+				"line": "#e4d9c8",
+				"text": "#1a1714",
+				"muted": "#6a655d",
+				"muted-light": "#b7b3ae",
+				"accent": "#c9b28a",
+				"accent-light": "#dccdb3"
+			}
+		},
+		"havana": {
+			"name": "Havana",
+			"family": "Warm neutral",
+			"colors": [
+				"#15110c",
+				"#352b22",
+				"#7c5a3c",
+				"#aa9480",
+				"#f6f2ee"
+			],
+			"base": {
+				"ink": "#15110c",
+				"graphite": "#251d16",
+				"graphite-2": "#352b22",
+				"paper": "#f6f2ee",
+				"paper-2": "#eae2d9",
+				"surface": "#fdfcfb",
+				"line": "#e1d4c7",
+				"text": "#1d1711",
+				"muted": "#6d5e50",
+				"muted-light": "#bcb2a9",
+				"accent": "#7c5a3c",
+				"accent-light": "#aa9480"
+			}
+		},
+		"dune": {
+			"name": "Dune",
+			"family": "Warm neutral",
+			"colors": [
+				"#13120e",
+				"#312f26",
+				"#a59a6a",
+				"#c4bd9e",
+				"#f7f6f0"
+			],
+			"base": {
+				"ink": "#13120e",
+				"graphite": "#222019",
+				"graphite-2": "#312f26",
+				"paper": "#f7f6f0",
+				"paper-2": "#eceadc",
+				"surface": "#fdfdfb",
+				"line": "#e2dec9",
+				"text": "#1b1913",
+				"muted": "#696758",
+				"muted-light": "#b8b6ad",
+				"accent": "#a59a6a",
+				"accent-light": "#c4bd9e"
+			}
+		},
+		"oxblood": {
+			"name": "Oxblood",
+			"family": "Red & copper",
+			"colors": [
+				"#180a0b",
+				"#3a1d1f",
+				"#6e1f2a",
+				"#b2888e",
+				"#f7f4f0"
+			],
+			"base": {
+				"ink": "#180a0b",
+				"graphite": "#281214",
+				"graphite-2": "#3a1d1f",
+				"paper": "#f7f4f0",
+				"paper-2": "#ece4dc",
+				"surface": "#fdfcfb",
+				"line": "#e2d6c9",
+				"text": "#210d0f",
+				"muted": "#875459",
+				"muted-light": "#c1a4a6",
+				"accent": "#6e1f2a",
+				"accent-light": "#b2888e"
+			}
+		},
+		"signal-red": {
+			"name": "Signal Red",
+			"family": "Red & copper",
+			"colors": [
+				"#101012",
+				"#292b2d",
+				"#c8102e",
+				"#e0798a",
+				"#f3f3f4"
+			],
+			"base": {
+				"ink": "#101012",
+				"graphite": "#1c1d1f",
+				"graphite-2": "#292b2d",
+				"paper": "#f3f3f4",
+				"paper-2": "#e3e4e5",
+				"surface": "#ffffff",
+				"line": "#d4d5d7",
+				"text": "#161618",
+				"muted": "#606267",
+				"muted-light": "#b0b2b5",
+				"accent": "#c8102e",
+				"accent-light": "#e0798a"
+			}
+		},
+		"copper-touring": {
+			"name": "Copper Touring",
+			"family": "Red & copper",
+			"colors": [
+				"#13100e",
+				"#312a26",
+				"#c97b4b",
+				"#dca98a",
+				"#f6f3f1"
+			],
+			"base": {
+				"ink": "#13100e",
+				"graphite": "#221c19",
+				"graphite-2": "#312a26",
+				"paper": "#f6f3f1",
+				"paper-2": "#e9e3df",
+				"surface": "#fdfcfb",
+				"line": "#ddd3ce",
+				"text": "#1b1613",
+				"muted": "#6c615b",
+				"muted-light": "#b8b1ad",
+				"accent": "#c97b4b",
+				"accent-light": "#dca98a"
+			}
+		},
+		"bordeaux": {
+			"name": "Bordeaux",
+			"family": "Red & copper",
+			"colors": [
+				"#150c0f",
+				"#342228",
+				"#8e2445",
+				"#c08497",
+				"#f3f3f4"
+			],
+			"base": {
+				"ink": "#150c0f",
+				"graphite": "#24161b",
+				"graphite-2": "#342228",
+				"paper": "#f3f3f4",
+				"paper-2": "#e2e4e6",
+				"surface": "#ffffff",
+				"line": "#d2d4d9",
+				"text": "#1d1115",
+				"muted": "#785a64",
+				"muted-light": "#bbaab0",
+				"accent": "#8e2445",
+				"accent-light": "#c08497"
+			}
+		},
+		"burnt-orange": {
+			"name": "Burnt Orange",
+			"family": "Red & copper",
+			"colors": [
+				"#0f1113",
+				"#272b30",
+				"#e08a4c",
+				"#ebb38b",
+				"#f5f4f2"
+			],
+			"base": {
+				"ink": "#0f1113",
+				"graphite": "#1a1d20",
+				"graphite-2": "#272b30",
+				"paper": "#f5f4f2",
+				"paper-2": "#e7e4e1",
+				"surface": "#ffffff",
+				"line": "#dbd6d1",
+				"text": "#14171a",
+				"muted": "#5d636a",
+				"muted-light": "#aeb2b7",
+				"accent": "#e08a4c",
+				"accent-light": "#ebb38b"
+			}
+		},
+		"alpine-silver": {
+			"name": "Alpine Silver",
+			"family": "Light & silver",
+			"colors": [
+				"#121416",
+				"#363b3f",
+				"#aab2bb",
+				"#c8cdd3",
+				"#f7f8f9"
+			],
+			"base": {
+				"ink": "#121416",
+				"graphite": "#272b2f",
+				"graphite-2": "#363b3f",
+				"paper": "#f7f8f9",
+				"paper-2": "#eaecee",
+				"surface": "#ffffff",
+				"line": "#d6d9dd",
+				"text": "#181b1d",
+				"muted": "#60666c",
+				"muted-light": "#afb2b6",
+				"accent": "#aab2bb",
+				"accent-light": "#c8cdd3"
+			}
+		},
+		"pearl-white": {
+			"name": "Pearl White",
+			"family": "Light & silver",
+			"colors": [
+				"#161513",
+				"#3c3935",
+				"#4a4038",
+				"#aaa5a1",
+				"#fbf9f6"
+			],
+			"base": {
+				"ink": "#161513",
+				"graphite": "#2c2a26",
+				"graphite-2": "#3c3935",
+				"paper": "#fbf9f6",
+				"paper-2": "#f4efe7",
+				"surface": "#fefcfa",
+				"line": "#e7decd",
+				"text": "#1d1b19",
+				"muted": "#6d6a64",
+				"muted-light": "#b5b3b0",
+				"accent": "#4a4038",
+				"accent-light": "#aaa5a1"
+			}
+		},
+		"ivory-touring": {
+			"name": "Ivory Touring",
+			"family": "Light & silver",
+			"colors": [
+				"#0a0f17",
+				"#1d2839",
+				"#27406b",
+				"#8694ac",
+				"#fbf8f2"
+			],
+			"base": {
+				"ink": "#0a0f17",
+				"graphite": "#131b28",
+				"graphite-2": "#1d2839",
+				"paper": "#fbf8f2",
+				"paper-2": "#f4efde",
+				"surface": "#fefdfa",
+				"line": "#ece2c5",
+				"text": "#0e1520",
+				"muted": "#586a89",
+				"muted-light": "#a5afc0",
+				"accent": "#27406b",
+				"accent-light": "#8694ac"
+			}
+		},
+		"moonstone": {
+			"name": "Moonstone",
+			"family": "Light & silver",
+			"colors": [
+				"#121316",
+				"#34343d",
+				"#a3a7c4",
+				"#c3c6d9",
+				"#f6f7f8"
+			],
+			"base": {
+				"ink": "#121316",
+				"graphite": "#25262c",
+				"graphite-2": "#34343d",
+				"paper": "#f6f7f8",
+				"paper-2": "#e8e9ed",
+				"surface": "#ffffff",
+				"line": "#d4d5dd",
+				"text": "#18191d",
+				"muted": "#63646e",
+				"muted-light": "#afb0b6",
+				"accent": "#a3a7c4",
+				"accent-light": "#c3c6d9"
+			}
+		},
+		"chalk": {
+			"name": "Chalk",
+			"family": "Light & silver",
+			"colors": [
+				"#151514",
+				"#3a3a36",
+				"#34443c",
+				"#a6ada9",
+				"#f3f3f1"
+			],
+			"base": {
+				"ink": "#151514",
+				"graphite": "#2a2a27",
+				"graphite-2": "#3a3a36",
+				"paper": "#f3f3f1",
+				"paper-2": "#e8e8e3",
+				"surface": "#ffffff",
+				"line": "#d9d9d3",
+				"text": "#1c1c1a",
+				"muted": "#63635f",
+				"muted-light": "#b4b4b1",
+				"accent": "#34443c",
+				"accent-light": "#a6ada9"
+			}
+		},
+		"racing-yellow": {
+			"name": "Racing Yellow",
+			"family": "Distinctive",
+			"colors": [
+				"#101011",
+				"#2a2b2d",
+				"#e3b505",
+				"#edcf5c",
+				"#f3f3f4"
+			],
+			"base": {
+				"ink": "#101011",
+				"graphite": "#1c1d1f",
+				"graphite-2": "#2a2b2d",
+				"paper": "#f3f3f4",
+				"paper-2": "#e3e4e5",
+				"surface": "#ffffff",
+				"line": "#d4d5d7",
+				"text": "#161718",
+				"muted": "#616366",
+				"muted-light": "#b1b2b4",
+				"accent": "#e3b505",
+				"accent-light": "#edcf5c"
+			}
+		},
+		"amethyst": {
+			"name": "Amethyst",
+			"family": "Distinctive",
+			"colors": [
+				"#0f0c16",
+				"#292136",
+				"#6b4ca6",
+				"#9f8bc5",
+				"#f3f2f5"
+			],
+			"base": {
+				"ink": "#0f0c16",
+				"graphite": "#1b1525",
+				"graphite-2": "#292136",
+				"paper": "#f3f2f5",
+				"paper-2": "#e3e0e8",
+				"surface": "#ffffff",
+				"line": "#d4d0db",
+				"text": "#15101e",
+				"muted": "#66597d",
+				"muted-light": "#b0a8bd",
+				"accent": "#6b4ca6",
+				"accent-light": "#9f8bc5"
+			}
+		},
+		"chartreuse": {
+			"name": "Chartreuse",
+			"family": "Distinctive",
+			"colors": [
+				"#101112",
+				"#292c2d",
+				"#a3c13a",
+				"#c3d77f",
+				"#f3f4f4"
+			],
+			"base": {
+				"ink": "#101112",
+				"graphite": "#1c1e1f",
+				"graphite-2": "#292c2d",
+				"paper": "#f3f4f4",
+				"paper-2": "#e3e5e5",
+				"surface": "#ffffff",
+				"line": "#d4d6d7",
+				"text": "#161718",
+				"muted": "#5e6264",
+				"muted-light": "#b0b3b5",
+				"accent": "#a3c13a",
+				"accent-light": "#c3d77f"
+			}
+		},
+		"patina": {
+			"name": "Patina",
+			"family": "Distinctive",
+			"colors": [
+				"#15100c",
+				"#342b22",
+				"#7fa38f",
+				"#acc3b6",
+				"#f2f5f4"
+			],
+			"base": {
+				"ink": "#15100c",
+				"graphite": "#241d16",
+				"graphite-2": "#342b22",
+				"paper": "#f2f5f4",
+				"paper-2": "#e0e9e4",
+				"surface": "#fbfdfc",
+				"line": "#cfdcd6",
+				"text": "#1d1711",
+				"muted": "#6f6053",
+				"muted-light": "#bbb2aa",
+				"accent": "#7fa38f",
+				"accent-light": "#acc3b6"
+			}
+		},
+		"aubergine": {
+			"name": "Aubergine",
+			"family": "Distinctive",
+			"colors": [
+				"#140b16",
+				"#332037",
+				"#b8b4c4",
+				"#d1ced9",
+				"#f4f2f5"
+			],
+			"base": {
+				"ink": "#140b16",
+				"graphite": "#231426",
+				"graphite-2": "#332037",
+				"paper": "#f4f2f5",
+				"paper-2": "#e6e2e7",
+				"surface": "#ffffff",
+				"line": "#d8d1da",
+				"text": "#1c0f1f",
+				"muted": "#78577f",
+				"muted-light": "#baa7be",
+				"accent": "#b8b4c4",
+				"accent-light": "#d1ced9"
+			}
+		},
+		"vintage-mint": {
+			"name": "Vintage Mint",
+			"family": "Distinctive",
+			"colors": [
+				"#0d1412",
+				"#24322f",
+				"#a8d5c2",
+				"#c6e4d7",
+				"#faf8f2"
+			],
+			"base": {
+				"ink": "#0d1412",
+				"graphite": "#182320",
+				"graphite-2": "#24322f",
+				"paper": "#faf8f2",
+				"paper-2": "#f3eee0",
+				"surface": "#fefdfa",
+				"line": "#eae1c7",
+				"text": "#121c19",
+				"muted": "#566c66",
+				"muted-light": "#acb9b6",
+				"accent": "#a8d5c2",
+				"accent-light": "#c6e4d7"
+			}
+		}
+	}
+}

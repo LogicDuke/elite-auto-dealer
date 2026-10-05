@@ -9,23 +9,19 @@
 /* ---------- Tokens ---------- */
 
 :root {
-	--ink: #121316;
-	--graphite: #1c1e22;
-	--graphite-2: #2b2e33;
-	--paper: #f5f3ee;
-	--paper-2: #ebe7de;
-	--surface: #fff;
-	--line: #dfdad0;
-	--line-dark: rgba(255, 255, 255, 0.14);
-	--text: #16171a;
-	--muted: #5d5f64;
-	--muted-light: #b8bbc1;
-	--accent: #a88a55;
-	--accent-light: #d2bd94;
-	--focus: #1f5fe0;
-	--focus-light: #8db2ff;
-	--reserved-bg: #efe4cb;
-	--reserved-text: #5a4413;
+	/* Brand colour comes from the palette (inc/palette.php), printed inline after this file: slots
+	   (--eda-c-*), the role tokens of each tone (--eda-bg, --eda-text, --eda-button-bg, …) and the
+	   chrome (--eda-header-glass, --eda-photo-bg, --eda-footer-bg, …). Components use roles only.
+	   Fixed functional colours below are never part of a palette; bin/contrast-gate.php checks them
+	   against every palette (values mirrored in eda_palette_fixed_colors()). */
+	--eda-focus-ring: #1f5fe0;
+	--eda-focus-ring-dark: #8db2ff;
+	--eda-on-photo: #fff;
+	--eda-scrim: #121316;
+	--eda-status-reserved-bg: #efe4cb;
+	--eda-status-reserved-ink: #5a4413;
+	--eda-status-sold-bg: #121316;
+	--eda-status-sold-ink: #fff;
 
 	--font-sans: ui-sans-serif, system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
 	--radius: 2px;
@@ -35,7 +31,7 @@
 	--section: clamp(3.5rem, 7vw, 7rem);
 	--header-h: 4.5rem;
 	--ease: cubic-bezier(0.2, 0.6, 0.2, 1);
-	--shadow-lift: 0 18px 40px -24px rgba(18, 19, 22, 0.45);
+	--shadow-lift: 0 18px 40px -24px color-mix(in srgb, var(--eda-scrim) 45%, transparent);
 }
 
 /* ---------- Base ---------- */
@@ -53,8 +49,8 @@ html {
 
 body {
 	margin: 0;
-	background: var(--paper);
-	color: var(--text);
+	background: var(--eda-bg);
+	color: var(--eda-text);
 	font-family: var(--font-sans);
 	font-size: 1rem;
 	line-height: 1.6;
@@ -89,15 +85,13 @@ img {
 
 /* Visible keyboard focus everywhere (project rule: never remove focus outlines). */
 :focus-visible {
-	outline: 2px solid var(--focus);
+	outline: 2px solid var(--eda-focus);
 	outline-offset: 3px;
 }
 
-.hero :focus-visible,
-.page-intro--hero :focus-visible,
-.section--dark :focus-visible,
+/* Heroes and dark sections get the dark focus ring from their tone (--eda-focus); the footer is chrome. */
 .site-footer :focus-visible {
-	outline-color: var(--focus-light);
+	outline-color: var(--eda-focus-ring-dark);
 }
 
 /* Skip-link target; main itself is not interactive. */
@@ -123,8 +117,8 @@ img {
 	height: auto;
 	padding: 0.75rem 1rem;
 	clip-path: none;
-	background: var(--ink);
-	color: #fff;
+	background: var(--eda-strong);
+	color: var(--eda-on-strong);
 }
 
 /* ---------- Layout ---------- */
@@ -152,12 +146,12 @@ img {
 }
 
 .section--paper {
-	background: var(--paper-2);
+	background: var(--eda-surface-alt);
 }
 
 .section--dark {
-	background: var(--graphite);
-	color: #fff;
+	background: var(--eda-bg);
+	color: var(--eda-text);
 }
 
 .section-head {
@@ -176,15 +170,11 @@ img {
 
 .eyebrow {
 	margin: 0 0 0.75rem;
-	color: var(--muted);
+	color: var(--eda-eyebrow);
 	font-size: 0.75rem;
 	font-weight: 600;
 	letter-spacing: 0.16em;
 	text-transform: uppercase;
-}
-
-.eyebrow--light {
-	color: var(--accent-light);
 }
 
 .link-arrow {
@@ -212,8 +202,8 @@ img {
 	padding: 0 1.5rem;
 	border: 1px solid transparent;
 	border-radius: var(--radius);
-	background: var(--ink);
-	color: var(--paper);
+	background: var(--eda-button-bg);
+	color: var(--eda-button-text);
 	font: inherit;
 	font-size: 0.9375rem;
 	font-weight: 500;
@@ -224,37 +214,29 @@ img {
 }
 
 .button--primary:hover,
+.button--light:hover,
 .enquiry-form button[type="submit"]:hover {
-	background: var(--graphite-2);
-}
-
-.button--light {
-	background: var(--paper);
-	color: var(--ink);
-}
-
-.button--light:hover {
-	background: #fff;
+	background: var(--eda-button-hover);
 }
 
 .button--ghost-light {
-	border-color: rgba(255, 255, 255, 0.45);
+	border-color: var(--eda-line-strong);
 	background: transparent;
-	color: #fff;
+	color: var(--eda-text);
 }
 
 .button--ghost-light:hover {
-	border-color: #fff;
+	border-color: var(--eda-text);
 }
 
 .button--quiet {
-	border-color: var(--line);
+	border-color: var(--eda-line);
 	background: transparent;
-	color: var(--text);
+	color: var(--eda-text);
 }
 
 .button--quiet:hover {
-	border-color: var(--text);
+	border-color: var(--eda-text);
 }
 
 .button-row {
@@ -269,13 +251,13 @@ img {
 	position: sticky;
 	top: 0;
 	z-index: 50;
-	border-bottom: 1px solid var(--line);
-	background: rgba(245, 243, 238, 0.94);
+	border-bottom: 1px solid var(--eda-line);
+	background: var(--eda-header-glass);
 }
 
 @supports (backdrop-filter: blur(8px)) {
 	.site-header {
-		background: rgba(245, 243, 238, 0.82);
+		background: var(--eda-header-glass-blur);
 		backdrop-filter: blur(12px);
 	}
 }
@@ -301,7 +283,7 @@ img {
 }
 
 .brand--light {
-	color: #fff;
+	color: var(--eda-footer-heading);
 }
 
 .nav-toggle {
@@ -311,10 +293,10 @@ img {
 	min-width: 3rem;
 	min-height: 3rem;
 	padding: 0 0.875rem;
-	border: 1px solid var(--line);
+	border: 1px solid var(--eda-line);
 	border-radius: var(--radius);
 	background: transparent;
-	color: var(--ink);
+	color: var(--eda-strong);
 	font: inherit;
 	font-size: 0.875rem;
 	font-weight: 500;
@@ -359,7 +341,7 @@ img {
 	display: flex;
 	align-items: center;
 	min-height: 3.5rem;
-	border-bottom: 1px solid var(--line);
+	border-bottom: 1px solid var(--eda-line);
 	font-size: 1.375rem;
 	text-decoration: none;
 }
@@ -394,7 +376,7 @@ html:not(.js) .site-nav {
 	z-index: 49;
 	overflow-y: auto;
 	padding: 1rem var(--gutter) 2rem;
-	background: var(--paper);
+	background: var(--eda-bg);
 	visibility: hidden;
 	opacity: 0;
 	transform: translateY(-0.5rem);
@@ -490,7 +472,7 @@ html:not(.js) .site-nav {
 	position: absolute;
 	inset: 61% 6% auto;
 	height: 1px;
-	background: linear-gradient(90deg, transparent, rgba(210, 189, 148, 0.45), transparent);
+	background: linear-gradient(90deg, transparent, color-mix(in srgb, var(--eda-c-accent-light) 45%, transparent), transparent);
 }
 
 .vehicle-media {
@@ -516,13 +498,13 @@ html:not(.js) .site-nav {
 }
 
 .badge--reserved {
-	background: var(--reserved-bg);
-	color: var(--reserved-text);
+	background: var(--eda-status-reserved-bg);
+	color: var(--eda-status-reserved-ink);
 }
 
 .badge--sold {
-	background: var(--ink);
-	color: #fff;
+	background: var(--eda-status-sold-bg);
+	color: var(--eda-status-sold-ink);
 }
 
 /* ---------- Hero ---------- */
@@ -533,8 +515,8 @@ html:not(.js) .site-nav {
 	align-items: end;
 	min-height: clamp(30rem, 70vh, 42rem);
 	padding: 5rem 0 clamp(7rem, 11vw, 8.5rem);
-	background: var(--graphite);
-	color: #fff;
+	background: var(--eda-photo-bg);
+	color: var(--eda-on-photo);
 	isolation: isolate;
 }
 
@@ -568,7 +550,7 @@ html:not(.js) .site-nav {
 	content: "";
 	position: absolute;
 	inset: 0;
-	background: linear-gradient(90deg, rgba(18, 19, 22, 0.88) 0%, rgba(18, 19, 22, 0.55) 55%, rgba(18, 19, 22, 0.15) 100%);
+	background: linear-gradient(90deg, color-mix(in srgb, var(--eda-scrim) 88%, transparent) 0%, color-mix(in srgb, var(--eda-scrim) 55%, transparent) 55%, color-mix(in srgb, var(--eda-scrim) 15%, transparent) 100%);
 }
 
 /* Portrait below 1024px: the mobile source (subject in the upper third, text below it). */
@@ -580,14 +562,14 @@ html:not(.js) .site-nav {
 	/* Stops run from the bottom: the text block is bottom-aligned and about 400px tall on every
 	   portrait size, so the text always sits on the dark part and the subject band above stays light. */
 	.hero__visual::after {
-		background: linear-gradient(0deg, rgba(18, 19, 22, 0.82) 0, rgba(18, 19, 22, 0.72) 410px, rgba(18, 19, 22, 0.1) 450px, rgba(18, 19, 22, 0.1) calc(100% - 3rem), rgba(18, 19, 22, 0.28) 100%);
+		background: linear-gradient(0deg, color-mix(in srgb, var(--eda-scrim) 82%, transparent) 0, color-mix(in srgb, var(--eda-scrim) 72%, transparent) 410px, color-mix(in srgb, var(--eda-scrim) 10%, transparent) 450px, color-mix(in srgb, var(--eda-scrim) 10%, transparent) calc(100% - 3rem), color-mix(in srgb, var(--eda-scrim) 28%, transparent) 100%);
 	}
 }
 
 /* Below 360px the headline wraps to three lines, so the text block (and the dark zone) is taller. */
 @media (orientation: portrait) and (max-width: 22.49em) {
 	.hero__visual::after {
-		background: linear-gradient(0deg, rgba(18, 19, 22, 0.82) 0, rgba(18, 19, 22, 0.74) 490px, rgba(18, 19, 22, 0.25) 530px, rgba(18, 19, 22, 0.25) 100%);
+		background: linear-gradient(0deg, color-mix(in srgb, var(--eda-scrim) 82%, transparent) 0, color-mix(in srgb, var(--eda-scrim) 74%, transparent) 490px, color-mix(in srgb, var(--eda-scrim) 25%, transparent) 530px, color-mix(in srgb, var(--eda-scrim) 25%, transparent) 100%);
 	}
 }
 
@@ -604,7 +586,7 @@ html:not(.js) .site-nav {
 
 .hero__lead {
 	margin-bottom: 2rem;
-	color: rgba(255, 255, 255, 0.8);
+	color: color-mix(in srgb, var(--eda-on-photo) 80%, transparent);
 	font-size: clamp(1.0625rem, 1.6vw, 1.25rem);
 }
 
@@ -622,21 +604,21 @@ html:not(.js) .site-nav {
 	gap: 1rem;
 	align-items: end;
 	padding: clamp(1rem, 2.5vw, 1.5rem);
-	border: 1px solid var(--line);
+	border: 1px solid var(--eda-line);
 	border-radius: var(--radius-lg);
-	background: var(--surface);
+	background: var(--eda-surface);
 }
 
 .vehicle-search--home {
 	border-color: transparent;
-	box-shadow: 0 24px 48px -28px rgba(18, 19, 22, 0.5);
+	box-shadow: 0 24px 48px -28px color-mix(in srgb, var(--eda-scrim) 50%, transparent);
 }
 
 .vehicle-search__field label,
 .enquiry-form label {
 	display: block;
 	margin-bottom: 0.375rem;
-	color: var(--muted);
+	color: var(--eda-text-muted);
 	font-size: 0.75rem;
 	font-weight: 600;
 	letter-spacing: 0.1em;
@@ -651,10 +633,10 @@ textarea {
 	width: 100%;
 	min-height: 3rem;
 	padding: 0.625rem 0.875rem;
-	border: 1px solid var(--line);
+	border: 1px solid var(--eda-field-line);
 	border-radius: var(--radius);
-	background-color: var(--surface);
-	color: var(--text);
+	background-color: var(--eda-surface);
+	color: var(--eda-text);
 	font: inherit;
 	font-size: 1rem;
 }
@@ -670,7 +652,7 @@ select {
 select:hover,
 input:hover,
 textarea:hover {
-	border-color: #b9b3a6;
+	border-color: var(--eda-line-strong);
 }
 
 textarea {
@@ -757,9 +739,9 @@ textarea {
 	display: flex;
 	flex-direction: column;
 	overflow: hidden;
-	border: 1px solid var(--line);
+	border: 1px solid var(--eda-line);
 	border-radius: var(--radius-lg);
-	background: var(--surface);
+	background: var(--eda-surface);
 	transition: transform 0.25s var(--ease), box-shadow 0.25s var(--ease);
 }
 
@@ -794,7 +776,7 @@ textarea {
 
 .vehicle-card__make {
 	margin: 0 0 0.25rem;
-	color: var(--muted);
+	color: var(--eda-text-muted);
 	font-size: 0.75rem;
 	font-weight: 600;
 	letter-spacing: 0.14em;
@@ -826,13 +808,13 @@ textarea {
 }
 
 .vehicle-card__title a:focus-visible::after {
-	outline: 2px solid var(--focus);
+	outline: 2px solid var(--eda-focus);
 	outline-offset: -2px;
 }
 
 .vehicle-card__variant {
 	margin: 0.25rem 0 0;
-	color: var(--muted);
+	color: var(--eda-text-muted);
 	font-size: 0.9375rem;
 }
 
@@ -841,7 +823,7 @@ textarea {
 	flex-wrap: wrap;
 	margin: 0.875rem 0 1.25rem;
 	padding: 0;
-	color: var(--muted);
+	color: var(--eda-text-muted);
 	font-size: 0.875rem;
 	list-style: none;
 }
@@ -858,7 +840,7 @@ textarea {
 	justify-content: space-between;
 	margin-top: auto;
 	padding-top: 1rem;
-	border-top: 1px solid var(--line);
+	border-top: 1px solid var(--eda-line);
 }
 
 .vehicle-card__price {
@@ -882,12 +864,12 @@ textarea {
 }
 
 .vehicle-card--sold .vehicle-card__price {
-	color: var(--muted);
+	color: var(--eda-text-muted);
 }
 
 .price-note {
 	margin: 0.125rem 0 0;
-	color: var(--muted);
+	color: var(--eda-text-muted);
 	font-size: 0.8125rem;
 	font-variant-numeric: tabular-nums;
 }
@@ -908,13 +890,13 @@ textarea {
 
 .feature-list li {
 	padding-top: 1.25rem;
-	border-top: 1px solid var(--ink);
+	border-top: 1px solid var(--eda-line-strong);
 	counter-increment: feature;
 }
 
 .feature-list li::before {
 	content: counter(feature, decimal-leading-zero);
-	color: var(--accent);
+	color: var(--eda-accent-ink);
 	font-size: 0.8125rem;
 	font-weight: 600;
 	letter-spacing: 0.12em;
@@ -927,7 +909,7 @@ textarea {
 
 .feature-list p {
 	margin: 0;
-	color: var(--muted);
+	color: var(--eda-text-muted);
 }
 
 @media (min-width: 40em) {
@@ -952,7 +934,7 @@ textarea {
 
 .collection-cta__count {
 	margin: 0.75rem 0 0;
-	color: var(--accent-light);
+	color: var(--eda-accent-ink);
 	font-size: 1.125rem;
 }
 
@@ -964,12 +946,12 @@ textarea {
 
 .showroom p {
 	max-width: 32rem;
-	color: var(--muted);
+	color: var(--eda-text-muted);
 }
 
 .showroom .showroom__place {
 	margin: 0.75rem 0 0;
-	color: var(--text);
+	color: var(--eda-text);
 	font-size: 1.25rem;
 }
 
@@ -983,7 +965,7 @@ textarea {
 
 .page-intro {
 	padding-block: clamp(1.5rem, 4vw, 3.5rem) clamp(1.5rem, 3vw, 2.5rem);
-	border-bottom: 1px solid var(--line);
+	border-bottom: 1px solid var(--eda-line);
 }
 
 /* Header image hero (Vehicles, About, Finance, Contact): the image fills a full-width hero,
@@ -995,8 +977,8 @@ textarea {
 	min-height: 16.25rem;
 	padding-block: 1.25rem 1.75rem;
 	border-bottom: 0;
-	background: var(--graphite);
-	color: #fff;
+	background: var(--eda-photo-bg);
+	color: var(--eda-on-photo);
 	isolation: isolate;
 }
 
@@ -1011,8 +993,8 @@ textarea {
 	position: absolute;
 	inset: 0;
 	background:
-		linear-gradient(0deg, rgba(18, 19, 22, 0.75) 0%, rgba(18, 19, 22, 0.45) 50%, rgba(18, 19, 22, 0) 85%),
-		linear-gradient(90deg, rgba(18, 19, 22, 0.78) 0%, rgba(18, 19, 22, 0.45) 40%, rgba(18, 19, 22, 0.08) 80%);
+		linear-gradient(0deg, color-mix(in srgb, var(--eda-scrim) 75%, transparent) 0%, color-mix(in srgb, var(--eda-scrim) 45%, transparent) 50%, color-mix(in srgb, var(--eda-scrim) 0%, transparent) 85%),
+		linear-gradient(90deg, color-mix(in srgb, var(--eda-scrim) 78%, transparent) 0%, color-mix(in srgb, var(--eda-scrim) 45%, transparent) 40%, color-mix(in srgb, var(--eda-scrim) 8%, transparent) 80%);
 }
 
 .page-intro__backdrop-image {
@@ -1038,19 +1020,19 @@ textarea {
 .page-intro--hero .breadcrumbs,
 .page-intro--hero .breadcrumbs [aria-current="page"] {
 	margin: 0;
-	color: rgba(255, 255, 255, 0.85);
+	color: color-mix(in srgb, var(--eda-on-photo) 85%, transparent);
 }
 
 .page-intro--hero .breadcrumbs li:not(:last-child)::after {
-	color: rgba(255, 255, 255, 0.45);
+	color: color-mix(in srgb, var(--eda-on-photo) 45%, transparent);
 }
 
 .page-intro--hero .page-title {
-	color: #fff;
+	color: var(--eda-on-photo);
 }
 
 .page-intro--hero .page-lead {
-	color: rgba(255, 255, 255, 0.85);
+	color: color-mix(in srgb, var(--eda-on-photo) 85%, transparent);
 }
 
 @media (min-width: 40em) {
@@ -1062,8 +1044,8 @@ textarea {
 	/* Text sits left: lighter bottom shading keeps the cars on the right bright. */
 	.page-intro__backdrop::after {
 		background:
-			linear-gradient(0deg, rgba(18, 19, 22, 0.55) 0%, rgba(18, 19, 22, 0) 55%),
-			linear-gradient(90deg, rgba(18, 19, 22, 0.78) 0%, rgba(18, 19, 22, 0.45) 40%, rgba(18, 19, 22, 0.08) 80%);
+			linear-gradient(0deg, color-mix(in srgb, var(--eda-scrim) 55%, transparent) 0%, color-mix(in srgb, var(--eda-scrim) 0%, transparent) 55%),
+			linear-gradient(90deg, color-mix(in srgb, var(--eda-scrim) 78%, transparent) 0%, color-mix(in srgb, var(--eda-scrim) 45%, transparent) 40%, color-mix(in srgb, var(--eda-scrim) 8%, transparent) 80%);
 	}
 }
 
@@ -1185,13 +1167,13 @@ textarea {
 .page-lead {
 	max-width: 40rem;
 	margin: 1rem 0 0;
-	color: var(--muted);
+	color: var(--eda-text-muted);
 	font-size: 1.125rem;
 }
 
 .breadcrumbs {
 	margin-bottom: 1.5rem;
-	color: var(--muted);
+	color: var(--eda-text-muted);
 	font-size: 0.8125rem;
 }
 
@@ -1207,7 +1189,7 @@ textarea {
 .breadcrumbs li:not(:last-child)::after {
 	content: "/";
 	margin-left: 0.5rem;
-	color: var(--line);
+	color: var(--eda-line);
 }
 
 .breadcrumbs a {
@@ -1219,7 +1201,7 @@ textarea {
 }
 
 .breadcrumbs [aria-current="page"] {
-	color: var(--text);
+	color: var(--eda-text);
 }
 
 .prose {
@@ -1246,9 +1228,9 @@ textarea {
 
 .panel {
 	padding: clamp(1.25rem, 3vw, 2rem);
-	border: 1px solid var(--line);
+	border: 1px solid var(--eda-line);
 	border-radius: var(--radius-lg);
-	background: var(--surface);
+	background: var(--eda-surface);
 }
 
 /* ---------- Inventory ---------- */
@@ -1277,22 +1259,22 @@ textarea {
 	min-width: 3rem;
 	min-height: 3rem;
 	padding: 0 0.75rem;
-	border: 1px solid var(--line);
+	border: 1px solid var(--eda-line);
 	border-radius: var(--radius);
 	text-decoration: none;
 }
 
 .page-numbers.current {
-	border-color: var(--ink);
-	background: var(--ink);
-	color: #fff;
+	border-color: var(--eda-strong);
+	background: var(--eda-strong);
+	color: var(--eda-on-strong);
 }
 
 .empty-state {
 	padding: clamp(2.5rem, 6vw, 4.5rem) 1.5rem;
-	border: 1px dashed var(--line);
+	border: 1px dashed var(--eda-line);
 	border-radius: var(--radius-lg);
-	background: var(--surface);
+	background: var(--eda-surface);
 	text-align: center;
 }
 
@@ -1301,7 +1283,7 @@ textarea {
 }
 
 .empty-state p {
-	color: var(--muted);
+	color: var(--eda-text-muted);
 }
 
 /* ---------- Single vehicle ---------- */
@@ -1371,8 +1353,8 @@ textarea {
 	padding: 0;
 	border: 0;
 	border-radius: 50%;
-	background: rgba(18, 19, 22, 0.5);
-	color: #fff;
+	background: color-mix(in srgb, var(--eda-scrim) 50%, transparent);
+	color: var(--eda-on-photo);
 	cursor: pointer;
 	transform: translateY(-50%);
 	transition: background-color 0.2s ease;
@@ -1383,13 +1365,13 @@ textarea {
 }
 
 .vehicle-gallery__nav:hover {
-	background: rgba(18, 19, 22, 0.78);
+	background: color-mix(in srgb, var(--eda-scrim) 78%, transparent);
 }
 
 .vehicle-gallery__nav:focus-visible {
-	outline: 2px solid var(--focus-light);
+	outline: 2px solid var(--eda-focus-ring-dark);
 	outline-offset: 2px;
-	background: rgba(18, 19, 22, 0.78);
+	background: color-mix(in srgb, var(--eda-scrim) 78%, transparent);
 }
 
 .vehicle-gallery__nav--prev {
@@ -1401,7 +1383,7 @@ textarea {
 }
 
 .vehicle-gallery__main:focus-visible {
-	outline: 2px solid var(--focus);
+	outline: 2px solid var(--eda-focus);
 	outline-offset: 3px;
 }
 
@@ -1433,7 +1415,7 @@ textarea {
 }
 
 .vehicle-gallery__thumb[aria-current="true"]::after {
-	border-color: var(--ink);
+	border-color: var(--eda-line-strong);
 }
 
 .vehicle-summary__title {
@@ -1444,7 +1426,7 @@ textarea {
 
 .vehicle-summary__variant {
 	margin: 0.5rem 0 0;
-	color: var(--muted);
+	color: var(--eda-text-muted);
 	font-size: 1.125rem;
 }
 
@@ -1457,12 +1439,12 @@ textarea {
 }
 
 .vehicle-single--sold .vehicle-summary__price {
-	color: var(--muted);
+	color: var(--eda-text-muted);
 }
 
 .vehicle-summary__vat {
 	margin: 0.25rem 0 0;
-	color: var(--muted);
+	color: var(--eda-text-muted);
 	font-size: 0.875rem;
 }
 
@@ -1471,16 +1453,16 @@ textarea {
 	grid-template-columns: repeat(2, minmax(0, 1fr));
 	gap: 0 1.5rem;
 	margin: 1.75rem 0;
-	border-top: 1px solid var(--line);
+	border-top: 1px solid var(--eda-line);
 }
 
 .key-facts div {
 	padding: 0.875rem 0;
-	border-bottom: 1px solid var(--line);
+	border-bottom: 1px solid var(--eda-line);
 }
 
 .key-facts dt {
-	color: var(--muted);
+	color: var(--eda-text-muted);
 	font-size: 0.75rem;
 	font-weight: 600;
 	letter-spacing: 0.1em;
@@ -1494,8 +1476,8 @@ textarea {
 
 .notice--sold {
 	padding: 1.25rem;
-	border-left: 3px solid var(--ink);
-	background: var(--surface);
+	border-left: 3px solid var(--eda-line-strong);
+	background: var(--eda-surface);
 }
 
 .notice--sold p {
@@ -1555,7 +1537,7 @@ textarea {
 .enquiry > h2 {
 	margin: 0 0 1.25rem;
 	padding-top: 1.25rem;
-	border-top: 1px solid var(--ink);
+	border-top: 1px solid var(--eda-line-strong);
 	font-size: clamp(1.375rem, 2.4vw, 1.75rem);
 }
 
@@ -1570,11 +1552,11 @@ textarea {
 	gap: 1rem;
 	justify-content: space-between;
 	padding: 0.75rem 0;
-	border-bottom: 1px solid var(--line);
+	border-bottom: 1px solid var(--eda-line);
 }
 
 .spec-list dt {
-	color: var(--muted);
+	color: var(--eda-text-muted);
 }
 
 .spec-list dd {
@@ -1594,7 +1576,7 @@ textarea {
 .equipment-list li {
 	position: relative;
 	padding: 0.5rem 0 0.5rem 1.25rem;
-	border-bottom: 1px solid var(--line);
+	border-bottom: 1px solid var(--eda-line);
 }
 
 .equipment-list li::before {
@@ -1604,7 +1586,7 @@ textarea {
 	left: 0;
 	width: 0.375rem;
 	height: 0.375rem;
-	background: var(--accent);
+	background: var(--eda-accent);
 }
 
 @media (min-width: 40em) {
@@ -1640,17 +1622,17 @@ textarea {
 	justify-content: center;
 	min-height: 3rem;
 	padding: 0 1rem;
-	border: 1px solid var(--line);
+	border: 1px solid var(--eda-line);
 	border-radius: var(--radius);
-	background: var(--surface);
+	background: var(--eda-surface);
 	font-weight: 500;
 	text-decoration: none;
 }
 
 .vehicle-action-bar li:last-child a {
-	border-color: var(--ink);
-	background: var(--ink);
-	color: var(--paper);
+	border-color: var(--eda-button-bg);
+	background: var(--eda-button-bg);
+	color: var(--eda-button-text);
 }
 
 @media (max-width: 63.99em) {
@@ -1660,8 +1642,8 @@ textarea {
 		inset: auto 0 0;
 		z-index: 40;
 		padding: 0.625rem var(--gutter) calc(0.625rem + env(safe-area-inset-bottom));
-		border-top: 1px solid var(--line);
-		background: rgba(245, 243, 238, 0.97);
+		border-top: 1px solid var(--eda-line);
+		background: var(--eda-bar-glass);
 	}
 
 	html:has(.vehicle-action-bar) .site-footer {
@@ -1694,11 +1676,11 @@ textarea {
 	width: 1.25rem;
 	height: 1.25rem;
 	margin: 0.15rem 0 0;
-	accent-color: var(--ink);
+	accent-color: var(--eda-strong);
 }
 
 .enquiry-form p:has(> input[type="checkbox"]) label {
-	color: var(--text);
+	color: var(--eda-text);
 	font-size: 0.9375rem;
 	font-weight: 400;
 	letter-spacing: 0;
@@ -1707,8 +1689,8 @@ textarea {
 
 .enquiry-status {
 	padding: 1rem 1.25rem;
-	border-left: 3px solid var(--ink);
-	background: var(--surface);
+	border-left: 3px solid var(--eda-line-strong);
+	background: var(--eda-surface);
 }
 
 /* Honeypot field: off-screen for people, still present for bots. */
@@ -1749,8 +1731,8 @@ textarea {
 
 .site-footer {
 	padding-block: clamp(3rem, 6vw, 4.5rem) 2rem;
-	background: var(--ink);
-	color: var(--muted-light);
+	background: var(--eda-footer-bg);
+	color: var(--eda-footer-text);
 	font-size: 0.9375rem;
 }
 
@@ -1767,7 +1749,7 @@ textarea {
 
 .site-footer__heading {
 	margin: 0 0 1rem;
-	color: #fff;
+	color: var(--eda-footer-heading);
 	font-size: 0.75rem;
 	font-weight: 600;
 	letter-spacing: 0.16em;
@@ -1798,7 +1780,7 @@ textarea {
 }
 
 .site-footer a:hover {
-	color: #fff;
+	color: var(--eda-footer-heading);
 	text-decoration: underline;
 }
 
@@ -1809,7 +1791,7 @@ textarea {
 	align-items: center;
 	justify-content: space-between;
 	padding-top: 1.5rem;
-	border-top: 1px solid var(--line-dark);
+	border-top: 1px solid var(--eda-footer-line);
 	font-size: 0.8125rem;
 }
 

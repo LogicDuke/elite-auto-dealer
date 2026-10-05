@@ -21,6 +21,8 @@ require EDA_DIR . '/inc/inventory-query.php';
 require EDA_DIR . '/inc/enquiries.php';
 require EDA_DIR . '/inc/enquiry-privacy.php';
 require EDA_DIR . '/inc/customizer.php';
+require EDA_DIR . '/inc/palette.php';
+require EDA_DIR . '/inc/palette-customizer.php';
 require EDA_DIR . '/inc/page-header.php';
 require EDA_DIR . '/inc/admin-roles.php';
 require EDA_DIR . '/inc/admin-vehicle-editor.php';

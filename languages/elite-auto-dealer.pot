@@ -9,7 +9,7 @@ msgstr ""
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"POT-Creation-Date: 2026-10-05T06:02:31+00:00\n"
+"POT-Creation-Date: 2026-10-05T06:05:29+00:00\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "X-Generator: WP-CLI 2.12.0\n"
 "X-Domain: elite-auto-dealer\n"
@@ -198,11 +198,11 @@ msgstr ""
 msgid "Arrange a viewing or ask about any vehicle in the collection. We will get back to you personally."
 msgstr ""
 
-#: functions.php:46
+#: functions.php:48
 msgid "Primary menu"
 msgstr ""
 
-#: functions.php:47
+#: functions.php:49
 msgid "Footer menu"
 msgstr ""
 
@@ -905,6 +905,60 @@ msgstr ""
 
 #: inc/page-header.php:55
 msgid "Full-width image behind the page title (1536 × 1024 px or wider). The featured image stays in the page content."
+msgstr ""
+
+#: inc/palette-control.php:30
+msgid "Dark"
+msgstr ""
+
+#: inc/palette-control.php:31
+msgid "Light"
+msgstr ""
+
+#: inc/palette-control.php:32
+msgid "Accent"
+msgstr ""
+
+#: inc/palette-control.php:40
+msgid "Restore the Aurelis default (Aurelis, Original)"
+msgstr ""
+
+#: inc/palette-control.php:55
+msgid "(default)"
+msgstr ""
+
+#: inc/palette-control.php:56
+msgid "Sections:"
+msgstr ""
+
+#: inc/palette-control.php:78
+msgid "Section pattern"
+msgstr ""
+
+#: inc/palette-control.php:79
+msgid "Sets the colour of every page section by its position. Photographic heroes keep their design; give a section the class eda-tone-dark, eda-tone-light or eda-tone-accent to set it on its own."
+msgstr ""
+
+#: inc/palette-customizer.php:56
+msgid "Colours"
+msgstr ""
+
+#: inc/palette-customizer.php:57
+msgid "Colours for the whole site. Every palette is checked for readable contrast (WCAG AA). Status badges and focus outlines keep their fixed colours."
+msgstr ""
+
+#: inc/palette-customizer.php:84
+msgid "Colour palette"
+msgstr ""
+
+#: inc/palette-customizer.php:85
+msgid "Choose a palette and a section pattern; the preview updates with your real pages."
+msgstr ""
+
+#. translators: %s: section tone names, e.g. "Accent".
+#: inc/palette-customizer.php:139
+#, php-format
+msgid "This palette has no readable %s sections, so the pattern skips them."
 msgstr ""
 
 #. translators: %s: make, model, fuel type, etc. Example: "BMW vehicles".
