@@ -260,6 +260,12 @@ img {
 		background: var(--eda-header-glass-blur);
 		backdrop-filter: blur(12px);
 	}
+
+	/* The blur makes the header the containing block of the fixed drawer, which would then be cut
+	   off below the first link; the open drawer covers the page anyway. */
+	.nav-open .site-header {
+		backdrop-filter: none;
+	}
 }
 
 .site-header__inner {
