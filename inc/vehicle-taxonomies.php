@@ -54,6 +54,13 @@ function eda_register_vehicle_taxonomies() {
 				// so their free-text tag boxes and quick-edit fields are hidden.
 				'meta_box_cb'        => in_array( $taxonomy, array( 'vehicle_make', 'vehicle_model' ), true ) ? false : null,
 				'show_in_quick_edit' => ! in_array( $taxonomy, array( 'vehicle_make', 'vehicle_model' ), true ),
+				// Anyone who edits vehicles may classify them; managing the vocabularies stays with editors.
+				'capabilities'       => array(
+					'manage_terms' => 'manage_categories',
+					'edit_terms'   => 'manage_categories',
+					'delete_terms' => 'manage_categories',
+					'assign_terms' => 'edit_vehicles',
+				),
 				'rewrite'            => array(
 					'slug'       => eda_url_bases()['vehicles'] . '/' . $base,
 					'with_front' => false,

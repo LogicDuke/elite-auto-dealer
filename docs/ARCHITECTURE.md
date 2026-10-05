@@ -17,7 +17,7 @@ WordPress admin (dealership staff)  ->  Dealer inventory (`vehicle` posts)  ->  
 - **Visitors only read and contact.** They can browse, filter and search, view vehicles, call, WhatsApp, and send an enquiry (general, test drive, finance, or trade-in valuation).
 - **No public write path to inventory.**
   - There is no front-end vehicle submission, no seller or dealer accounts, no seller profiles and no listing payments.
-  - The `vehicle` post type uses standard post capabilities. Anonymous REST writes are refused (401), and the subscriber role cannot create vehicles.
+  - The `vehicle` post type has its own capabilities (`edit_vehicles`, …; see `inc/admin-roles.php`). Anonymous REST writes are refused (401), and the subscriber role cannot create vehicles.
   - The only public form handler (`admin_post_nopriv_eda_enquiry`) can create nothing but private `eda_enquiry` posts. The only other public endpoint, `wp_ajax_nopriv_eda_enquiry_nonce`, is read-only and returns a nonce.
 - **Trade-in is a private enquiry, never a listing.** A customer's own car (e.g. "BMW 320d, 2019, 85 000 km") is sent to the dealership inside the enquiry message and stored only as a private `eda_enquiry`. It never becomes a `vehicle` post or anything public.
 
@@ -29,7 +29,11 @@ functions.php           Constants, textdomain, theme supports, menus, image size
 inc/
   vehicle-post-type.php   `vehicle` CPT, URL bases, term archives -> inventory template
   vehicle-taxonomies.php  7 taxonomies, model -> make link, default term seeding
-  vehicle-meta.php        Meta schema, registration, sanitising, admin meta box (incl. Make → Model selector), gallery picker enqueue
+  vehicle-meta.php        Meta schema, registration, sanitising, make/model pair saving
+  admin-roles.php         Vehicle/enquiry capabilities, "Dealership staff" role (versioned), staff menu
+  admin-vehicle-editor.php  Dealer vehicle editor: classic screen, one form (sections A–G), validation, saving
+  admin-vehicle-list.php  All Vehicles columns, sorting, POST quick-status buttons
+  admin-site-settings.php Site Settings screen (name, tagline, city, country, phone, WhatsApp, enquiry email)
   vehicle-catalogue.php   Make/Model catalogue seeding + versioned updates (data/vehicle-catalogue.json)
   template-tags.php       Meta access/formatting, price format, phone helpers, breadcrumb trail
   seo.php                 Vehicle + breadcrumb JSON-LD, listing canonical / robots
@@ -48,7 +52,9 @@ template-parts/
 page-templates/contact.php  "Contact" page template: page content + general enquiry form
 front-page.php, archive-vehicle.php, single-vehicle.php, page.php, index.php, 404.php, header.php, footer.php
 assets/css/main.css     Design system: tokens, layout, header/drawer, cards, inventory, vehicle page, forms
-assets/js/admin-vehicle.js  Media picker for the gallery field and the page header image box
+assets/js/admin-vehicle.js  Media picker for the page header image box
+assets/js/admin-vehicle-editor.js  Vehicle editor: photo manager, kW → hp, EV fields, title preview, validation
+assets/css/admin-vehicle.css  Vehicle editor and All Vehicles list styles
 assets/js/enquiry.js    Refreshes the enquiry nonce before submit (cache-safe forms)
 assets/js/navigation.js Mobile drawer (ESC, focus loop, scroll lock) + clean GET search URLs
 assets/js/make-model.js Shared Make → Model cascading (homepage search, inventory filter, admin selector)
@@ -125,7 +131,7 @@ Seeding runs on theme activation and only adds missing terms (checked by slug). 
 
 ## Metadata
 
-All fields are defined once in `eda_vehicle_meta_fields()` (`inc/vehicle-meta.php`). That schema drives `register_post_meta()` (REST-exposed, typed, sanitised), the admin meta box, the front-end spec list and structured data. **To add a field, add one array entry.**
+All fields are defined once in `eda_vehicle_meta_fields()` (`inc/vehicle-meta.php`). That schema drives `register_post_meta()` (REST-exposed, typed, sanitised), the vehicle editor fields, the front-end spec list and structured data. **To add a field, add one array entry.**
 
 Stored as post meta `_eda_{key}` (underscore = hidden from the generic Custom Fields box). Empty input deletes the key; "not set" is never stored as `0` or `''`.
 
@@ -237,7 +243,7 @@ template-parts/enquiry-form.php  --POST-->  admin-post.php?action=eda_enquiry  -
 - **Storage:** private post type `eda_enquiry` (not public, not in REST, can't be created manually), listed under Vehicles → Enquiries with a read-only details box.
   - Meta: `_eda_enquiry_{vehicle_id,type,name,email,phone,message,consent,consent_text,vehicle_label}`.
   - `vehicle_label` is a title + stock ID snapshot, so the enquiry keeps context after the vehicle is deleted.
-- **Notification:** to Customizer → Dealer contact → Enquiry email (fallback: admin email), with `Reply-To` set to the customer.
+- **Notification:** to Site Settings → Enquiry email (fallback: admin email), with `Reply-To` set to the customer.
 - **Security:** nonce, honeypot field, server-side validation, and no personal data in redirect URLs.
 - **Not built yet:** rate limiting / challenge beyond the honeypot (add if spam appears).
 
@@ -446,7 +452,10 @@ Planned approach, not built yet:
 - **Finance example**: Belgian consumer-credit rules require a representative example (APR, term, total payable) whenever a monthly amount is advertised. `finance_monthly` is therefore stored but not displayed (see Design-phase requirements).
 
 - **Prefix `eda` / meta prefix `_eda_`.** WPCS flags 3-letter prefixes as collision-prone; kept for brevity and excluded in `phpcs.xml.dist`. Renaming later means migrating stored meta keys, so change it now or never.
-- **Classic theme with the block editor for vehicle descriptions.** Vehicle details use a classic meta box, which still works in the block editor.
+- **Vehicles use a simplified classic edit screen, not the block editor.** `use_block_editor_for_post_type` is off for `vehicle` only. One form (`inc/admin-vehicle-editor.php`) replaces title, editor, featured image and order boxes; WordPress still saves, publishes, locks and trashes. Storage is unchanged: photo 1 = featured image, photos 2+ = `_eda_gallery`, description = post content (block markup is preserved: wpautop is off for block content), homepage position = `menu_order`. Only submitted fields are written, so an absent field never deletes data. The title is Make + Model + Variant unless overridden; the slug is built from it on first publish and never changes afterwards.
+- **Publishing requirements are enforced on the server** (`wp_insert_post_data`): make, model (belonging to the make), year, mileage, fuel, transmission, price > 0, status and a main photo. A vehicle missing any of them is kept as a draft with a notice; the browser check is convenience only.
+- **Site Settings edits the existing storage; it has none of its own.** Dealership name and tagline are the WordPress Site Title and Tagline (`blogname`, `blogdescription`); city, country, phone, WhatsApp and enquiry email are the Customizer theme mods (`eda_city`, `eda_country`, `eda_phone`, `eda_whatsapp`, `eda_enquiry_email`), so Customizer → Dealer contact shows the same values. Only changed values are written; emptying a contact field removes the theme mod so the theme's fallback applies (enquiries then go to the admin email). Phone numbers are stored as typed (+ and spaces kept); WhatsApp must start with + and the country code because `wa.me` links need it. Images stay in the Customizer and page edit screens. There are no opening hours and no logo in the theme (the header shows the Site Title as text).
+- **Capabilities, not hidden menus, are the security.** `vehicle` and `eda_enquiry` use their own capability types (`edit_vehicles`, `edit_enquiries`, …). The `eda_dealer_staff` role has those plus `read`, `upload_files` and `eda_manage_site_settings` (Site Settings) and nothing for posts, pages, themes, plugins, users or terms. Administrators and editors receive the same capabilities. Bump `EDA_ROLES_VERSION` to re-apply. Staff saving never changes the author.
 - **Enquiry form nonce is refreshed on submit** (see "Cache-safe nonce"), so vehicle pages can be fully page-cached.
 - **Enquiry retention is 12 months by default** and runs only while this theme is active (see "Retention").
 

@@ -9,7 +9,7 @@ msgstr ""
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"POT-Creation-Date: 2026-10-05T05:56:04+00:00\n"
+"POT-Creation-Date: 2026-10-05T06:02:31+00:00\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "X-Generator: WP-CLI 2.12.0\n"
 "X-Domain: elite-auto-dealer\n"
@@ -83,6 +83,7 @@ msgstr ""
 
 #. Template Name of the theme
 #: footer.php:44
+#: inc/admin-site-settings.php:197
 msgid "Contact"
 msgstr ""
 
@@ -121,7 +122,7 @@ msgid "Contact us"
 msgstr ""
 
 #: front-page.php:51
-#: inc/vehicle-post-type.php:43
+#: inc/vehicle-post-type.php:44
 #: template-parts/vehicle-search.php:41
 #: template-parts/vehicle-search.php:88
 msgid "Search vehicles"
@@ -197,11 +198,11 @@ msgstr ""
 msgid "Arrange a viewing or ask about any vehicle in the collection. We will get back to you personally."
 msgstr ""
 
-#: functions.php:42
+#: functions.php:46
 msgid "Primary menu"
 msgstr ""
 
-#: functions.php:43
+#: functions.php:47
 msgid "Footer menu"
 msgstr ""
 
@@ -217,36 +218,510 @@ msgstr ""
 msgid "Primary"
 msgstr ""
 
-#: inc/customizer.php:19
-msgid "Dealer contact"
+#: inc/admin-roles.php:51
+msgid "Dealership staff"
 msgstr ""
 
+#: inc/admin-site-settings.php:24
+msgid "Dealership name"
+msgstr ""
+
+#: inc/admin-site-settings.php:25
+msgid "Shown in the header, the footer and enquiry emails."
+msgstr ""
+
+#: inc/admin-site-settings.php:31
+msgid "Tagline"
+msgstr ""
+
+#: inc/admin-site-settings.php:32
+msgid "A short line shown in the footer and on the Vehicles page, e.g. \"Premium pre-owned automobiles\"."
+msgstr ""
+
+#: inc/admin-site-settings.php:38
 #: inc/customizer.php:25
 msgid "City"
 msgstr ""
 
+#: inc/admin-site-settings.php:39
 #: inc/customizer.php:25
 msgid "Shown with the dealership name, e.g. Brussels."
 msgstr ""
 
+#: inc/admin-site-settings.php:45
 #: inc/customizer.php:26
 msgid "Country"
 msgstr ""
 
+#: inc/admin-site-settings.php:46
+msgid "Shown after the city, e.g. Belgium."
+msgstr ""
+
+#: inc/admin-site-settings.php:52
 #: inc/customizer.php:27
 msgid "Phone number"
 msgstr ""
 
+#: inc/admin-site-settings.php:53
+msgid "Shown as you type it and used for the Call buttons, e.g. +32 2 123 45 67. Leave empty to hide the Call buttons."
+msgstr ""
+
+#: inc/admin-site-settings.php:59
 #: inc/customizer.php:28
 msgid "WhatsApp number"
 msgstr ""
 
-#: inc/customizer.php:28
-msgid "International format, e.g. +32 470 12 34 56. Leave empty to hide WhatsApp."
+#: inc/admin-site-settings.php:60
+msgid "Start with + and the country code, e.g. +32 470 12 34 56. Leave empty to hide the WhatsApp buttons."
 msgstr ""
 
+#: inc/admin-site-settings.php:66
 #: inc/customizer.php:29
 msgid "Enquiry email"
+msgstr ""
+
+#: inc/admin-site-settings.php:67
+msgid "Enquiries from the website are sent to this address. Leave empty to use the site administrator’s email."
+msgstr ""
+
+#: inc/admin-site-settings.php:100
+msgid "Please enter the dealership name."
+msgstr ""
+
+#: inc/admin-site-settings.php:103
+msgid "Please enter a valid phone number, using digits, spaces and an optional + at the start, e.g. +32 2 123 45 67."
+msgstr ""
+
+#: inc/admin-site-settings.php:106
+msgid "Please enter the WhatsApp number with + and the country code, e.g. +32 470 12 34 56."
+msgstr ""
+
+#: inc/admin-site-settings.php:109
+msgid "Please enter a valid enquiry email."
+msgstr ""
+
+#: inc/admin-site-settings.php:147
+#: inc/admin-site-settings.php:148
+#: inc/admin-site-settings.php:200
+msgid "Site Settings"
+msgstr ""
+
+#: inc/admin-site-settings.php:169
+msgid "You are not allowed to change the site settings."
+msgstr ""
+
+#: inc/admin-site-settings.php:196
+msgid "Dealership"
+msgstr ""
+
+#: inc/admin-site-settings.php:202
+msgid "Your settings have been saved. The website now shows the new details."
+msgstr ""
+
+#: inc/admin-site-settings.php:205
+msgid "Nothing was saved yet. Please correct the following:"
+msgstr ""
+
+#: inc/admin-site-settings.php:223
+#: inc/admin-vehicle-editor.php:354
+#: inc/admin-vehicle-editor.php:414
+#: inc/admin-vehicle-editor.php:502
+#: inc/admin-vehicle-editor.php:508
+msgid "Required"
+msgstr ""
+
+#: inc/admin-site-settings.php:244
+msgid "Save settings"
+msgstr ""
+
+#: inc/admin-vehicle-editor.php:23
+#: inc/vehicle-taxonomies.php:26
+msgid "Body type"
+msgstr ""
+
+#: inc/admin-vehicle-editor.php:24
+#: inc/vehicle-taxonomies.php:29
+msgid "Condition"
+msgstr ""
+
+#: inc/admin-vehicle-editor.php:25
+#: inc/vehicle-taxonomies.php:27
+msgid "Fuel type"
+msgstr ""
+
+#: inc/admin-vehicle-editor.php:26
+#: inc/vehicle-taxonomies.php:28
+msgid "Transmission"
+msgstr ""
+
+#: inc/admin-vehicle-editor.php:37
+msgid "Please select a make before publishing."
+msgstr ""
+
+#: inc/admin-vehicle-editor.php:38
+msgid "Please select a model before publishing."
+msgstr ""
+
+#: inc/admin-vehicle-editor.php:39
+msgid "Please add the year before publishing."
+msgstr ""
+
+#: inc/admin-vehicle-editor.php:40
+msgid "Please add the mileage before publishing."
+msgstr ""
+
+#: inc/admin-vehicle-editor.php:41
+msgid "Please select a fuel type before publishing."
+msgstr ""
+
+#: inc/admin-vehicle-editor.php:42
+msgid "Please select a transmission before publishing."
+msgstr ""
+
+#: inc/admin-vehicle-editor.php:43
+msgid "Please add a price before publishing."
+msgstr ""
+
+#: inc/admin-vehicle-editor.php:44
+msgid "Please choose a status (available, reserved or sold) before publishing."
+msgstr ""
+
+#: inc/admin-vehicle-editor.php:45
+msgid "Please add a main photo before publishing."
+msgstr ""
+
+#: inc/admin-vehicle-editor.php:236
+msgid "This vehicle was saved as a draft and is not on the website yet."
+msgstr ""
+
+#: inc/admin-vehicle-editor.php:368
+#: inc/admin-vehicle-editor.php:418
+msgid "Choose…"
+msgstr ""
+
+#: inc/admin-vehicle-editor.php:439
+msgid "Published on the website"
+msgstr ""
+
+#: inc/admin-vehicle-editor.php:439
+msgid "Draft: not on the website yet"
+msgstr ""
+
+#: inc/admin-vehicle-editor.php:443
+msgid "View on website"
+msgstr ""
+
+#: inc/admin-vehicle-editor.php:444
+msgid "Update vehicle"
+msgstr ""
+
+#: inc/admin-vehicle-editor.php:446
+msgid "Save draft"
+msgstr ""
+
+#: inc/admin-vehicle-editor.php:448
+msgid "Publish vehicle"
+msgstr ""
+
+#: inc/admin-vehicle-editor.php:452
+msgid "Move to trash"
+msgstr ""
+
+#: inc/admin-vehicle-editor.php:495
+#: inc/vehicle-post-type.php:40
+msgid "Add vehicle"
+msgstr ""
+
+#: inc/admin-vehicle-editor.php:495
+#: inc/vehicle-post-type.php:41
+msgid "Edit vehicle"
+msgstr ""
+
+#: inc/admin-vehicle-editor.php:497
+msgid "Some details are missing before this vehicle can be published:"
+msgstr ""
+
+#: inc/admin-vehicle-editor.php:500
+msgid "Basic information"
+msgstr ""
+
+#: inc/admin-vehicle-editor.php:502
+#: inc/vehicle-taxonomies.php:24
+#: inc/vehicle-taxonomies.php:148
+#: inc/vehicle-taxonomies.php:163
+#: inc/vehicle-taxonomies.php:234
+msgid "Make"
+msgstr ""
+
+#: inc/admin-vehicle-editor.php:503
+msgid "Choose a make…"
+msgstr ""
+
+#: inc/admin-vehicle-editor.php:508
+#: inc/vehicle-taxonomies.php:25
+msgid "Model"
+msgstr ""
+
+#: inc/admin-vehicle-editor.php:509
+msgid "Choose a model…"
+msgstr ""
+
+#: inc/admin-vehicle-editor.php:513
+msgid "Choose the make first; the list then shows only its models."
+msgstr ""
+
+#: inc/admin-vehicle-editor.php:514
+msgid "For example \"Competition xDrive\" or \"2.0 TDI S line\"."
+msgstr ""
+
+#: inc/admin-vehicle-editor.php:517
+msgid "Listing title"
+msgstr ""
+
+#: inc/admin-vehicle-editor.php:517
+msgid "Optional"
+msgstr ""
+
+#: inc/admin-vehicle-editor.php:519
+msgid "Leave empty to use Make + Model + Variant automatically. Shown on the website as:"
+msgstr ""
+
+#: inc/admin-vehicle-editor.php:530
+msgid "Pricing & status"
+msgstr ""
+
+#: inc/admin-vehicle-editor.php:536
+msgid "Price (€)"
+msgstr ""
+
+#: inc/admin-vehicle-editor.php:540
+msgid "VAT"
+msgstr ""
+
+#: inc/admin-vehicle-editor.php:545
+#: inc/admin-vehicle-list.php:25
+msgid "Status"
+msgstr ""
+
+#: inc/admin-vehicle-editor.php:549
+msgid "Homepage"
+msgstr ""
+
+#: inc/admin-vehicle-editor.php:551
+msgid "Show as a featured vehicle on the homepage"
+msgstr ""
+
+#: inc/admin-vehicle-editor.php:552
+msgid "Position on the homepage"
+msgstr ""
+
+#: inc/admin-vehicle-editor.php:553
+msgid "1 = first. Featured vehicles are shown in this order."
+msgstr ""
+
+#: inc/admin-vehicle-editor.php:557
+msgid "Vehicle details"
+msgstr ""
+
+#: inc/admin-vehicle-editor.php:559
+msgid "Horsepower is filled in automatically; you can still correct it."
+msgstr ""
+
+#: inc/admin-vehicle-editor.php:564
+msgid "Equipment & options"
+msgstr ""
+
+#: inc/admin-vehicle-editor.php:568
+msgid "Add an option that is not in the list"
+msgstr ""
+
+#: inc/admin-vehicle-editor.php:568
+msgid "e.g. Head-up display"
+msgstr ""
+
+#: inc/admin-vehicle-editor.php:568
+msgid "Add option"
+msgstr ""
+
+#: inc/admin-vehicle-editor.php:572
+msgid "Photos"
+msgstr ""
+
+#: inc/admin-vehicle-editor.php:572
+msgid "Photo 1 is the main photo on the website. Drag photos to change the order, or use the arrow buttons."
+msgstr ""
+
+#: inc/admin-vehicle-editor.php:574
+msgid "Vehicle photos in order"
+msgstr ""
+
+#: inc/admin-vehicle-editor.php:574
+msgid "No photos yet. Add at least one: photo 1 becomes the main photo."
+msgstr ""
+
+#: inc/admin-vehicle-editor.php:579
+msgid "+ Add photos"
+msgstr ""
+
+#: inc/admin-vehicle-editor.php:583
+#: single-vehicle.php:146
+msgid "Description"
+msgstr ""
+
+#: inc/admin-vehicle-editor.php:583
+msgid "A few sentences about the car, as you would tell a customer."
+msgstr ""
+
+#: inc/admin-vehicle-editor.php:603
+msgid "Technical & compliance"
+msgstr ""
+
+#: inc/admin-vehicle-editor.php:603
+msgid "Stock number, VIN, Car-Pass, emissions, warranty…"
+msgstr ""
+
+#: inc/admin-vehicle-editor.php:636
+msgid "Main photo"
+msgstr ""
+
+#. translators: %d: photo number.
+#: inc/admin-vehicle-editor.php:638
+#, php-format
+msgid "Photo %d"
+msgstr ""
+
+#: inc/admin-vehicle-editor.php:639
+msgid "Move left"
+msgstr ""
+
+#: inc/admin-vehicle-editor.php:640
+msgid "Move right"
+msgstr ""
+
+#: inc/admin-vehicle-editor.php:641
+msgid "Replace"
+msgstr ""
+
+#: inc/admin-vehicle-editor.php:642
+msgid "Remove"
+msgstr ""
+
+#: inc/admin-vehicle-editor.php:643
+msgid "Add photos"
+msgstr ""
+
+#: inc/admin-vehicle-editor.php:644
+msgid "Add to vehicle"
+msgstr ""
+
+#: inc/admin-vehicle-editor.php:645
+msgid "Use this photo"
+msgstr ""
+
+#. translators: 1: photo number, 2: number of photos.
+#: inc/admin-vehicle-editor.php:647
+#, php-format
+msgid "Photo moved to position %1$d of %2$d."
+msgstr ""
+
+#: inc/admin-vehicle-editor.php:648
+msgid "Photo removed."
+msgstr ""
+
+#: inc/admin-vehicle-editor.php:649
+msgid "Photos added."
+msgstr ""
+
+#: inc/admin-vehicle-editor.php:650
+msgid "No photos yet."
+msgstr ""
+
+#: inc/admin-vehicle-list.php:20
+msgid "Photo"
+msgstr ""
+
+#: inc/admin-vehicle-list.php:21
+#: inc/enquiries.php:146
+#: inc/enquiries.php:234
+#: inc/enquiry-privacy.php:131
+#: inc/vehicle-post-type.php:38
+msgid "Vehicle"
+msgstr ""
+
+#: inc/admin-vehicle-list.php:22
+#: inc/vehicle-meta.php:74
+msgid "Year"
+msgstr ""
+
+#: inc/admin-vehicle-list.php:23
+#: inc/vehicle-meta.php:83
+msgid "Mileage"
+msgstr ""
+
+#: inc/admin-vehicle-list.php:24
+#: inc/vehicle-meta.php:55
+msgid "Price"
+msgstr ""
+
+#: inc/admin-vehicle-list.php:26
+#: inc/vehicle-meta.php:46
+msgid "Featured"
+msgstr ""
+
+#: inc/admin-vehicle-list.php:27
+msgid "Last updated"
+msgstr ""
+
+#. translators: %d: position on the homepage.
+#: inc/admin-vehicle-list.php:60
+#, php-format
+msgid "Yes · position %d"
+msgstr ""
+
+#. translators: %d: position on the homepage.
+#: inc/admin-vehicle-list.php:60
+#: inc/template-tags.php:44
+msgid "Yes"
+msgstr ""
+
+#: inc/admin-vehicle-list.php:62
+#: inc/enquiries.php:239
+#: inc/template-tags.php:44
+msgid "No"
+msgstr ""
+
+#. translators: 1: vehicle title, 2: status.
+#: inc/admin-vehicle-list.php:94
+#, php-format
+msgid "Mark %1$s as %2$s"
+msgstr ""
+
+#. translators: %s: status.
+#: inc/admin-vehicle-list.php:96
+#, php-format
+msgid "Mark %s"
+msgstr ""
+
+#: inc/admin-vehicle-list.php:140
+msgid "You are not allowed to change this vehicle."
+msgstr ""
+
+#. translators: 1: vehicle title, 2: status.
+#: inc/admin-vehicle-list.php:172
+#, php-format
+msgid "%1$s is now marked as %2$s."
+msgstr ""
+
+#: inc/admin-vehicle-list.php:174
+msgid "The status could not be changed."
+msgstr ""
+
+#: inc/customizer.php:19
+msgid "Dealer contact"
+msgstr ""
+
+#: inc/customizer.php:28
+msgid "International format, e.g. +32 470 12 34 56. Leave empty to hide WhatsApp."
 msgstr ""
 
 #: inc/customizer.php:29
@@ -316,75 +791,63 @@ msgid "No enquiries yet."
 msgstr ""
 
 #. translators: 1: enquiry type, 2: customer name.
-#: inc/enquiries.php:113
+#: inc/enquiries.php:117
 #, php-format
 msgid "%1$s – %2$s"
 msgstr ""
 
-#: inc/enquiries.php:141
-#: inc/enquiries.php:229
+#: inc/enquiries.php:145
+#: inc/enquiries.php:233
 #: inc/enquiry-privacy.php:130
 msgid "Type"
 msgstr ""
 
-#: inc/enquiries.php:142
-#: inc/enquiries.php:230
-#: inc/enquiry-privacy.php:131
-#: inc/vehicle-post-type.php:38
-msgid "Vehicle"
-msgstr ""
-
-#: inc/enquiries.php:143
-#: inc/enquiries.php:231
+#: inc/enquiries.php:147
+#: inc/enquiries.php:235
 #: inc/enquiry-privacy.php:132
 #: template-parts/enquiry-form.php:55
 msgid "Name"
 msgstr ""
 
-#: inc/enquiries.php:144
-#: inc/enquiries.php:232
+#: inc/enquiries.php:148
+#: inc/enquiries.php:236
 #: inc/enquiry-privacy.php:133
 #: template-parts/enquiry-form.php:59
 msgid "Email"
 msgstr ""
 
-#: inc/enquiries.php:145
-#: inc/enquiries.php:233
+#: inc/enquiries.php:149
+#: inc/enquiries.php:237
 #: inc/enquiry-privacy.php:134
 msgid "Phone"
 msgstr ""
 
 #. translators: 1: enquiry type, 2: site name.
-#: inc/enquiries.php:155
+#: inc/enquiries.php:159
 #, php-format
 msgid "New enquiry (%1$s) – %2$s"
 msgstr ""
 
-#: inc/enquiries.php:215
+#: inc/enquiries.php:219
 msgid "Enquiry details"
 msgstr ""
 
-#: inc/enquiries.php:228
+#: inc/enquiries.php:232
 #: inc/enquiry-privacy.php:129
 msgid "Received"
 msgstr ""
 
-#: inc/enquiries.php:234
+#: inc/enquiries.php:238
 #: inc/enquiry-privacy.php:135
 msgid "Message"
 msgstr ""
 
-#: inc/enquiries.php:235
+#: inc/enquiries.php:239
 #: inc/enquiry-privacy.php:136
 msgid "Consent"
 msgstr ""
 
-#: inc/enquiries.php:235
-#: inc/template-tags.php:44
-msgid "No"
-msgstr ""
-
-#: inc/enquiries.php:245
+#: inc/enquiries.php:249
 msgid "Open vehicle"
 msgstr ""
 
@@ -458,10 +921,6 @@ msgctxt "price format"
 msgid "€ %s"
 msgstr ""
 
-#: inc/template-tags.php:44
-msgid "Yes"
-msgstr ""
-
 #: inc/template-tags.php:109
 #: inc/template-tags.php:342
 msgid "Home"
@@ -521,20 +980,12 @@ msgstr ""
 msgid "Reserved"
 msgstr ""
 
-#: inc/vehicle-meta.php:46
-msgid "Featured"
-msgstr ""
-
 #: inc/vehicle-meta.php:50
 msgid "Variant / trim"
 msgstr ""
 
 #: inc/vehicle-meta.php:51
 msgid "e.g. 40 TFSI S line"
-msgstr ""
-
-#: inc/vehicle-meta.php:55
-msgid "Price"
 msgstr ""
 
 #: inc/vehicle-meta.php:60
@@ -553,16 +1004,8 @@ msgstr ""
 msgid "Margin scheme (VAT not deductible)"
 msgstr ""
 
-#: inc/vehicle-meta.php:74
-msgid "Year"
-msgstr ""
-
 #: inc/vehicle-meta.php:79
 msgid "First registration"
-msgstr ""
-
-#: inc/vehicle-meta.php:83
-msgid "Mileage"
 msgstr ""
 
 #: inc/vehicle-meta.php:84
@@ -664,79 +1107,33 @@ msgstr ""
 msgid "Image gallery"
 msgstr ""
 
-#: inc/vehicle-meta.php:251
-msgid "Vehicle details"
-msgstr ""
-
-#: inc/vehicle-meta.php:287
-msgid "Select images"
-msgstr ""
-
-#: inc/vehicle-meta.php:335
-#: inc/vehicle-taxonomies.php:24
-#: inc/vehicle-taxonomies.php:141
-#: inc/vehicle-taxonomies.php:156
-#: inc/vehicle-taxonomies.php:227
-msgid "Make"
-msgstr ""
-
-#: inc/vehicle-meta.php:336
-#: inc/vehicle-taxonomies.php:176
-msgid "— Select make —"
-msgstr ""
-
-#: inc/vehicle-meta.php:341
-#: inc/vehicle-taxonomies.php:25
-msgid "Model"
-msgstr ""
-
-#: inc/vehicle-meta.php:343
-msgid "— Select model —"
-msgstr ""
-
-#: inc/vehicle-meta.php:350
-msgid "Missing from the list?"
-msgstr ""
-
-#: inc/vehicle-meta.php:352
-msgid "Add a make"
-msgstr ""
-
-#: inc/vehicle-meta.php:354
-msgid "Add a model (choose its make there)"
-msgstr ""
-
 #: inc/vehicle-post-type.php:37
 msgid "Vehicles"
 msgstr ""
 
 #: inc/vehicle-post-type.php:39
-msgid "Add new vehicle"
-msgstr ""
-
-#: inc/vehicle-post-type.php:40
-msgid "Edit vehicle"
-msgstr ""
-
-#: inc/vehicle-post-type.php:41
-msgid "New vehicle"
+msgid "Add Vehicle"
 msgstr ""
 
 #: inc/vehicle-post-type.php:42
+msgid "New vehicle"
+msgstr ""
+
+#: inc/vehicle-post-type.php:43
 #: template-parts/vehicle-card.php:47
 msgid "View vehicle"
 msgstr ""
 
-#: inc/vehicle-post-type.php:44
+#: inc/vehicle-post-type.php:45
 msgid "No vehicles found."
 msgstr ""
 
-#: inc/vehicle-post-type.php:45
+#: inc/vehicle-post-type.php:46
 msgid "No vehicles found in Trash."
 msgstr ""
 
-#: inc/vehicle-post-type.php:46
-msgid "All vehicles"
+#: inc/vehicle-post-type.php:47
+msgid "All Vehicles"
 msgstr ""
 
 #: inc/vehicle-taxonomies.php:24
@@ -751,32 +1148,16 @@ msgstr ""
 msgid "Body types"
 msgstr ""
 
-#: inc/vehicle-taxonomies.php:26
-msgid "Body type"
-msgstr ""
-
 #: inc/vehicle-taxonomies.php:27
 msgid "Fuel types"
-msgstr ""
-
-#: inc/vehicle-taxonomies.php:27
-msgid "Fuel type"
 msgstr ""
 
 #: inc/vehicle-taxonomies.php:28
 msgid "Transmissions"
 msgstr ""
 
-#: inc/vehicle-taxonomies.php:28
-msgid "Transmission"
-msgstr ""
-
 #: inc/vehicle-taxonomies.php:29
 msgid "Conditions"
-msgstr ""
-
-#: inc/vehicle-taxonomies.php:29
-msgid "Condition"
 msgstr ""
 
 #: inc/vehicle-taxonomies.php:30
@@ -788,99 +1169,103 @@ msgstr ""
 msgid "Equipment item"
 msgstr ""
 
-#: inc/vehicle-taxonomies.php:88
+#: inc/vehicle-taxonomies.php:95
 msgid "Hatchback"
 msgstr ""
 
-#: inc/vehicle-taxonomies.php:89
+#: inc/vehicle-taxonomies.php:96
 msgid "Sedan"
 msgstr ""
 
-#: inc/vehicle-taxonomies.php:90
+#: inc/vehicle-taxonomies.php:97
 msgid "Estate"
 msgstr ""
 
-#: inc/vehicle-taxonomies.php:91
+#: inc/vehicle-taxonomies.php:98
 msgid "SUV"
 msgstr ""
 
-#: inc/vehicle-taxonomies.php:92
+#: inc/vehicle-taxonomies.php:99
 msgid "Coupé"
 msgstr ""
 
-#: inc/vehicle-taxonomies.php:93
+#: inc/vehicle-taxonomies.php:100
 msgid "Convertible"
 msgstr ""
 
-#: inc/vehicle-taxonomies.php:94
+#: inc/vehicle-taxonomies.php:101
 msgid "MPV"
 msgstr ""
 
-#: inc/vehicle-taxonomies.php:95
+#: inc/vehicle-taxonomies.php:102
 msgid "Van"
 msgstr ""
 
-#: inc/vehicle-taxonomies.php:96
+#: inc/vehicle-taxonomies.php:103
 msgid "Pick-up"
 msgstr ""
 
-#: inc/vehicle-taxonomies.php:99
+#: inc/vehicle-taxonomies.php:106
 msgid "Petrol"
 msgstr ""
 
-#: inc/vehicle-taxonomies.php:100
+#: inc/vehicle-taxonomies.php:107
 msgid "Diesel"
 msgstr ""
 
-#: inc/vehicle-taxonomies.php:101
+#: inc/vehicle-taxonomies.php:108
 msgid "Hybrid"
 msgstr ""
 
-#: inc/vehicle-taxonomies.php:102
+#: inc/vehicle-taxonomies.php:109
 msgid "Plug-in hybrid"
 msgstr ""
 
-#: inc/vehicle-taxonomies.php:103
+#: inc/vehicle-taxonomies.php:110
 msgid "Electric"
 msgstr ""
 
-#: inc/vehicle-taxonomies.php:104
+#: inc/vehicle-taxonomies.php:111
 msgid "LPG"
 msgstr ""
 
-#: inc/vehicle-taxonomies.php:105
+#: inc/vehicle-taxonomies.php:112
 msgid "CNG"
 msgstr ""
 
-#: inc/vehicle-taxonomies.php:108
+#: inc/vehicle-taxonomies.php:115
 msgid "Manual"
 msgstr ""
 
-#: inc/vehicle-taxonomies.php:109
+#: inc/vehicle-taxonomies.php:116
 msgid "Automatic"
 msgstr ""
 
-#: inc/vehicle-taxonomies.php:112
+#: inc/vehicle-taxonomies.php:119
 msgid "Used"
 msgstr ""
 
-#: inc/vehicle-taxonomies.php:113
+#: inc/vehicle-taxonomies.php:120
 msgid "New"
 msgstr ""
 
-#: inc/vehicle-taxonomies.php:114
+#: inc/vehicle-taxonomies.php:121
 msgid "Demo"
 msgstr ""
 
-#: inc/vehicle-taxonomies.php:131
+#: inc/vehicle-taxonomies.php:138
 msgid "Models are model families only (e.g. A4, 3 Series, M4). Put trims and engine variants (e.g. 40 TFSI S line) in the vehicle's Variant / trim field."
 msgstr ""
 
-#: inc/vehicle-taxonomies.php:214
+#: inc/vehicle-taxonomies.php:183
+msgid "— Select make —"
+msgstr ""
+
+#: inc/vehicle-taxonomies.php:221
 msgid "Choose the make this model belongs to."
 msgstr ""
 
-#: inc/vehicle-taxonomies.php:244
+#: inc/vehicle-taxonomies.php:251
 msgid "No make"
 msgstr ""
 
@@ -922,10 +1307,6 @@ msgstr ""
 
 #: single-vehicle.php:124
 msgid "Specifications"
-msgstr ""
-
-#: single-vehicle.php:146
-msgid "Description"
 msgstr ""
 
 #: template-parts/breadcrumbs.php:16

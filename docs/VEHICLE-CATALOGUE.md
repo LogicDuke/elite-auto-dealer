@@ -77,7 +77,7 @@ On the demo site the first run created 41 makes and 413 models, and adopted the 
 - `eda_maybe_seed_catalogue()` runs the seed only when the installed version is lower, then stores the new version. A transient lock prevents parallel runs.
 - **When it is checked:**
   - on theme activation (`after_switch_theme`);
-  - on `admin_init` for logged-in staff (`edit_posts`), excluding AJAX.
+  - on `admin_init` for logged-in staff (`edit_vehicles`), excluding AJAX.
 
   It is never checked on front-end requests or anonymous `admin-post` requests. The cost per admin page is one autoloaded option read; the seed itself runs once per version.
 - **To ship catalogue additions:** add entries to the JSON, raise `version` **and** `EDA_CATALOGUE_VERSION`, run the catalogue test. Existing sites seed the new entries the next time staff open wp-admin. Existing terms and dealer links are untouched.

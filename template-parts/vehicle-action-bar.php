@@ -3,7 +3,7 @@
  * Vehicle actions: Call / WhatsApp / Enquire. Placed early in the source (right after the
  * price) so it is early in keyboard order; CSS pins it to the bottom of small screens.
  * Not rendered for sold vehicles. Call and WhatsApp only appear when configured
- * (Customizer → Dealer contact).
+ * (Site Settings, or Customizer → Dealer contact).
  *
  * @package EliteAutoDealer
  */

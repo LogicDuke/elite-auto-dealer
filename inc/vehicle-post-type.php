@@ -33,27 +33,31 @@ function eda_register_vehicle_post_type() {
 	register_post_type(
 		'vehicle',
 		array(
-			'labels'        => array(
+			'labels'          => array(
 				'name'               => __( 'Vehicles', 'elite-auto-dealer' ),
 				'singular_name'      => __( 'Vehicle', 'elite-auto-dealer' ),
-				'add_new_item'       => __( 'Add new vehicle', 'elite-auto-dealer' ),
+				'add_new'            => __( 'Add Vehicle', 'elite-auto-dealer' ),
+				'add_new_item'       => __( 'Add vehicle', 'elite-auto-dealer' ),
 				'edit_item'          => __( 'Edit vehicle', 'elite-auto-dealer' ),
 				'new_item'           => __( 'New vehicle', 'elite-auto-dealer' ),
 				'view_item'          => __( 'View vehicle', 'elite-auto-dealer' ),
 				'search_items'       => __( 'Search vehicles', 'elite-auto-dealer' ),
 				'not_found'          => __( 'No vehicles found.', 'elite-auto-dealer' ),
 				'not_found_in_trash' => __( 'No vehicles found in Trash.', 'elite-auto-dealer' ),
-				'all_items'          => __( 'All vehicles', 'elite-auto-dealer' ),
+				'all_items'          => __( 'All Vehicles', 'elite-auto-dealer' ),
 			),
-			'public'        => true,
-			'show_in_rest'  => true,
-			'menu_position' => 5,
-			'menu_icon'     => 'dashicons-car',
+			'public'          => true,
+			// Own capabilities (edit_vehicles, publish_vehicles, …): see inc/admin-roles.php.
+			'capability_type' => array( 'vehicle', 'vehicles' ),
+			'map_meta_cap'    => true,
+			'show_in_rest'    => true,
+			'menu_position'   => 5,
+			'menu_icon'       => 'dashicons-car',
 			// custom-fields is required for registered meta to appear in the REST API.
 			// page-attributes adds the native "Order" field (menu_order): the curated featured order.
-			'supports'      => array( 'title', 'editor', 'excerpt', 'thumbnail', 'revisions', 'custom-fields', 'page-attributes' ),
-			'has_archive'   => eda_url_bases()['vehicles'],
-			'rewrite'       => array(
+			'supports'        => array( 'title', 'editor', 'excerpt', 'thumbnail', 'revisions', 'custom-fields', 'page-attributes' ),
+			'has_archive'     => eda_url_bases()['vehicles'],
+			'rewrite'         => array(
 				'slug'       => eda_url_bases()['vehicle'],
 				'with_front' => false,
 			),

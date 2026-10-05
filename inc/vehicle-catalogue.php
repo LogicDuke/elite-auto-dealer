@@ -161,7 +161,7 @@ function eda_maybe_seed_catalogue() {
  * Check on staff admin page loads only: never on the front end, AJAX or anonymous admin-post requests.
  */
 function eda_catalogue_admin_check() {
-	if ( wp_doing_ajax() || ! current_user_can( 'edit_posts' ) ) {
+	if ( wp_doing_ajax() || ! current_user_can( 'edit_vehicles' ) ) {
 		return;
 	}
 	eda_maybe_seed_catalogue();

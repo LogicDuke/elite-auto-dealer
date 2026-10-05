@@ -41,20 +41,24 @@ function eda_register_enquiry_post_type() {
 	register_post_type(
 		'eda_enquiry',
 		array(
-			'labels'       => array(
+			'labels'          => array(
 				'name'          => __( 'Enquiries', 'elite-auto-dealer' ),
 				'singular_name' => __( 'Enquiry', 'elite-auto-dealer' ),
 				'edit_item'     => __( 'Enquiry', 'elite-auto-dealer' ),
 				'all_items'     => __( 'Enquiries', 'elite-auto-dealer' ),
 				'not_found'     => __( 'No enquiries yet.', 'elite-auto-dealer' ),
 			),
-			'public'       => false,
-			'show_ui'      => true,
-			'show_in_menu' => 'edit.php?post_type=vehicle',
-			'show_in_rest' => false,
-			'supports'     => array( 'title' ),
-			'map_meta_cap' => true,
-			'capabilities' => array( 'create_posts' => 'do_not_allow' ),
+			'public'          => false,
+			'show_ui'         => true,
+			'show_in_menu'    => true,
+			'menu_position'   => 6,
+			'menu_icon'       => 'dashicons-email-alt',
+			'show_in_rest'    => false,
+			'supports'        => array( 'title' ),
+			// Own capabilities (edit_enquiries, …): see inc/admin-roles.php.
+			'capability_type' => array( 'enquiry', 'enquiries' ),
+			'map_meta_cap'    => true,
+			'capabilities'    => array( 'create_posts' => 'do_not_allow' ),
 		)
 	);
 }

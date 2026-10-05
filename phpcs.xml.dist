@@ -17,6 +17,11 @@
 			<property name="text_domain" type="array" value="elite-auto-dealer"/>
 		</properties>
 	</rule>
+	<rule ref="WordPress.WP.Capabilities">
+		<properties>
+			<property name="custom_capabilities" type="array" value="edit_vehicles,edit_others_vehicles,edit_published_vehicles,edit_private_vehicles,publish_vehicles,read_private_vehicles,delete_vehicles,delete_others_vehicles,delete_published_vehicles,delete_private_vehicles,edit_enquiries,edit_others_enquiries,edit_private_enquiries,edit_published_enquiries,read_private_enquiries,delete_enquiries,delete_others_enquiries,delete_private_enquiries,delete_published_enquiries,eda_manage_site_settings"/>
+		</properties>
+	</rule>
 	<rule ref="WordPress.NamingConventions.PrefixAllGlobals">
 		<properties>
 			<property name="prefixes" type="array" value="eda,EDA"/>
