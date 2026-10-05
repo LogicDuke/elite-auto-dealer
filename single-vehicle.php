@@ -19,8 +19,10 @@ while ( have_posts() ) :
 	$eda_variant = eda_vehicle_subtitle();
 	$eda_gallery = eda_vehicle_meta( 'gallery' );
 	$eda_gallery = is_array( $eda_gallery ) ? array_values( $eda_gallery ) : array();
-	$eda_fields  = eda_vehicle_meta_fields();
-	$eda_vat     = eda_vehicle_meta( 'vat_regime' );
+	// Slideshow order: featured image (hero), then the gallery (rear, cockpit, interior, detail).
+	$eda_images = array_values( array_unique( array_filter( array_map( 'intval', array_merge( array( get_post_thumbnail_id() ), $eda_gallery ) ), 'wp_attachment_is_image' ) ) );
+	$eda_fields = eda_vehicle_meta_fields();
+	$eda_vat    = eda_vehicle_meta( 'vat_regime' );
 	?>
 	<article <?php post_class( array( 'vehicle-single', $eda_status ? 'vehicle-single--' . $eda_status : '' ) ); ?>>
 		<div class="container">
@@ -28,17 +30,55 @@ while ( have_posts() ) :
 
 			<div class="vehicle-layout">
 				<div class="vehicle-layout__media">
-					<div class="vehicle-gallery">
-						<div class="vehicle-gallery__main">
-							<?php eda_vehicle_image( get_post_thumbnail_id(), 'eda-vehicle-large', '(min-width: 1024px) 60vw, 100vw', true ); ?>
-							<?php eda_vehicle_status_badge(); ?>
+					<?php if ( ! $eda_images ) : // No photography yet: placeholders (main + 4 slots). ?>
+						<div class="vehicle-gallery">
+							<div class="vehicle-gallery__main">
+								<?php eda_vehicle_image( 0, 'eda-vehicle-large', '(min-width: 1024px) 60vw, 100vw', true ); ?>
+								<?php eda_vehicle_status_badge(); ?>
+							</div>
+							<ul class="vehicle-gallery__thumbs">
+								<?php for ( $eda_i = 0; $eda_i < 4; $eda_i++ ) : ?>
+									<li><?php eda_vehicle_image( 0, 'eda-vehicle-card', '(min-width: 1024px) 15vw, 25vw' ); ?></li>
+								<?php endfor; ?>
+							</ul>
 						</div>
-						<ul class="vehicle-gallery__thumbs">
-							<?php for ( $eda_i = 0; $eda_i < 4; $eda_i++ ) : // Gallery slots: rear, cockpit, interior, detail. ?>
-								<li><?php eda_vehicle_image( $eda_gallery[ $eda_i ] ?? 0, 'eda-vehicle-card', '(min-width: 1024px) 15vw, 25vw' ); ?></li>
-							<?php endfor; ?>
-						</ul>
-					</div>
+					<?php else : // Featured image + gallery: a slideshow (assets/js/vehicle-gallery.js); without JS the first image and the thumbnail links. ?>
+						<?php $eda_count = count( $eda_images ); ?>
+						<?php /* translators: %s: vehicle title. */ ?>
+						<div class="vehicle-gallery" data-gallery data-label="<?php echo esc_attr( sprintf( __( 'Photos of %s', 'elite-auto-dealer' ), get_the_title() ) ); ?>">
+							<div class="vehicle-gallery__main">
+								<div class="vehicle-gallery__slides">
+									<?php foreach ( $eda_images as $eda_i => $eda_image ) : // Only the first loads up front; the rest are hidden, so the browser fetches them when shown. ?>
+										<div class="vehicle-gallery__slide<?php echo 0 === $eda_i ? ' is-active' : ''; ?>" data-gallery-slide<?php echo $eda_i ? ' hidden' : ''; ?>>
+											<?php eda_vehicle_image( $eda_image, 'eda-vehicle-large', '(min-width: 1024px) 60vw, 100vw', 0 === $eda_i ); ?>
+										</div>
+									<?php endforeach; ?>
+								</div>
+								<?php eda_vehicle_status_badge(); ?>
+								<?php if ( $eda_count > 1 ) : ?>
+									<button type="button" class="vehicle-gallery__nav vehicle-gallery__nav--prev" data-gallery-prev hidden aria-label="<?php esc_attr_e( 'Previous vehicle image', 'elite-auto-dealer' ); ?>">
+										<svg viewBox="0 0 24 24" width="20" height="20" aria-hidden="true" focusable="false"><path d="M15 5l-7 7 7 7" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"/></svg>
+									</button>
+									<button type="button" class="vehicle-gallery__nav vehicle-gallery__nav--next" data-gallery-next hidden aria-label="<?php esc_attr_e( 'Next vehicle image', 'elite-auto-dealer' ); ?>">
+										<svg viewBox="0 0 24 24" width="20" height="20" aria-hidden="true" focusable="false"><path d="M9 5l7 7-7 7" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"/></svg>
+									</button>
+									<?php /* translators: 1: current image number, 2: number of images. */ ?>
+									<p class="screen-reader-text" aria-live="polite" data-gallery-status data-template="<?php esc_attr_e( 'Image %1$s of %2$s', 'elite-auto-dealer' ); ?>"></p>
+								<?php endif; ?>
+							</div>
+							<?php if ( $eda_count > 1 ) : ?>
+								<ul class="vehicle-gallery__thumbs" style="--thumbs: <?php echo (int) $eda_count; ?>">
+									<?php foreach ( $eda_images as $eda_i => $eda_image ) : ?>
+										<li>
+											<a class="vehicle-gallery__thumb" href="<?php echo esc_url( (string) wp_get_attachment_image_url( $eda_image, 'full' ) ); ?>" data-gallery-thumb<?php echo 0 === $eda_i ? ' aria-current="true"' : ''; ?>>
+												<?php eda_vehicle_image( $eda_image, 'eda-vehicle-card', '(min-width: 1024px) 12vw, 20vw' ); ?>
+											</a>
+										</li>
+									<?php endforeach; ?>
+								</ul>
+							<?php endif; ?>
+						</div>
+					<?php endif; ?>
 				</div>
 
 				<div class="vehicle-layout__summary">

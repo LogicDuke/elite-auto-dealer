@@ -36,8 +36,10 @@ inc/
   inventory-query.php     Inventory page size (12), price_max filter, sort options, shared make/model data + search state
   enquiries.php           Enquiry types, private `eda_enquiry` CPT, validation, storage, email, handler, nonce refresh
   enquiry-privacy.php     Enquiry retention clean-up, personal-data exporter and eraser
-  customizer.php          Dealer contact: phone, WhatsApp, enquiry email
+  customizer.php          Dealer contact (phone, WhatsApp, enquiry email) + homepage / Vehicles images
+  page-header.php         Page header image (meta _eda_header_image + edit-screen box)
 template-parts/
+  page-intro.php          Shared inner-page header: full-width image hero or plain text header
   vehicle-card.php        Listing card
   vehicle-action-bar.php  Call / WhatsApp / Enquire (sticky on small screens)
   enquiry-form.php        The one reusable enquiry form
@@ -46,18 +48,24 @@ template-parts/
 page-templates/contact.php  "Contact" page template: page content + general enquiry form
 front-page.php, archive-vehicle.php, single-vehicle.php, page.php, index.php, 404.php, header.php, footer.php
 assets/css/main.css     Design system: tokens, layout, header/drawer, cards, inventory, vehicle page, forms
-assets/js/admin-vehicle.js  Media picker for the gallery field
+assets/js/admin-vehicle.js  Media picker for the gallery field and the page header image box
 assets/js/enquiry.js    Refreshes the enquiry nonce before submit (cache-safe forms)
 assets/js/navigation.js Mobile drawer (ESC, focus loop, scroll lock) + clean GET search URLs
 assets/js/make-model.js Shared Make → Model cascading (homepage search, inventory filter, admin selector)
+assets/js/vehicle-gallery.js  Vehicle page slideshow: arrows, thumbnails, keyboard, swipe (vehicle pages only, progressive enhancement)
 data/vehicle-catalogue.json  Default Make → Model family catalogue (49 makes, 428 models), generated
 bin/build-vehicle-catalogue.py  Catalogue source + generator (--check verifies the JSON); dev tool, not shipped
 languages/              elite-auto-dealer.pot + nl_BE / fr_BE .po/.mo (see "Multilingual")
 demo/vehicles.json      Canonical demo inventory (Aurelis Motors, 15 vehicles)
 demo/seed.php           Idempotent demo seeder / validator / cleanup (wp-cli)
+demo/import-images.php  Idempotent demo image importer / QA gate / cleanup (wp-cli)
+demo/import-site-images.php  Website images (homepage hero, inner-page headers): import, assign, cleanup (wp-cli)
+demo/images/            Approved demo JPEGs (vehicles + site/), local only (Git-ignored; archived in Drive)
 assets/img, assets/fonts   Empty, reserved
 tests/smoke-test.php    wp-cli smoke test (data model, sanitising, enquiries, SEO helpers)
 tests/demo-test.php     Demo dataset rules, seeded state, idempotency, cleanup safety drill
+tests/image-import-test.php  Image QA gate, import, idempotency, checksum replacement, cleanup safety, derivatives
+tests/site-image-test.php    Website images: QA gate, import, assignment, cleanup, rendered hero and page headers
 tests/catalogue-test.php  Catalogue data, seeding/versioning, sold-only filter rule, admin selector, generator check
 ```
 
@@ -202,7 +210,7 @@ Because the ratios match, `wp_get_attachment_image()` / `the_post_thumbnail()` a
 
 **Source contract:** vehicle photos are uploaded at exactly **1536 × 1024 px**, 3:2, sRGB JPEG, 180–350 KB (preferred maximum 450 KB). See [VEHICLE-IMAGE-ROADMAP.md](VEHICLE-IMAGE-ROADMAP.md) §3 and `image_contract` in `demo/image-roadmap.json`. No registered vehicle size exceeds the source. WordPress never upscales, so a smaller upload would simply lack the larger derivatives; the import QA rejects such files instead of enlarging them. Byte size and dimensions are checked at import, and the theme ships no compression or optimisation code.
 
-**Homepage hero:** `front-page.php` currently renders a placeholder through `eda-vehicle-large`. The final hero is a separate art-directed asset (its own brief, crop and dimensions, still to be defined) and is **not** bound by the vehicle-photo contract.
+**Homepage hero:** a separate art-directed asset, **not** bound by the vehicle-photo contract. `eda_home_hero_image()` renders a `<picture>` (desktop image plus a portrait-mobile source) from the Customizer "Homepage hero" settings, falling back to the placeholder. Vehicles, About, Finance and Contact share one full-width header hero (`template-parts/page-intro.php`, 260 / 320 / 400–512 px, light text over a subtle overlay, slow image-only zoom that is off for reduced motion); without a header image it is the plain text header. The header image is separate from the body image: pages use page meta `_eda_header_image` ("Header image" box, `inc/page-header.php`), Vehicles the Customizer `eda_inventory_image`. A page's featured image stays in its content. See [WEBSITE-IMAGE-ROADMAP.md](WEBSITE-IMAGE-ROADMAP.md).
 
 ## Enquiries
 
@@ -391,7 +399,7 @@ Demo content only, replaceable without code changes. The full vehicle table is i
   ```sh
   wp eval-file wp-content/themes/elite-auto-dealer/demo/seed.php            # import / update
   wp eval-file wp-content/themes/elite-auto-dealer/demo/seed.php validate   # validate the JSON only
-  wp eval-file wp-content/themes/elite-auto-dealer/demo/seed.php cleanup    # remove the demo
+  wp eval-file wp-content/themes/elite-auto-dealer/demo/seed.php cleanup    # remove the demo (vehicles + images)
   wp eval-file wp-content/themes/elite-auto-dealer/tests/demo-test.php      # verify (leaves the demo seeded)
   ```
 
@@ -411,7 +419,7 @@ Demo content only, replaceable without code changes. The full vehicle table is i
   - It deletes only vehicles carrying the demo marker.
   - It deletes make, model and equipment terms only if the seeder created them **and** no vehicle uses them any more.
   - It never deletes base vocabulary terms, terms that existed before seeding, or terms used by real vehicles. Enquiries are not deleted; they follow the retention policy.
-- **No images yet.** No featured images or gallery, no placeholder URLs, no network requests. The image contract for the next phase (75 images: 15 × hero/rear/cockpit/interior/detail, exactly 1536 × 1024, 3:2, sRGB JPEG, 180–350 KB) is in [VEHICLE-IMAGE-ROADMAP.md](VEHICLE-IMAGE-ROADMAP.md), with the machine-readable manifest in `demo/image-roadmap.json` (validate with `php tests/image-roadmap-test.php`).
+- **Images:** 75 approved photos (15 × hero/rear/cockpit/interior/detail, exactly 1536 × 1024, 3:2, sRGB JPEG) are imported by `demo/import-images.php` from the Git-ignored `demo/images/`. The hero becomes the featured image; the other four form `_eda_gallery`. Identity, idempotency, the QA gate and cleanup are in [VEHICLE-IMAGE-ROADMAP.md](VEHICLE-IMAGE-ROADMAP.md) §7; the manifest is `demo/image-roadmap.json` (`php tests/image-roadmap-test.php`). The seeder never touches `_thumbnail_id` or `_eda_gallery`, so reseeding keeps the images.
 - **Site identity on the demo site:** the title "Aurelis Motors" and tagline "Premium pre-owned automobiles" were set as normal WordPress options (Settings → General) on the local demo install only. They are never hard-coded in the theme or set by the seeder. Phone, WhatsApp and enquiry email stay empty until safe fictional contact data is approved.
 - **Term language:** make, model and equipment term names are English for now. Translating database terms is deferred; the theme UI is NL/FR-ready.
 - **Packaging:** `demo/` stays in the development repository. Showcase/demo builds may include the demo tooling. Production/client release packages may exclude `demo/` (seeder and dataset) when a clean install is required; the theme does not depend on it at runtime. Packaging rules are not changed yet.

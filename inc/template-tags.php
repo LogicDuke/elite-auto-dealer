@@ -263,6 +263,45 @@ function eda_vehicle_image( $attachment_id, $size, $sizes, $eager = false ) {
 }
 
 /**
+ * Homepage hero image: an art-directed <picture> from the Customizer "Homepage hero" settings
+ * (desktop/default plus an optional portrait-mobile source). Decorative (alt=""), because the H1
+ * carries the meaning; above the fold, so eager and high priority. Placeholder until a desktop
+ * image is set.
+ */
+function eda_home_hero_image() {
+	$desktop = (int) get_theme_mod( 'eda_hero_image' );
+	$mobile  = (int) get_theme_mod( 'eda_hero_image_mobile' );
+	if ( ! wp_attachment_is_image( $desktop ) ) {
+		echo '<span class="media-placeholder" aria-hidden="true"></span>';
+		return;
+	}
+	echo '<picture>';
+	if ( wp_attachment_is_image( $mobile ) ) {
+		$meta = wp_get_attachment_metadata( $mobile );
+		printf(
+			'<source media="(orientation: portrait) and (max-width: 63.99em)" srcset="%s" sizes="100vw" width="%d" height="%d">',
+			esc_attr( (string) wp_get_attachment_image_srcset( $mobile, 'full' ) ),
+			(int) $meta['width'],
+			(int) $meta['height']
+		);
+	}
+	echo wp_get_attachment_image(
+		$desktop,
+		'full',
+		false,
+		array(
+			'class'         => 'hero__image',
+			'alt'           => '',
+			'sizes'         => '100vw',
+			'loading'       => 'eager',
+			'fetchpriority' => 'high',
+			'decoding'      => 'async',
+		)
+	);
+	echo '</picture>';
+}
+
+/**
  * Number of vehicles currently offered (published and not sold).
  *
  * @return int

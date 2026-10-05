@@ -1,6 +1,6 @@
 <?php
 /**
- * Customizer: dealer contact details used by the vehicle action bar and enquiry emails.
+ * Customizer: dealer contact details (vehicle action bar, enquiry emails) and the header images.
  *
  * @package EliteAutoDealer
  */
@@ -38,6 +38,35 @@ function eda_customize_register( $wp_customize ) {
 				'description' => $description,
 				'section'     => 'eda_dealer',
 				'type'        => $type,
+			)
+		);
+	}
+
+	// Site images: attachment IDs (docs/WEBSITE-IMAGE-ROADMAP.md). Pages use their featured image.
+	$wp_customize->add_section(
+		'eda_hero',
+		array(
+			'title'    => __( 'Header images', 'elite-auto-dealer' ),
+			'priority' => 31,
+		)
+	);
+	$images = array(
+		'eda_hero_image'        => array( __( 'Hero image (desktop and landscape)', 'elite-auto-dealer' ), __( '2560 × 1138 px JPEG. Keep the left side calm for the headline.', 'elite-auto-dealer' ) ),
+		'eda_hero_image_mobile' => array( __( 'Hero image (portrait mobile)', 'elite-auto-dealer' ), __( '1200 × 1800 px JPEG, subject in the upper third. Optional.', 'elite-auto-dealer' ) ),
+		'eda_inventory_image'   => array( __( 'Vehicles page header image', 'elite-auto-dealer' ), __( '1536 × 1024 px JPEG (3:2). Other pages use their featured image.', 'elite-auto-dealer' ) ),
+	);
+	foreach ( $images as $id => list( $label, $description ) ) {
+		$wp_customize->add_setting( $id, array( 'sanitize_callback' => 'absint' ) );
+		$wp_customize->add_control(
+			new WP_Customize_Media_Control(
+				$wp_customize,
+				$id,
+				array(
+					'label'       => $label,
+					'description' => $description,
+					'section'     => 'eda_hero',
+					'mime_type'   => 'image',
+				)
 			)
 		);
 	}

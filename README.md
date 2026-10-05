@@ -25,6 +25,15 @@ wp eval-file wp-content/themes/elite-auto-dealer/tests/smoke-test.php
 wp eval-file wp-content/themes/elite-auto-dealer/demo/seed.php
 wp eval-file wp-content/themes/elite-auto-dealer/tests/demo-test.php
 
+# Demo images: unpack the approved ZIP (Drive) into demo/images/, then import and verify
+wp eval-file wp-content/themes/elite-auto-dealer/demo/import-images.php validate
+wp eval-file wp-content/themes/elite-auto-dealer/demo/import-images.php
+wp eval-file wp-content/themes/elite-auto-dealer/tests/image-import-test.php
+
+# Website images (homepage hero + inner-page headers): unpack the approved ZIPs into demo/images/site/
+wp eval-file wp-content/themes/elite-auto-dealer/demo/import-site-images.php
+wp eval-file wp-content/themes/elite-auto-dealer/tests/site-image-test.php
+
 # Make/Model catalogue (theme active)
 wp eval-file wp-content/themes/elite-auto-dealer/tests/catalogue-test.php
 

@@ -17,8 +17,8 @@ defined( 'ABSPATH' ) || exit;
 
 // phpcs:disable WordPress.WP.AlternativeFunctions, WordPress.Security.EscapeOutput -- CLI test script.
 
-define( 'EDA_DEMO_LIBRARY', true );
-require get_template_directory() . '/demo/seed.php';
+define( 'EDA_SITE_IMAGES_LIBRARY', true );
+require_once get_template_directory() . '/demo/import-site-images.php'; // Loads both importers and demo/seed.php.
 
 $eda_failures = 0;
 $eda_check    = static function ( $condition, $message ) use ( &$eda_failures ) {
@@ -236,7 +236,20 @@ wp_set_object_terms( $eda_real, array( 'navigation' ), 'vehicle_equipment' );
 wp_set_object_terms( $eda_real, array( 'bmw' ), 'vehicle_make' );
 $eda_blocked = eda_demo_seed( $eda_data );
 $eda_check( array( 'AUR-26001' ) === $eda_blocked['skipped'] && 'Real dealership vehicle' === get_the_title( $eda_real ), 'seeder never overwrites a real vehicle with the same stock ID' );
-$eda_clean = eda_demo_cleanup( $eda_dataset );
+$eda_images = count(
+	get_posts(
+		array(
+			'post_type'      => 'attachment',
+			'post_status'    => 'any',
+			'fields'         => 'ids',
+			'posts_per_page' => -1,
+			'meta_key'       => '_eda_demo_image', // phpcs:ignore WordPress.DB.SlowDBQuery.slow_db_query_meta_key
+		)
+	)
+);
+$eda_clean  = eda_demo_cleanup( $eda_dataset );
+$eda_site   = count( array_filter( array( get_theme_mod( 'eda_hero_image' ), get_theme_mod( 'eda_hero_image_mobile' ) ) ) );
+$eda_check( $eda_images === $eda_clean['images'] && $eda_clean['site_images'] >= $eda_site && ! get_theme_mod( 'eda_hero_image' ), "cleanup also removes the $eda_images tagged vehicle images and {$eda_clean['site_images']} website images (hero settings cleared)" );
 $eda_check( 15 === $eda_clean['vehicles'] && null !== get_post( $eda_real ), 'cleanup removes the 15 demo vehicles and keeps the real one' );
 $eda_check( get_term_by( 'slug', 'navigation', 'vehicle_equipment' ) && get_term_by( 'slug', 'bmw', 'vehicle_make' ), 'cleanup keeps demo-created terms still used by a real vehicle' );
 $eda_check( ! get_term_by( 'slug', 'sport-exhaust', 'vehicle_equipment' ), 'cleanup removes unused demo-created terms' );
@@ -247,6 +260,14 @@ wp_delete_post( $eda_real, true );
 // Restore the demo inventory.
 $eda_restore = eda_demo_seed( $eda_data );
 $eda_check( 15 === $eda_restore['created'] && 15 === (int) wp_count_posts( 'vehicle' )->publish, 'demo inventory restored (15 created)' );
+if ( $eda_images ) {
+	$eda_photos = eda_images_import( eda_images_manifest(), get_template_directory() . '/demo/images' );
+	$eda_check( $eda_images === $eda_photos['created'] && 15 === $eda_photos['vehicles'], "demo images restored ({$eda_photos['created']} created)" );
+}
+if ( $eda_clean['site_images'] ) {
+	$eda_pages = eda_site_images_import( get_template_directory() . '/demo/images/site', $eda_dataset );
+	$eda_check( $eda_clean['site_images'] === $eda_pages['created'] && $eda_pages['created'] === $eda_pages['assigned'], "website images restored ({$eda_pages['created']} created, {$eda_pages['assigned']} assigned)" );
+}
 
 echo PHP_EOL . ( $eda_failures ? "$eda_failures FAILED" : 'ALL PASSED' ) . PHP_EOL;
 if ( $eda_failures ) {

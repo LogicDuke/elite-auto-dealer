@@ -94,6 +94,7 @@ img {
 }
 
 .hero :focus-visible,
+.page-intro--hero :focus-visible,
 .section--dark :focus-visible,
 .site-footer :focus-visible {
 	outline-color: var(--focus-light);
@@ -550,12 +551,44 @@ html:not(.js) .site-nav {
 	object-fit: cover;
 }
 
-/* Keeps text readable over the eventual photograph. */
+.hero__visual picture {
+	display: block;
+	height: 100%;
+}
+
+.hero__visual .hero__image {
+	display: block;
+	width: 100%;
+	height: 100%;
+	object-fit: cover;
+}
+
+/* Keeps text readable over the photograph: subject right, headline left. */
 .hero__visual::after {
 	content: "";
 	position: absolute;
 	inset: 0;
 	background: linear-gradient(90deg, rgba(18, 19, 22, 0.88) 0%, rgba(18, 19, 22, 0.55) 55%, rgba(18, 19, 22, 0.15) 100%);
+}
+
+/* Portrait below 1024px: the mobile source (subject in the upper third, text below it). */
+@media (orientation: portrait) and (max-width: 63.99em) {
+	.hero__visual .hero__image {
+		object-position: 50% 30%;
+	}
+
+	/* Stops run from the bottom: the text block is bottom-aligned and about 400px tall on every
+	   portrait size, so the text always sits on the dark part and the subject band above stays light. */
+	.hero__visual::after {
+		background: linear-gradient(0deg, rgba(18, 19, 22, 0.82) 0, rgba(18, 19, 22, 0.72) 410px, rgba(18, 19, 22, 0.1) 450px, rgba(18, 19, 22, 0.1) calc(100% - 3rem), rgba(18, 19, 22, 0.28) 100%);
+	}
+}
+
+/* Below 360px the headline wraps to three lines, so the text block (and the dark zone) is taller. */
+@media (orientation: portrait) and (max-width: 22.49em) {
+	.hero__visual::after {
+		background: linear-gradient(0deg, rgba(18, 19, 22, 0.82) 0, rgba(18, 19, 22, 0.74) 490px, rgba(18, 19, 22, 0.25) 530px, rgba(18, 19, 22, 0.25) 100%);
+	}
 }
 
 .hero__content > * {
@@ -953,6 +986,196 @@ textarea {
 	border-bottom: 1px solid var(--line);
 }
 
+/* Header image hero (Vehicles, About, Finance, Contact): the image fills a full-width hero,
+   shallower than the homepage's. Breadcrumb top-left, title block bottom-left, light text over a
+   subtle left-weighted overlay. Without an image the plain text header above applies. */
+.page-intro--hero {
+	position: relative;
+	display: flex;
+	min-height: 16.25rem;
+	padding-block: 1.25rem 1.75rem;
+	border-bottom: 0;
+	background: var(--graphite);
+	color: #fff;
+	isolation: isolate;
+}
+
+.page-intro__backdrop {
+	position: absolute;
+	inset: 0;
+	z-index: -1;
+}
+
+.page-intro__backdrop::after {
+	content: "";
+	position: absolute;
+	inset: 0;
+	background:
+		linear-gradient(0deg, rgba(18, 19, 22, 0.75) 0%, rgba(18, 19, 22, 0.45) 50%, rgba(18, 19, 22, 0) 85%),
+		linear-gradient(90deg, rgba(18, 19, 22, 0.78) 0%, rgba(18, 19, 22, 0.45) 40%, rgba(18, 19, 22, 0.08) 80%);
+}
+
+.page-intro__backdrop-image {
+	display: block;
+	width: 100%;
+	height: 100%;
+	object-fit: cover;
+	object-position: 50% 45%;
+}
+
+.page-intro--hero .page-intro__inner,
+.page-intro--hero .page-intro__text {
+	display: flex;
+	flex-direction: column;
+	justify-content: space-between;
+	gap: 1.5rem;
+}
+
+.page-intro--hero .page-intro__text {
+	flex: 1;
+}
+
+.page-intro--hero .breadcrumbs,
+.page-intro--hero .breadcrumbs [aria-current="page"] {
+	margin: 0;
+	color: rgba(255, 255, 255, 0.85);
+}
+
+.page-intro--hero .breadcrumbs li:not(:last-child)::after {
+	color: rgba(255, 255, 255, 0.45);
+}
+
+.page-intro--hero .page-title {
+	color: #fff;
+}
+
+.page-intro--hero .page-lead {
+	color: rgba(255, 255, 255, 0.85);
+}
+
+@media (min-width: 40em) {
+	.page-intro--hero {
+		min-height: 20rem;
+		padding-block: 1.5rem 2.25rem;
+	}
+
+	/* Text sits left: lighter bottom shading keeps the cars on the right bright. */
+	.page-intro__backdrop::after {
+		background:
+			linear-gradient(0deg, rgba(18, 19, 22, 0.55) 0%, rgba(18, 19, 22, 0) 55%),
+			linear-gradient(90deg, rgba(18, 19, 22, 0.78) 0%, rgba(18, 19, 22, 0.45) 40%, rgba(18, 19, 22, 0.08) 80%);
+	}
+}
+
+/* 400px up to 1440, growing with the width (422px at 1920, 512px at 2560) so the 3:2 source keeps
+   the cars whole on wide screens. */
+@media (min-width: 64em) {
+	.page-intro--hero {
+		min-height: clamp(25rem, 22vw, 32rem);
+		padding-block: 2rem 2.75rem;
+	}
+}
+
+@media (min-width: 100em) {
+	.page-intro__backdrop-image {
+		object-position: 50% 40%;
+	}
+}
+
+@media (min-width: 140em) {
+	.page-intro__backdrop-image {
+		object-position: 50% 42%;
+	}
+}
+
+/* ---------- Hero motion ---------- */
+
+/* A slow, clearly visible image-only push-in (zoom, alternate) on the homepage and inner-page
+   heroes; the easing stays in motion through most of the cycle and only softens at the turns. The
+   wrapper clips; overlays, text, buttons and forms stay still. Transform only (compositor-friendly).
+   Values per hero via custom properties; the scale always overscans the frame, so no edge is ever
+   exposed. Off entirely for reduced motion (below). */
+.hero__visual,
+.page-intro__backdrop {
+	overflow: hidden;
+}
+
+.hero__image,
+.page-intro__backdrop-image {
+	transform-origin: var(--hero-origin, 50% 50%);
+	animation: eda-hero-motion var(--hero-duration, 14s) cubic-bezier(0.3, 0.1, 0.7, 0.9) infinite alternate both;
+}
+
+@keyframes eda-hero-motion {
+	from {
+		transform: scale(1) translate3d(0, 0, 0);
+	}
+
+	to {
+		transform: scale(var(--hero-scale, 1.06)) translate3d(0, 0, 0);
+	}
+}
+
+/* A straight camera push-in on every hero: origins are centred horizontally, so nothing pans
+   sideways. Vertical anchors only where they keep the subject whole. */
+.hero__visual {
+	--hero-scale: 1.08;
+	--hero-duration: 14s;
+	--hero-origin: 50% 50%;
+}
+
+/* Vehicles: centred on the line of cars so roofs and wheels grow evenly. */
+.page-intro--motion-vehicles {
+	--hero-scale: 1.06;
+	--hero-duration: 13.5s;
+	--hero-origin: 50% 44%;
+}
+
+.page-intro--motion-about {
+	--hero-scale: 1.07;
+}
+
+/* Finance: the calmest. */
+.page-intro--motion-finance {
+	--hero-scale: 1.06;
+	--hero-duration: 15s;
+}
+
+.page-intro--motion-contact {
+	--hero-scale: 1.07;
+}
+
+/* Portrait homepage (mobile source, subject in the upper third) and phones: gentler. */
+@media (orientation: portrait) and (max-width: 63.99em) {
+	.hero__visual {
+		--hero-scale: 1.04;
+		--hero-origin: 50% 30%;
+	}
+}
+
+@media (max-width: 39.99em) {
+	.page-intro--hero {
+		--hero-scale: 1.035;
+	}
+}
+
+/* Wide screens: the line of cars nearly fills the shallow hero, with more room above the roofs
+   than under the wheels. Vehicles zooms from ground level (wheels stay planted, the cars grow
+   upwards) and less; ultra-wide (512px hero, cars almost full height) least of all. */
+@media (min-width: 100em) {
+	.page-intro--motion-vehicles {
+		--hero-scale: 1.045;
+		--hero-origin: 50% 95%;
+	}
+}
+
+@media (min-width: 140em) {
+	.page-intro--motion-vehicles {
+		--hero-scale: 1.015;
+		--hero-origin: 50% 97%;
+	}
+}
+
 .page-title {
 	margin: 0;
 	font-size: clamp(2.25rem, 5vw, 3.75rem);
@@ -1006,6 +1229,19 @@ textarea {
 
 .prose > :last-child {
 	margin-bottom: 0;
+}
+
+/* Supporting page image (featured image) after the text, at text-column width. */
+.page-figure {
+	margin: clamp(2rem, 4vw, 3rem) 0 0;
+}
+
+.page-figure img,
+.contact-layout__figure img {
+	display: block;
+	width: 100%;
+	height: auto;
+	border-radius: var(--radius-lg);
 }
 
 .panel {
@@ -1087,7 +1323,7 @@ textarea {
 
 .vehicle-gallery__thumbs {
 	display: grid;
-	grid-template-columns: repeat(4, minmax(0, 1fr));
+	grid-template-columns: repeat(var(--thumbs, 4), minmax(0, 1fr));
 	gap: 0.5rem;
 	margin: 0.5rem 0 0;
 	padding: 0;
@@ -1097,6 +1333,107 @@ textarea {
 .vehicle-gallery__thumbs li {
 	overflow: hidden;
 	border-radius: var(--radius);
+}
+
+/* Slideshow: slides stacked in a fixed 3:2 frame (no layout shift), short crossfade. */
+.vehicle-gallery__slides {
+	position: relative;
+	aspect-ratio: 3 / 2;
+	touch-action: pan-y;
+}
+
+.vehicle-gallery__slide {
+	position: absolute;
+	inset: 0;
+	opacity: 0;
+	visibility: hidden;
+	transition: opacity 0.2s ease, visibility 0s linear 0.2s;
+}
+
+.vehicle-gallery__slide.is-active {
+	opacity: 1;
+	visibility: visible;
+	transition: opacity 0.2s ease;
+}
+
+.vehicle-gallery__slide .vehicle-media {
+	height: 100%;
+}
+
+.vehicle-gallery__nav {
+	position: absolute;
+	top: 50%;
+	z-index: 2;
+	display: grid;
+	place-items: center;
+	width: 2.75rem;
+	height: 2.75rem;
+	padding: 0;
+	border: 0;
+	border-radius: 50%;
+	background: rgba(18, 19, 22, 0.5);
+	color: #fff;
+	cursor: pointer;
+	transform: translateY(-50%);
+	transition: background-color 0.2s ease;
+}
+
+.vehicle-gallery__nav[hidden] {
+	display: none;
+}
+
+.vehicle-gallery__nav:hover {
+	background: rgba(18, 19, 22, 0.78);
+}
+
+.vehicle-gallery__nav:focus-visible {
+	outline: 2px solid var(--focus-light);
+	outline-offset: 2px;
+	background: rgba(18, 19, 22, 0.78);
+}
+
+.vehicle-gallery__nav--prev {
+	left: 0.75rem;
+}
+
+.vehicle-gallery__nav--next {
+	right: 0.75rem;
+}
+
+.vehicle-gallery__main:focus-visible {
+	outline: 2px solid var(--focus);
+	outline-offset: 3px;
+}
+
+/* Thumbnails: the current one at full strength with a thin dark frame, the others slightly muted. */
+.vehicle-gallery__thumb {
+	position: relative;
+	display: block;
+}
+
+.vehicle-gallery__thumb img {
+	opacity: 0.68;
+	transition: opacity 0.2s ease;
+}
+
+.vehicle-gallery__thumb:hover img,
+.vehicle-gallery__thumb:focus-visible img,
+.vehicle-gallery__thumb[aria-current="true"] img {
+	opacity: 1;
+}
+
+.vehicle-gallery__thumb::after {
+	content: "";
+	position: absolute;
+	inset: 0;
+	border: 2px solid transparent;
+	border-radius: var(--radius);
+	transition: border-color 0.2s ease;
+	pointer-events: none;
+}
+
+.vehicle-gallery__thumb[aria-current="true"]::after {
+	border-color: var(--ink);
 }
 
 .vehicle-summary__title {
@@ -1385,11 +1722,26 @@ textarea {
 	gap: 2.5rem;
 }
 
+.contact-layout__figure {
+	margin: 0;
+}
+
 @media (min-width: 56em) {
 	.contact-layout {
 		grid-template-columns: minmax(0, 1fr) minmax(0, 1.2fr);
-		gap: 4rem;
+		gap: 2rem 4rem;
 		align-items: start;
+	}
+
+	/* Entrance photo under the intro text, beside the form (which spans both rows). */
+	.contact-layout > .panel {
+		grid-column: 2;
+		grid-row: 1 / span 2;
+	}
+
+	.contact-layout__figure {
+		grid-column: 1;
+		grid-row: 2;
 	}
 }
 
@@ -1503,6 +1855,18 @@ textarea {
 	}
 
 	.vehicle-card:hover {
+		transform: none;
+	}
+
+	.vehicle-gallery__slide,
+	.vehicle-gallery__slide.is-active {
+		transition: none;
+	}
+
+	/* No hero motion at all (not just a shorter one): the static image keeps its position. */
+	.hero__image,
+	.page-intro__backdrop-image {
+		animation: none;
 		transform: none;
 	}
 }

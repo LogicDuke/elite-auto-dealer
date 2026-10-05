@@ -112,7 +112,10 @@ $eda_check( 15 === count( $eda_info ), 'vehicle summaries present for all 15' );
 $eda_check( count( array_unique( array_column( $eda_info, 'detail_shot' ) ) ) >= 10, 'detail shots are varied (at least 10 distinct)' );
 $eda_check( count( array_unique( array_column( $eda_info, 'forecourt_zone' ) ) ) >= 3 && 2 === count( array_unique( array_column( $eda_info, 'hero_angle' ) ) ), 'hero zones and angles vary' );
 $eda_check( 15 === count( array_unique( array_map( static fn( $v ) => $v['meta']['exterior_colour'], $eda_vehicles ) ) ), 'all exterior colours distinct' );
-$eda_check( ! preg_grep( '/\.(jpe?g|png|webp)$/i', (array) glob( $eda_root . '/demo/images/*/*' ) ), 'no image files present yet (planning phase)' );
+// Approved JPEGs are local development assets: Git-ignored, and only canonical manifest paths may exist.
+$eda_present = array_map( static fn( $f ) => substr( $f, strlen( $eda_root ) + 1 ), (array) glob( $eda_root . '/demo/images/aur-*/*' ) ); // Vehicle folders; site/ has its own test.
+$eda_check( in_array( '/demo/images/', file( $eda_root . '/.gitignore', FILE_IGNORE_NEW_LINES ), true ), 'demo/images/ is Git-ignored (approved set archived in Drive)' );
+$eda_check( ! array_diff( $eda_present, array_column( $eda_slots, 'path' ) ), 'vehicle image folders hold only manifest files (' . count( $eda_present ) . ' present)' );
 
 echo PHP_EOL . ( $eda_failures ? "$eda_failures FAILED" : 'ALL PASSED' ) . PHP_EOL;
 exit( $eda_failures ? 1 : 0 );

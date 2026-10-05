@@ -21,6 +21,7 @@ require EDA_DIR . '/inc/inventory-query.php';
 require EDA_DIR . '/inc/enquiries.php';
 require EDA_DIR . '/inc/enquiry-privacy.php';
 require EDA_DIR . '/inc/customizer.php';
+require EDA_DIR . '/inc/page-header.php';
 
 /**
  * Theme supports, menus and image sizes.
@@ -78,6 +79,18 @@ function eda_enqueue_assets() {
 			'in_footer' => true,
 		)
 	);
+	if ( is_singular( 'vehicle' ) ) {
+		wp_enqueue_script(
+			'eda-vehicle-gallery',
+			EDA_URI . '/assets/js/vehicle-gallery.js',
+			array(),
+			eda_asset_version( 'assets/js/vehicle-gallery.js' ),
+			array(
+				'strategy'  => 'defer',
+				'in_footer' => true,
+			)
+		);
+	}
 }
 add_action( 'wp_enqueue_scripts', 'eda_enqueue_assets' );
 

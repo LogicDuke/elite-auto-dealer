@@ -2,7 +2,7 @@
 
 Production specification for **75 images: 15 vehicles × 5 roles**. Machine-readable twin: `demo/image-roadmap.json`, generated from the same spec and validated by `tests/image-roadmap-test.php`. Vehicle identity comes from `demo/vehicles.json`; if this document and the inventory ever disagree, the inventory wins.
 
-Status: **planning only.** No images are generated or imported in this phase.
+Status: **produced and imported.** The approved set (75/75) is imported on the local demo site by `demo/import-images.php` (section 7).
 
 ## 1. Global style
 
@@ -337,26 +337,57 @@ Any drift is a reject. Across vehicles, the colours stored in the data guarantee
 | 4 | `aur-26015-interior.jpg` | interior | From the open passenger door: black synthetic leather seats, minimalist full-width dashboard trim strip, glass roof above. No people, 24–35 mm equivalent, natural proportions. | Tesla Model Y Long Range — front seats |
 | 5 | `aur-26015-detail.jpg` | detail | Front view with the bonnet open showing the empty front luggage compartment (frunk). | Tesla Model Y Long Range — front trunk |
 
-## 7. Import plan (next phase, not implemented)
+## 7. Import (implemented)
 
-1. Approved files go into `demo/images/{stock-id-lowercase}/` with the exact filenames above. The folder and file name identify the stock ID and role.
+**Commands** (from the WordPress root, theme active, after `demo/seed.php`):
+
+```sh
+wp eval-file wp-content/themes/elite-auto-dealer/demo/import-images.php            # import / update
+wp eval-file wp-content/themes/elite-auto-dealer/demo/import-images.php validate   # QA gate only, writes nothing
+wp eval-file wp-content/themes/elite-auto-dealer/demo/import-images.php cleanup    # remove the demo images only
+wp eval-file wp-content/themes/elite-auto-dealer/tests/image-import-test.php        # verify (leaves the 75 images imported)
+```
+
+CLI only: no admin screen, REST route or upload endpoint.
+
+1. **Source:** the approved files live in `demo/images/{stock-id-lowercase}/` with the exact filenames above. They are local development assets: `/demo/images/` is Git-ignored, and the approved set is archived in Google Drive (`aurelis-motors-75-approved-images.zip`). To set up a machine, unpack that ZIP so each file lands at its manifest `path`.
 2. The importer reads `demo/image-roadmap.json` and processes only slots whose file exists. It never fetches remote URLs.
-   **QA gate before any attachment is created:** the file must decode as a JPEG, be sRGB, measure exactly the `image_contract` 1536 × 1024 px and weigh at most the preferred 450 KB (180–350 KB expected). A failing file is reported and skipped, never resized, upscaled or recompressed.
-3. **Idempotent attachments:**
-   - each attachment is tagged with post meta `_eda_demo_image = {filename}` (plus the dataset id);
-   - on rerun, the existing attachment is reused, or replaced in place when the file checksum changed;
-   - nothing is duplicated, and attachments without the tag are never touched.
-4. `hero` → featured image (`_thumbnail_id`). `rear`, `cockpit`, `interior`, `detail` → `_eda_gallery` in that order, written through the theme's schema sanitiser.
-5. Alt text from the manifest is stored as `_wp_attachment_image_alt`. The title is the alt text; the caption is empty.
-6. The attachments are parented to their vehicle. Demo cleanup is extended to remove only tagged demo attachments.
-7. WordPress generates the `eda-vehicle-card` (640×427) and `eda-vehicle-medium` (960×640) derivatives. `eda-vehicle-large` (1536×1024) equals the source, so WordPress keeps the original for it, and core sizes at or above the source width (`1536x1536`, `2048x2048`) are skipped too. WordPress never upscales, and no derivative is larger than the source. No custom resizing.
+   **QA gate before any attachment is created** (`validate` runs it alone):
+   - the file is readable, has a `.jpg` extension and fully decodes as a JPEG (`image/jpeg`);
+   - it is exactly the `image_contract` 1536 × 1024 px (3:2);
+   - it is sRGB (an embedded ICC profile must be sRGB; without one, a 3-channel JPEG counts as sRGB);
+   - it weighs at most the preferred 450 KB (460,800 bytes). 180–350 KB is the target, and 351–450 KB still passes.
+
+   A failing file is reported and skipped, never resized, upscaled or recompressed.
+3. **Vehicle match:** the vehicle is the single post with that stock ID **and** `_eda_demo = aurelis-demo`. If a real (non-demo) or duplicated vehicle holds the stock ID, its images are skipped with a warning.
+4. **Attachment identity:** post meta, never titles or file names:
+   - `_eda_demo` = dataset id;
+   - `_eda_demo_image` = canonical filename;
+   - `_eda_demo_image_checksum` = SHA-256 of the source.
+5. **Idempotency:**
+   - A rerun with identical files creates nothing: 75 reused, same IDs and relationships.
+   - A changed source (checksum differs) replaces the file and its derivatives **in place**: same attachment ID and path, so the relationships stay and no orphan is created.
+   - Two attachments with one identity are reported and left alone. Untagged media is never touched.
+6. **Relationships:** `hero` → featured image (`_thumbnail_id`). `rear`, `cockpit`, `interior`, `detail` → `_eda_gallery` in that order (the hero is not repeated), written through the theme's schema sanitiser. They are rebuilt from the tagged attachments on every run, so a partial run never drops existing links.
+7. **Attachment data:**
+   - alt text from the manifest goes to `_wp_attachment_image_alt`;
+   - the title is the alt text, and the caption and description are empty;
+   - the MIME type is `image/jpeg`, and the parent is the vehicle.
+8. **Cleanup** (`import-images.php cleanup`, also run first by `seed.php cleanup`):
+   - it deletes only attachments carrying **both** `_eda_demo` and `_eda_demo_image`, together with their files;
+   - featured-image references go with the attachment, and gallery references are stripped, so no broken IDs remain;
+   - untagged or half-tagged uploads survive, even with a demo-like file name.
+
+   On Windows hosts whose uploads path uses `C:/`, core leaves derivative files behind (`path_is_absolute()` expects `C:\`). The cleanup therefore also removes each attachment's own listed sizes, confined to its folder.
+9. **Local site (3 October 2026):** 75 tagged attachments; 15 vehicles with the hero as featured image and a 4-image gallery; 525 files in uploads (75 originals + 6 sizes each, no `eda-vehicle-large` copy).
+10. WordPress generates the `eda-vehicle-card` (640×427) and `eda-vehicle-medium` (960×640) derivatives. `eda-vehicle-large` (1536×1024) equals the source, so WordPress keeps the original for it, and core sizes at or above the source width (`1536x1536`, `2048x2048`) are skipped too. WordPress never upscales, and no derivative is larger than the source. No custom resizing.
 
 ## 8. Open decisions
 
 - **Plate treatment (decided):** blank white Belgian-format plate with thin red border and no characters on every exterior image. Do not generate "AURELIS" or any other plate text.
 - **Generation tool and model,** and whether image-to-image reference passes are used to hold continuity within a vehicle.
 - **Who approves each image** against this contract, and the reject criteria for brand-detail accuracy (grille, lights, dashboard family).
-- **Storage (decided):** the approved 1536 × 1024 JPEGs are archived outside Git in Google Drive (`04_Vehicle_Images/Approved_Web_Images`). Git keeps the contract, manifest and importer. At 75 × 180–450 KB the full set is roughly 14–34 MB, so whether a copy ships inside a demo package is a packaging decision.
+- **Storage (decided):** the approved 1536 × 1024 JPEGs are archived outside Git in Google Drive (`04_Vehicle_Images/Approved_Web_Images`). Git keeps the contract, manifest, importer and tests; `demo/images/` is Git-ignored. At 75 × 180–450 KB the full set is roughly 14–34 MB, so whether a copy ships inside a demo package is a packaging decision.
 - **Alt-text language:** English for now (consistent with English term names), with nl/fr alt text deferred.
 - **Sold vehicle** (AUR-26006): it gets a full set here; whether sold vehicles keep their full gallery publicly is a design-phase decision.
 

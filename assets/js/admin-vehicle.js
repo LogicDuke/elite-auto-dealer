@@ -1,6 +1,7 @@
 /* global wp */
 /**
- * Vehicle gallery picker: stores attachment IDs as a comma-separated list in a hidden input.
+ * Media picker: stores attachment IDs as a comma-separated list in a hidden input.
+ * Vehicle gallery (multiple) and page header image (data-multiple="false").
  */
 document.addEventListener( 'click', ( event ) => {
 	const button = event.target.closest( '.eda-gallery-select' );
@@ -12,7 +13,7 @@ document.addEventListener( 'click', ( event ) => {
 	const preview = button.previousElementSibling;
 	const frame = wp.media( {
 		title: button.textContent,
-		multiple: 'add',
+		multiple: 'false' === button.dataset.multiple ? false : 'add',
 		library: { type: 'image' },
 	} );
 

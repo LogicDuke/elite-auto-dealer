@@ -1,12 +1,14 @@
 <?php
 /**
- * Demo inventory seeder (Aurelis Motors). Reads demo/vehicles.json; no network, no images.
+ * Demo inventory seeder (Aurelis Motors). Reads demo/vehicles.json; no network. Images are
+ * imported separately by demo/import-images.php and demo/import-site-images.php; cleanup here
+ * removes them too.
  *
  * Run from the WordPress root with the theme active:
  *
  *   wp eval-file wp-content/themes/elite-auto-dealer/demo/seed.php            # import / update
  *   wp eval-file wp-content/themes/elite-auto-dealer/demo/seed.php validate   # check the JSON only
- *   wp eval-file wp-content/themes/elite-auto-dealer/demo/seed.php cleanup    # remove demo vehicles
+ *   wp eval-file wp-content/themes/elite-auto-dealer/demo/seed.php cleanup    # remove demo vehicles + images
  *
  * Demo records are marked with post meta `_eda_demo` = dataset id and matched by stock ID, so
  * re-running updates instead of duplicating, and real dealership vehicles are never touched.
@@ -329,18 +331,104 @@ function eda_demo_seed( array $data ) {
 }
 
 /**
- * Remove demo vehicles, then demo-created make/model/equipment terms that no vehicle uses any more.
+ * Delete one attachment with all its files.
+ *
+ * Core skips derivatives when uploads use a "C:/" path (path_is_absolute() wants "C:\", e.g. LocalWP
+ * on Windows), so this attachment's own listed sizes are removed too, confined to its folder.
+ * On other hosts core has already deleted them and the extra pass is a no-op.
+ *
+ * @param int $id Attachment ID.
+ * @return bool Deleted.
+ */
+function eda_demo_delete_attachment( $id ) {
+	$dir   = dirname( (string) get_attached_file( $id ) );
+	$sizes = wp_list_pluck( wp_get_attachment_metadata( $id )['sizes'] ?? array(), 'file' );
+	if ( ! wp_delete_attachment( $id, true ) ) {
+		return false;
+	}
+	foreach ( $sizes as $file ) {
+		wp_delete_file_from_directory( "$dir/$file", $dir );
+	}
+	return true;
+}
+
+/**
+ * Remove imported demo images: only attachments tagged with BOTH `_eda_demo` = dataset and the
+ * identity key (`_eda_demo_image` for vehicle photos, `_eda_demo_site_image` for website images).
+ * Untagged media (client uploads, look-alike file names) is never touched.
+ * Featured-image references go with the attachment (core); gallery references and the homepage
+ * hero / inventory image settings and page header images are cleared here, so nothing keeps a
+ * broken attachment ID.
+ *
+ * @param string $dataset Dataset id.
+ * @param string $key     Identity meta key.
+ * @return int Attachments deleted.
+ */
+function eda_demo_images_cleanup( $dataset, $key = '_eda_demo_image' ) {
+	$ids     = get_posts(
+		array(
+			'post_type'      => 'attachment',
+			'post_status'    => 'any',
+			'fields'         => 'ids',
+			'posts_per_page' => -1,
+			'meta_query'     => array( // phpcs:ignore WordPress.DB.SlowDBQuery.slow_db_query_meta_query -- CLI seeder.
+				array(
+					'key'   => '_eda_demo',
+					'value' => $dataset,
+				),
+				array(
+					'key'     => $key,
+					'compare' => 'EXISTS',
+				),
+			),
+		)
+	);
+	$deleted = count( array_filter( array_map( 'eda_demo_delete_attachment', $ids ) ) );
+
+	$vehicles = get_posts(
+		array(
+			'post_type'      => 'vehicle',
+			'post_status'    => 'any',
+			'fields'         => 'ids',
+			'posts_per_page' => -1,
+			'meta_key'       => '_eda_gallery', // phpcs:ignore WordPress.DB.SlowDBQuery.slow_db_query_meta_key -- CLI seeder.
+		)
+	);
+	foreach ( $vehicles as $vehicle ) {
+		$gallery = (array) get_post_meta( $vehicle, '_eda_gallery', true );
+		$kept    = array_values( array_diff( $gallery, $ids ) );
+		if ( ! $kept ) {
+			delete_post_meta( $vehicle, '_eda_gallery' );
+		} elseif ( $kept !== $gallery ) {
+			update_post_meta( $vehicle, '_eda_gallery', $kept );
+		}
+	}
+	foreach ( array( 'eda_hero_image', 'eda_hero_image_mobile', 'eda_inventory_image' ) as $mod ) {
+		if ( in_array( (int) get_theme_mod( $mod ), $ids, true ) ) {
+			remove_theme_mod( $mod );
+		}
+	}
+	foreach ( $ids as $id ) {
+		delete_metadata( 'post', 0, '_eda_header_image', $id, true ); // Page header images.
+	}
+	return $deleted;
+}
+
+/**
+ * Remove demo images (vehicle and website) and demo vehicles, then demo-created make/model/equipment terms that no vehicle uses any more.
  * Seeded base terms (fuel, body, …), catalogue terms, terms that existed before seeding and terms
  * still in use stay.
  * Enquiries are never deleted here (they follow the retention policy).
  *
  * @param string $dataset Dataset id.
- * @return array{vehicles: int, terms: int}
+ * @return array{images: int, site_images: int, vehicles: int, terms: int}
  */
 function eda_demo_cleanup( $dataset ) {
 	$removed = array(
-		'vehicles' => 0,
-		'terms'    => 0,
+		'images'      => eda_demo_images_cleanup( $dataset ),
+		'site_images' => eda_demo_images_cleanup( $dataset, '_eda_demo_site_image' ),
+		'vehicles'    => 0,
+		'terms'       => 0,
 	);
 
 	$ids = get_posts(
@@ -405,7 +493,7 @@ if ( 'validate' === $eda_mode ) {
 	WP_CLI::success( 'demo/vehicles.json is valid (' . count( $eda_data['vehicles'] ) . ' vehicles).' );
 } elseif ( 'cleanup' === $eda_mode ) {
 	$eda_removed = eda_demo_cleanup( $eda_data['dataset'] );
-	WP_CLI::success( "Removed {$eda_removed['vehicles']} demo vehicles and {$eda_removed['terms']} unused demo-created terms." );
+	WP_CLI::success( "Removed {$eda_removed['images']} demo vehicle images, {$eda_removed['site_images']} demo website images, {$eda_removed['vehicles']} demo vehicles and {$eda_removed['terms']} unused demo-created terms." );
 } elseif ( 'seed' === $eda_mode ) {
 	$eda_result = eda_demo_seed( $eda_data );
 	foreach ( $eda_result['skipped'] as $eda_stock ) {

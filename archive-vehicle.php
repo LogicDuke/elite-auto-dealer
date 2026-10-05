@@ -11,17 +11,19 @@ get_header();
 
 global $wp_query;
 $eda_total = (int) $wp_query->found_posts;
+
+get_template_part(
+	'template-parts/page-intro',
+	null,
+	array(
+		'eyebrow' => get_bloginfo( 'name' ),
+		'title'   => eda_current_inventory_heading(),
+		'lead'    => get_bloginfo( 'description' ),
+		'image'   => (int) get_theme_mod( 'eda_inventory_image' ), // No page object: Customizer setting.
+		'motion'  => 'vehicles',
+	)
+);
 ?>
-<div class="page-intro">
-	<div class="container">
-		<?php get_template_part( 'template-parts/breadcrumbs' ); ?>
-		<p class="eyebrow"><?php echo esc_html( get_bloginfo( 'name' ) ); ?></p>
-		<h1 class="page-title"><?php echo esc_html( eda_current_inventory_heading() ); ?></h1>
-		<?php if ( get_bloginfo( 'description' ) ) : ?>
-			<p class="page-lead"><?php bloginfo( 'description' ); ?></p>
-		<?php endif; ?>
-	</div>
-</div>
 
 <div class="container inventory">
 	<div class="inventory__filters">

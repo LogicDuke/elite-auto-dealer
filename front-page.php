@@ -32,7 +32,7 @@ $eda_place    = eda_dealer_location();
 ?>
 <section class="hero" aria-labelledby="hero-title">
 	<div class="hero__visual">
-		<?php eda_vehicle_image( 0, 'eda-vehicle-large', '100vw' ); ?>
+		<?php eda_home_hero_image(); ?>
 	</div>
 	<div class="container hero__content">
 		<p class="eyebrow eyebrow--light">

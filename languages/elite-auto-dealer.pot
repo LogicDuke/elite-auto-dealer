@@ -9,7 +9,7 @@ msgstr ""
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"POT-Creation-Date: 2026-10-03T00:17:44+00:00\n"
+"POT-Creation-Date: 2026-10-05T05:56:04+00:00\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "X-Generator: WP-CLI 2.12.0\n"
 "X-Domain: elite-auto-dealer\n"
@@ -43,35 +43,35 @@ msgstr ""
 msgid "Browse our vehicles"
 msgstr ""
 
-#: archive-vehicle.php:28
+#: archive-vehicle.php:30
 msgid "Filter vehicles"
 msgstr ""
 
 #. translators: %s: number of vehicles.
-#: archive-vehicle.php:35
+#: archive-vehicle.php:37
 #, php-format
 msgid "%s vehicle"
 msgid_plural "%s vehicles"
 msgstr[0] ""
 msgstr[1] ""
 
-#: archive-vehicle.php:51
+#: archive-vehicle.php:53
 msgid "Previous"
 msgstr ""
 
-#: archive-vehicle.php:52
+#: archive-vehicle.php:54
 msgid "Next"
 msgstr ""
 
-#: archive-vehicle.php:58
+#: archive-vehicle.php:60
 msgid "No vehicles match these filters"
 msgstr ""
 
-#: archive-vehicle.php:59
+#: archive-vehicle.php:61
 msgid "Try a different make or price, or view the full collection."
 msgstr ""
 
-#: archive-vehicle.php:60
+#: archive-vehicle.php:62
 #: front-page.php:63
 #: front-page.php:117
 msgid "View all vehicles"
@@ -197,11 +197,11 @@ msgstr ""
 msgid "Arrange a viewing or ask about any vehicle in the collection. We will get back to you personally."
 msgstr ""
 
-#: functions.php:41
+#: functions.php:42
 msgid "Primary menu"
 msgstr ""
 
-#: functions.php:42
+#: functions.php:43
 msgid "Footer menu"
 msgstr ""
 
@@ -251,6 +251,34 @@ msgstr ""
 
 #: inc/customizer.php:29
 msgid "Receives enquiry notifications. Defaults to the site admin email."
+msgstr ""
+
+#: inc/customizer.php:49
+msgid "Header images"
+msgstr ""
+
+#: inc/customizer.php:54
+msgid "Hero image (desktop and landscape)"
+msgstr ""
+
+#: inc/customizer.php:54
+msgid "2560 × 1138 px JPEG. Keep the left side calm for the headline."
+msgstr ""
+
+#: inc/customizer.php:55
+msgid "Hero image (portrait mobile)"
+msgstr ""
+
+#: inc/customizer.php:55
+msgid "1200 × 1800 px JPEG, subject in the upper third. Optional."
+msgstr ""
+
+#: inc/customizer.php:56
+msgid "Vehicles page header image"
+msgstr ""
+
+#: inc/customizer.php:56
+msgid "1536 × 1024 px JPEG (3:2). Other pages use their featured image."
 msgstr ""
 
 #: inc/enquiries.php:20
@@ -404,6 +432,18 @@ msgstr ""
 msgid "Year: newest first"
 msgstr ""
 
+#: inc/page-header.php:48
+msgid "Header image"
+msgstr ""
+
+#: inc/page-header.php:54
+msgid "Select header image"
+msgstr ""
+
+#: inc/page-header.php:55
+msgid "Full-width image behind the page title (1536 × 1024 px or wider). The featured image stays in the page content."
+msgstr ""
+
 #. translators: %s: make, model, fuel type, etc. Example: "BMW vehicles".
 #: inc/seo.php:93
 #, php-format
@@ -423,7 +463,7 @@ msgid "Yes"
 msgstr ""
 
 #: inc/template-tags.php:109
-#: inc/template-tags.php:303
+#: inc/template-tags.php:342
 msgid "Home"
 msgstr ""
 
@@ -460,7 +500,7 @@ msgstr ""
 msgid "Power"
 msgstr ""
 
-#: inc/template-tags.php:344
+#: inc/template-tags.php:383
 msgid "Other"
 msgstr ""
 
@@ -740,7 +780,7 @@ msgid "Condition"
 msgstr ""
 
 #: inc/vehicle-taxonomies.php:30
-#: single-vehicle.php:113
+#: single-vehicle.php:153
 msgid "Equipment"
 msgstr ""
 
@@ -848,23 +888,43 @@ msgstr ""
 msgid "Nothing found."
 msgstr ""
 
-#: single-vehicle.php:71
+#. translators: %s: vehicle title.
+#: single-vehicle.php:48
+#, php-format
+msgid "Photos of %s"
+msgstr ""
+
+#: single-vehicle.php:59
+msgid "Previous vehicle image"
+msgstr ""
+
+#: single-vehicle.php:62
+msgid "Next vehicle image"
+msgstr ""
+
+#. translators: 1: current image number, 2: number of images.
+#: single-vehicle.php:66
+#, php-format
+msgid "Image %1$s of %2$s"
+msgstr ""
+
+#: single-vehicle.php:111
 msgid "This vehicle has been sold."
 msgstr ""
 
-#: single-vehicle.php:71
+#: single-vehicle.php:111
 msgid "Browse the cars currently available in our collection."
 msgstr ""
 
-#: single-vehicle.php:72
+#: single-vehicle.php:112
 msgid "View available vehicles"
 msgstr ""
 
-#: single-vehicle.php:84
+#: single-vehicle.php:124
 msgid "Specifications"
 msgstr ""
 
-#: single-vehicle.php:106
+#: single-vehicle.php:146
 msgid "Description"
 msgstr ""
 
