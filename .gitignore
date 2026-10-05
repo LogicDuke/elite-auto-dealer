@@ -28,3 +28,6 @@ desktop.ini
 # Approved demo vehicle photos: local development assets. The approved set is archived in
 # Google Drive (04_Vehicle_Images); Git tracks the manifest, importer, tests and docs only.
 /demo/images/
+
+# Wrangler local state (cloudflare/: pages dev / deploy)
+.wrangler/
