@@ -7,6 +7,18 @@
 
 defined( 'ABSPATH' ) || exit;
 
+// Static export only (inert in WordPress): in-browser filtering, see eda_static_inventory().
+wp_enqueue_script(
+	'eda-inventory-static',
+	EDA_URI . '/assets/js/inventory-static.js',
+	array(),
+	eda_asset_version( 'assets/js/inventory-static.js' ),
+	array(
+		'strategy'  => 'defer',
+		'in_footer' => true,
+	)
+);
+
 get_header();
 
 global $wp_query;

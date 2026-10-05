@@ -728,6 +728,12 @@ textarea {
 	gap: clamp(1rem, 2vw, 1.75rem);
 }
 
+/* Static export filtering (inventory-static.js) hides an empty grid and the pagination. */
+.vehicle-grid[hidden],
+.pagination[hidden] {
+	display: none;
+}
+
 @media (min-width: 40em) {
 	.vehicle-grid {
 		grid-template-columns: repeat(2, minmax(0, 1fr));

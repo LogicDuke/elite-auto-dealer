@@ -16,8 +16,10 @@ $eda_heading = in_array( $eda_heading, array( 'h2', 'h3' ), true ) ? $eda_headin
 $eda_status  = eda_vehicle_status();
 $eda_facts   = eda_vehicle_key_facts();
 unset( $eda_facts[ __( 'Power', 'elite-auto-dealer' ) ] );
+// Filter/sort values for the static export's in-browser filtering (assets/js/inventory-static.js).
+$eda_terms = static fn( $taxonomy ) => implode( ' ', wp_list_pluck( get_the_terms( get_the_ID(), $taxonomy ) ?: array(), 'slug' ) );
 ?>
-<article <?php post_class( array( 'vehicle-card', $eda_status ? 'vehicle-card--' . $eda_status : '' ) ); ?>>
+<article <?php post_class( array( 'vehicle-card', $eda_status ? 'vehicle-card--' . $eda_status : '' ) ); ?> data-make="<?php echo esc_attr( $eda_terms( 'vehicle_make' ) ); ?>" data-model="<?php echo esc_attr( $eda_terms( 'vehicle_model' ) ); ?>" data-fuel="<?php echo esc_attr( $eda_terms( 'vehicle_fuel_type' ) ); ?>" data-price="<?php echo esc_attr( eda_vehicle_meta( 'price' ) ); ?>" data-mileage="<?php echo esc_attr( eda_vehicle_meta( 'mileage' ) ); ?>" data-year="<?php echo esc_attr( eda_vehicle_meta( 'year' ) ); ?>" data-date="<?php echo esc_attr( get_post_time( 'U', true ) ); ?>" data-status="<?php echo esc_attr( $eda_status ); ?>">
 	<div class="vehicle-card__media">
 		<?php eda_vehicle_image( get_post_thumbnail_id(), 'eda-vehicle-medium', '(min-width: 1024px) 400px, (min-width: 640px) 50vw, 100vw' ); ?>
 		<?php eda_vehicle_status_badge(); ?>

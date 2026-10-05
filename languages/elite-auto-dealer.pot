@@ -9,7 +9,7 @@ msgstr ""
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"POT-Creation-Date: 2026-10-05T13:29:42+00:00\n"
+"POT-Creation-Date: 2026-10-05T14:55:59+00:00\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "X-Generator: WP-CLI 2.12.0\n"
 "X-Domain: elite-auto-dealer\n"
@@ -43,37 +43,42 @@ msgstr ""
 msgid "Browse our vehicles"
 msgstr ""
 
-#: archive-vehicle.php:30
+#: archive-vehicle.php:42
 msgid "Filter vehicles"
 msgstr ""
 
 #. translators: %s: number of vehicles.
-#: archive-vehicle.php:37
+#: archive-vehicle.php:49
+#: inc/inventory-query.php:296
+#: inc/inventory-query.php:298
 #, php-format
 msgid "%s vehicle"
 msgid_plural "%s vehicles"
 msgstr[0] ""
 msgstr[1] ""
 
-#: archive-vehicle.php:53
+#: archive-vehicle.php:65
 msgid "Previous"
 msgstr ""
 
-#: archive-vehicle.php:54
+#: archive-vehicle.php:66
 msgid "Next"
 msgstr ""
 
-#: archive-vehicle.php:60
+#: archive-vehicle.php:72
+#: inc/inventory-query.php:299
 msgid "No vehicles match these filters"
 msgstr ""
 
-#: archive-vehicle.php:61
+#: archive-vehicle.php:73
+#: inc/inventory-query.php:300
 msgid "Try a different make or price, or view the full collection."
 msgstr ""
 
-#: archive-vehicle.php:62
+#: archive-vehicle.php:74
 #: front-page.php:63
 #: front-page.php:117
+#: inc/inventory-query.php:301
 msgid "View all vehicles"
 msgstr ""
 
@@ -1037,6 +1042,11 @@ msgstr ""
 msgid "Year: newest first"
 msgstr ""
 
+#: inc/inventory-query.php:302
+#: template-parts/vehicle-search.php:90
+msgid "Clear filters"
+msgstr ""
+
 #: inc/page-header.php:48
 msgid "Header image"
 msgstr ""
@@ -1316,7 +1326,7 @@ msgid "New vehicle"
 msgstr ""
 
 #: inc/vehicle-post-type.php:43
-#: template-parts/vehicle-card.php:47
+#: template-parts/vehicle-card.php:49
 msgid "View vehicle"
 msgstr ""
 
@@ -1583,8 +1593,4 @@ msgstr ""
 
 #: template-parts/vehicle-search.php:79
 msgid "Sort by"
-msgstr ""
-
-#: template-parts/vehicle-search.php:90
-msgid "Clear filters"
 msgstr ""

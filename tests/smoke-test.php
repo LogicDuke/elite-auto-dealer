@@ -332,6 +332,14 @@ $eda_check( str_contains( $eda_static, 'name="enquiry[website]"' ) && str_contai
 $eda_messages = json_decode( html_entity_decode( preg_replace( '/^.*data-eda-messages="([^"]*)".*$/s', '$1', $eda_static ) ), true );
 $eda_check( is_array( $eda_messages ) && array( 'demo', 'sent', 'invalid', 'error' ) === array_keys( $eda_messages ) && str_contains( $eda_messages['demo'], 'not sent to anyone or stored' ), 'exported form carries its messages; the demo message says nothing was sent or stored' );
 $eda_check( '<p>x</p>' === eda_static_enquiry_form( '<p>x</p>' ), 'pages without the enquiry form are untouched' );
+// Static export: vehicle filters run in the browser (assets/js/inventory-static.js) on marked listings.
+$eda_listing = (string) wp_remote_retrieve_body( wp_remote_get( get_post_type_archive_link( 'vehicle' ) ) );
+$eda_check( ! str_contains( $eda_listing, 'data-eda-static-inventory' ) && str_contains( $eda_listing, 'inventory-static.js' ), 'WordPress listing: not marked static (server filtering), script enqueued (inert)' );
+$eda_check( (bool) preg_match( '/<article [^>]*vehicle-card[^>]*data-make="[a-z0-9-]+" data-model="[a-z0-9-]+" data-fuel="[a-z0-9-]+" data-price="\d*" data-mileage="\d*" data-year="\d*" data-date="\d+" data-status="(available|reserved|sold|)"/', $eda_listing ), 'vehicle cards carry make, model, fuel, price, mileage, year, date and status' );
+$eda_marked = eda_static_inventory( $eda_listing );
+$eda_strings = json_decode( html_entity_decode( preg_replace( '/^.*data-eda-strings="([^"]*)".*$/s', '$1', $eda_marked ) ), true );
+$eda_check( 1 === substr_count( $eda_marked, '<div class="container inventory" data-eda-static-inventory data-eda-strings="' ) && '%s vehicle' === ( $eda_strings['one'] ?? '' ) && '%s vehicles' === ( $eda_strings['other'] ?? '' ) && ! empty( $eda_strings['empty'] ) && ! empty( $eda_strings['clear'] ), 'exported listing marked static, with its count, empty-state and clear texts' );
+$eda_check( '<main>x</main>' === eda_static_inventory( '<main>x</main>' ), 'pages without a listing are untouched' );
 $eda_home = (string) wp_remote_retrieve_body( wp_remote_get( home_url( '/?utm_source=test' ) ) );
 $eda_check( 1 === substr_count( $eda_home, '<link rel="canonical"' ) && str_contains( $eda_home, '<link rel="canonical" href="' . esc_url( home_url( '/' ) ) . '">' ), 'homepage: one canonical, the clean home URL (core prints none for front-page.php)' );
 $eda_js = (string) file_get_contents( EDA_DIR . '/assets/js/enquiry.js' ); // phpcs:ignore WordPress.WP.AlternativeFunctions.file_get_contents_file_get_contents -- local file.

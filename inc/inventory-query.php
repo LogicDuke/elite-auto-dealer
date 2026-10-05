@@ -277,3 +277,30 @@ function eda_model_conflicts_with_make( $make_slug, $model_slug ) {
 	$model = get_term_by( 'slug', $model_slug, 'vehicle_model' );
 	return $make && $model && (int) get_term_meta( $model->term_id, 'eda_make', true ) !== (int) $make->term_id;
 }
+
+/**
+ * Static export (Simply Static → Cloudflare Pages): the filters above run in WordPress only, so a
+ * static /vehicles/?make=… would show every vehicle. Mark exported listings for
+ * assets/js/inventory-static.js, which filters and sorts the exported cards in the browser the same
+ * way, with the texts it needs. WordPress itself keeps filtering on the server.
+ *
+ * @param string $html Exported page.
+ * @return string
+ */
+function eda_static_inventory( $html ) {
+	if ( ! is_string( $html ) || ! str_contains( $html, '<div class="container inventory">' ) ) {
+		return $html;
+	}
+	$strings = array(
+		/* translators: %s: number of vehicles. */
+		'one'       => _n( '%s vehicle', '%s vehicles', 1, 'elite-auto-dealer' ),
+		/* translators: %s: number of vehicles. */
+		'other'     => _n( '%s vehicle', '%s vehicles', 2, 'elite-auto-dealer' ),
+		'empty'     => __( 'No vehicles match these filters', 'elite-auto-dealer' ),
+		'emptyText' => __( 'Try a different make or price, or view the full collection.', 'elite-auto-dealer' ),
+		'all'       => __( 'View all vehicles', 'elite-auto-dealer' ),
+		'clear'     => __( 'Clear filters', 'elite-auto-dealer' ),
+	);
+	return str_replace( '<div class="container inventory">', '<div class="container inventory" data-eda-static-inventory data-eda-strings="' . esc_attr( wp_json_encode( $strings ) ) . '">', $html );
+}
+add_filter( 'ss_after_replace_urls_in_html', 'eda_static_inventory' );
