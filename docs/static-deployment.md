@@ -46,6 +46,14 @@ admin username), the theme's `bin`, `data`, `demo` and `cloudflare` folders, the
 beyond the first (`/vehicles/page/2/`, `/vehicles/<taxonomy>/<term>/page/2/` …), which the crawler
 misses; list them from WordPress (12 vehicles per page).
 
+## Site icon
+
+The demo's Site Icon (Settings → General / Customizer → Site Identity) is the Aurelis "A"
+monogram: master `demo/aurelis-site-icon.svg` (default Aurelis palette: ink `#121316`, accent-light
+`#d2bd94`), rendered to `demo/aurelis-site-icon.png` (512 px). WordPress prints its 32/192/180/270
+px sizes; `finalize.mjs` wraps the 32 px PNG into `favicon.ico`. It belongs to the fictional demo
+brand, not to the theme; a dealership sets its own.
+
 ## Export, finalize, deploy
 
 ```

@@ -1,0 +1,11 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" width="512" height="512">
+	<!-- Aurelis Motors site icon (demo brand): capital A monogram, default Aurelis palette (ink #121316, accent-light #d2bd94). -->
+	<defs>
+		<clipPath id="eda-icon-base"><rect x="0" y="0" width="512" height="408"/></clipPath>
+	</defs>
+	<rect width="512" height="512" rx="96" fill="#121316"/>
+	<g fill="none" stroke="#d2bd94" clip-path="url(#eda-icon-base)">
+		<path d="M136 448 L256 104 L376 448" stroke-width="50" stroke-linejoin="bevel"/>
+		<path d="M188 312 H324" stroke-width="40"/>
+	</g>
+</svg>
