@@ -9,7 +9,7 @@ msgstr ""
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"POT-Creation-Date: 2026-10-05T06:06:56+00:00\n"
+"POT-Creation-Date: 2026-10-05T06:08:03+00:00\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "X-Generator: WP-CLI 2.12.0\n"
 "X-Domain: elite-auto-dealer\n"
@@ -97,6 +97,10 @@ msgstr ""
 #: front-page.php:133
 #, php-format
 msgid "Contact %s"
+msgstr ""
+
+#: footer.php:66
+msgid "Legal"
 msgstr ""
 
 #: front-page.php:41
@@ -198,12 +202,16 @@ msgstr ""
 msgid "Arrange a viewing or ask about any vehicle in the collection. We will get back to you personally."
 msgstr ""
 
-#: functions.php:49
+#: functions.php:50
 msgid "Primary menu"
 msgstr ""
 
-#: functions.php:50
+#: functions.php:51
 msgid "Footer menu"
+msgstr ""
+
+#: functions.php:52
+msgid "Footer legal"
 msgstr ""
 
 #: header.php:21
@@ -281,7 +289,7 @@ msgid "Enquiry email"
 msgstr ""
 
 #: inc/admin-site-settings.php:67
-msgid "Enquiries from the website are sent to this address. Leave empty to use the site administrator’s email."
+msgid "Enquiries from the website are sent to this address. If it is empty, enquiries are only stored under Enquiries and not emailed."
 msgstr ""
 
 #: inc/admin-site-settings.php:100
@@ -641,8 +649,8 @@ msgid "Photo"
 msgstr ""
 
 #: inc/admin-vehicle-list.php:21
-#: inc/enquiries.php:146
-#: inc/enquiries.php:234
+#: inc/enquiries.php:151
+#: inc/enquiries.php:257
 #: inc/enquiry-privacy.php:131
 #: inc/vehicle-post-type.php:38
 msgid "Vehicle"
@@ -685,7 +693,7 @@ msgid "Yes"
 msgstr ""
 
 #: inc/admin-vehicle-list.php:62
-#: inc/enquiries.php:239
+#: inc/enquiries.php:262
 #: inc/template-tags.php:44
 msgid "No"
 msgstr ""
@@ -716,6 +724,88 @@ msgstr ""
 msgid "The status could not be changed."
 msgstr ""
 
+#: inc/consent.php:125
+msgid "Cookie Policy"
+msgstr ""
+
+#: inc/consent.php:126
+msgid "Privacy Notice"
+msgstr ""
+
+#: inc/consent.php:127
+msgid "Legal Notice"
+msgstr ""
+
+#: inc/consent.php:176
+msgid "Dealership address"
+msgstr ""
+
+#: inc/consent.php:179
+msgid "Telephone"
+msgstr ""
+
+#: inc/consent.php:182
+msgid "Email address"
+msgstr ""
+
+#: inc/consent.php:204
+msgid "Cookie preferences"
+msgstr ""
+
+#: inc/consent.php:214
+msgid "Reject optional"
+msgstr ""
+
+#: inc/consent.php:215
+msgid "Accept optional"
+msgstr ""
+
+#: inc/consent.php:217
+msgid "Save preferences"
+msgstr ""
+
+#: inc/consent.php:233
+msgid "Your privacy"
+msgstr ""
+
+#. translators: %s: optional services, e.g. "Maps".
+#: inc/consent.php:237
+#, php-format
+msgid "This site uses only the storage it needs to work. With your permission it can also use: %s. Nothing optional starts until you choose."
+msgstr ""
+
+#: inc/consent.php:243
+msgid "Manage preferences"
+msgstr ""
+
+#: inc/consent.php:261
+msgid "Close without changes"
+msgstr ""
+
+#: inc/consent.php:262
+msgid "Privacy preferences"
+msgstr ""
+
+#: inc/consent.php:267
+msgid "Choose what you allow. Nothing optional is switched on until you choose it, and you can change your mind at any time under “Cookie preferences” in the footer."
+msgstr ""
+
+#: inc/consent.php:268
+msgid "This website uses no analytics, advertising or other optional services, so there is nothing to accept or reject. It keeps only the small amount of browser storage described below."
+msgstr ""
+
+#: inc/consent.php:275
+msgid "Necessary"
+msgstr ""
+
+#: inc/consent.php:276
+msgid "Keeps the website working. On demonstration sites it also remembers the colour palette you preview with “Try Colors” (stored only in your browser). Staff who log in receive WordPress login cookies. Always active."
+msgstr ""
+
+#: inc/consent.php:295
+msgid "Close"
+msgstr ""
+
 #: inc/customizer.php:19
 msgid "Dealer contact"
 msgstr ""
@@ -725,7 +815,7 @@ msgid "International format, e.g. +32 470 12 34 56. Leave empty to hide WhatsApp
 msgstr ""
 
 #: inc/customizer.php:29
-msgid "Receives enquiry notifications. Defaults to the site admin email."
+msgid "Receives enquiry notifications. If empty, enquiries are only stored under Enquiries."
 msgstr ""
 
 #: inc/customizer.php:49
@@ -796,58 +886,66 @@ msgstr ""
 msgid "%1$s – %2$s"
 msgstr ""
 
-#: inc/enquiries.php:145
-#: inc/enquiries.php:233
+#: inc/enquiries.php:150
+#: inc/enquiries.php:256
 #: inc/enquiry-privacy.php:130
 msgid "Type"
 msgstr ""
 
-#: inc/enquiries.php:147
-#: inc/enquiries.php:235
+#: inc/enquiries.php:152
+#: inc/enquiries.php:258
 #: inc/enquiry-privacy.php:132
 #: template-parts/enquiry-form.php:55
 msgid "Name"
 msgstr ""
 
-#: inc/enquiries.php:148
-#: inc/enquiries.php:236
+#: inc/enquiries.php:153
+#: inc/enquiries.php:259
 #: inc/enquiry-privacy.php:133
 #: template-parts/enquiry-form.php:59
 msgid "Email"
 msgstr ""
 
-#: inc/enquiries.php:149
-#: inc/enquiries.php:237
+#: inc/enquiries.php:154
+#: inc/enquiries.php:260
 #: inc/enquiry-privacy.php:134
 msgid "Phone"
 msgstr ""
 
 #. translators: 1: enquiry type, 2: site name.
-#: inc/enquiries.php:159
+#: inc/enquiries.php:164
 #, php-format
 msgid "New enquiry (%1$s) – %2$s"
 msgstr ""
 
-#: inc/enquiries.php:219
+#: inc/enquiries.php:181
+msgid "No enquiry email is set: website enquiries are stored under Enquiries but not emailed to anyone."
+msgstr ""
+
+#: inc/enquiries.php:183
+msgid "Set the enquiry email in Site Settings"
+msgstr ""
+
+#: inc/enquiries.php:242
 msgid "Enquiry details"
 msgstr ""
 
-#: inc/enquiries.php:232
+#: inc/enquiries.php:255
 #: inc/enquiry-privacy.php:129
 msgid "Received"
 msgstr ""
 
-#: inc/enquiries.php:238
+#: inc/enquiries.php:261
 #: inc/enquiry-privacy.php:135
 msgid "Message"
 msgstr ""
 
-#: inc/enquiries.php:239
+#: inc/enquiries.php:262
 #: inc/enquiry-privacy.php:136
 msgid "Consent"
 msgstr ""
 
-#: inc/enquiries.php:249
+#: inc/enquiries.php:272
 msgid "Open vehicle"
 msgstr ""
 

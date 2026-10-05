@@ -24,6 +24,7 @@ require EDA_DIR . '/inc/customizer.php';
 require EDA_DIR . '/inc/palette.php';
 require EDA_DIR . '/inc/palette-customizer.php';
 require EDA_DIR . '/inc/demo-palette-switcher.php';
+require EDA_DIR . '/inc/consent.php';
 require EDA_DIR . '/inc/page-header.php';
 require EDA_DIR . '/inc/admin-roles.php';
 require EDA_DIR . '/inc/admin-vehicle-editor.php';
@@ -48,6 +49,7 @@ function eda_setup() {
 		array(
 			'primary' => __( 'Primary menu', 'elite-auto-dealer' ),
 			'footer'  => __( 'Footer menu', 'elite-auto-dealer' ),
+			'legal'   => __( 'Footer legal', 'elite-auto-dealer' ),
 		)
 	);
 

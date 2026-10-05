@@ -6,7 +6,8 @@
  *
  * Run from the WordPress root with the theme active:
  *
- *   wp eval-file wp-content/themes/elite-auto-dealer/demo/seed.php            # import / update
+ *   wp eval-file wp-content/themes/elite-auto-dealer/demo/seed.php            # import / update (+ legal pages)
+ *   wp eval-file wp-content/themes/elite-auto-dealer/demo/seed.php legal      # legal pages + footer legal menu only
  *   wp eval-file wp-content/themes/elite-auto-dealer/demo/seed.php validate   # check the JSON only
  *   wp eval-file wp-content/themes/elite-auto-dealer/demo/seed.php cleanup    # remove demo vehicles + images
  *
@@ -469,6 +470,125 @@ function eda_demo_cleanup( $dataset ) {
 	return $removed;
 }
 
+/**
+ * Create or update one legal page from demo/<file> (plain, editable block content).
+ *
+ * Content written by the seeder is fingerprinted (`_eda_demo_legal` = md5 of the saved content),
+ * so re-seeding refreshes untouched pages but never overwrites wording the owner has edited.
+ * A page without a fingerprint is only filled while unpublished (WordPress's default draft
+ * privacy page).
+ *
+ * @param string $slug  Slug for a new page.
+ * @param string $title Title.
+ * @param string $file  Source file in demo/.
+ * @param int    $id    Existing page ID (0: find by slug).
+ * @return array{id: int, action: string}
+ */
+function eda_demo_legal_page( $slug, $title, $file, $id = 0 ) {
+	// phpcs:ignore WordPress.WP.AlternativeFunctions.file_get_contents_file_get_contents -- local file.
+	$content = (string) file_get_contents( __DIR__ . '/' . $file );
+	$page    = $id ? get_post( $id ) : get_page_by_path( $slug );
+	$action  = 'created';
+
+	if ( $page ) {
+		$hash = get_post_meta( $page->ID, '_eda_demo_legal', true );
+		if ( $hash ? md5( $page->post_content ) !== $hash : 'publish' === $page->post_status ) {
+			return array(
+				'id'     => $page->ID,
+				'action' => 'kept (edited)',
+			);
+		}
+		$action = $content === $page->post_content && 'publish' === $page->post_status ? 'unchanged' : 'updated';
+		wp_update_post(
+			wp_slash(
+				array(
+					'ID'           => $page->ID,
+					'post_title'   => $title,
+					'post_status'  => 'publish',
+					'post_content' => $content,
+				)
+			)
+		);
+		$id = $page->ID;
+	} else {
+		$id = wp_insert_post(
+			wp_slash(
+				array(
+					'post_type'    => 'page',
+					'post_name'    => $slug,
+					'post_title'   => $title,
+					'post_status'  => 'publish',
+					'post_content' => $content,
+				)
+			)
+		);
+	}
+	update_post_meta( $id, '_eda_demo_legal', md5( get_post( $id )->post_content ) );
+
+	return array(
+		'id'     => (int) $id,
+		'action' => $action,
+	);
+}
+
+/**
+ * Legal pages (Legal Notice, Cookie Policy, Privacy Notice as WordPress's privacy page) and the
+ * "Footer legal" menu with Cookie preferences. Idempotent: no duplicate pages, privacy pages or
+ * menu items on re-runs. Vehicles and images are not touched.
+ *
+ * @return array<string, array{id: int, action: string}>
+ */
+function eda_demo_seed_legal() {
+	$privacy = (int) get_option( 'wp_page_for_privacy_policy' );
+	$privacy = $privacy && 'page' === get_post_type( $privacy ) && 'trash' !== get_post_status( $privacy ) ? $privacy : 0;
+	$pages   = array(
+		'legal-notice'  => eda_demo_legal_page( 'legal-notice', 'Legal Notice', 'legal-notice.html' ),
+		'cookie-policy' => eda_demo_legal_page( 'cookie-policy', 'Cookie Policy', 'cookie-policy.html' ),
+		'privacy'       => eda_demo_legal_page( 'privacy-notice', 'Privacy Notice', 'privacy-notice.html', $privacy ),
+	);
+	update_option( 'wp_page_for_privacy_policy', $pages['privacy']['id'] );
+
+	$menu = wp_get_nav_menu_object( 'Footer legal' );
+	$menu = $menu ? $menu->term_id : wp_create_nav_menu( 'Footer legal' );
+	$have = wp_get_nav_menu_items( $menu );
+	$have = is_array( $have ) ? $have : array();
+	$want = array(
+		array( 'Privacy Notice', $pages['privacy']['id'] ),
+		array( 'Legal Notice', $pages['legal-notice']['id'] ),
+		array( 'Cookie Policy', $pages['cookie-policy']['id'] ),
+		array( 'Cookie preferences', '#eds-consent' ),
+	);
+	foreach ( $want as $position => list( $label, $target ) ) {
+		$exists = array_filter( $have, static fn( $item ) => is_int( $target ) ? (int) $item->object_id === $target && 'page' === $item->object : $item->url === $target );
+		if ( $exists ) {
+			continue;
+		}
+		wp_update_nav_menu_item(
+			$menu,
+			0,
+			is_int( $target ) ? array(
+				'menu-item-title'     => $label,
+				'menu-item-object'    => 'page',
+				'menu-item-object-id' => $target,
+				'menu-item-type'      => 'post_type',
+				'menu-item-status'    => 'publish',
+				'menu-item-position'  => $position + 1,
+			) : array(
+				'menu-item-title'    => $label,
+				'menu-item-url'      => $target,
+				'menu-item-type'     => 'custom',
+				'menu-item-status'   => 'publish',
+				'menu-item-position' => $position + 1,
+			)
+		);
+	}
+	$locations          = (array) get_theme_mod( 'nav_menu_locations', array() );
+	$locations['legal'] = $menu;
+	set_theme_mod( 'nav_menu_locations', $locations );
+
+	return $pages;
+}
+
 // Library mode for tests: define EDA_DEMO_LIBRARY before including this file.
 if ( defined( 'EDA_DEMO_LIBRARY' ) ) {
 	return;
@@ -500,6 +620,13 @@ if ( 'validate' === $eda_mode ) {
 		WP_CLI::warning( "$eda_stock skipped: stock ID belongs to a non-demo or duplicated vehicle." );
 	}
 	WP_CLI::success( "Demo inventory: {$eda_result['created']} created, {$eda_result['updated']} updated, " . count( $eda_result['skipped'] ) . ' skipped.' );
-} else {
-	WP_CLI::error( "Unknown mode '$eda_mode'. Use: (none) | validate | cleanup" );
+}
+
+if ( in_array( $eda_mode, array( 'seed', 'legal' ), true ) ) {
+	foreach ( eda_demo_seed_legal() as $eda_page => $eda_legal ) {
+		WP_CLI::log( "Legal page $eda_page (#{$eda_legal['id']}): {$eda_legal['action']}." );
+	}
+	WP_CLI::success( 'Legal pages, privacy page and "Footer legal" menu are in place.' );
+} elseif ( ! in_array( $eda_mode, array( 'validate', 'cleanup' ), true ) ) {
+	WP_CLI::error( "Unknown mode '$eda_mode'. Use: (none) | legal | validate | cleanup" );
 }

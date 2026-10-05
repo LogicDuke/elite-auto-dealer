@@ -133,14 +133,19 @@ function eda_store_enquiry( array $data ) {
 }
 
 /**
- * Email the dealer. Recipient: Customizer "Enquiry email", falling back to the site admin email.
+ * Email the dealer at Site Settings → Enquiry email (theme mod eda_enquiry_email). There is
+ * deliberately no fallback to the WordPress admin email (often a private address, e.g. on a public
+ * demo): without an enquiry email the enquiry is only stored, and eda_enquiry_email_notice() warns.
  *
  * @param int   $enquiry_id Enquiry ID.
  * @param array $data       Validated data.
  * @return bool
  */
 function eda_notify_enquiry( $enquiry_id, array $data ) {
-	$to    = get_theme_mod( 'eda_enquiry_email' ) ? get_theme_mod( 'eda_enquiry_email' ) : get_option( 'admin_email' );
+	$to = (string) get_theme_mod( 'eda_enquiry_email' );
+	if ( ! is_email( $to ) ) {
+		return false;
+	}
 	$lines = array(
 		__( 'Type', 'elite-auto-dealer' ) . ': ' . eda_enquiry_types()[ $data['type'] ],
 		__( 'Vehicle', 'elite-auto-dealer' ) . ': ' . ( $data['vehicle_id'] ? get_the_title( $data['vehicle_id'] ) . ' — ' . get_permalink( $data['vehicle_id'] ) : '—' ),
@@ -161,6 +166,24 @@ function eda_notify_enquiry( $enquiry_id, array $data ) {
 		array( 'Reply-To: ' . $data['email'] )
 	);
 }
+
+/**
+ * Admin warning while no enquiry email is set: enquiries are then stored but not emailed.
+ * Shown to people who can fix it (Site Settings), on the Dashboard, Enquiries and Site Settings.
+ */
+function eda_enquiry_email_notice() {
+	$screen = get_current_screen();
+	if ( get_theme_mod( 'eda_enquiry_email' ) || ! current_user_can( 'eda_manage_site_settings' ) || ! $screen || ! in_array( $screen->id, array( 'dashboard', 'edit-eda_enquiry', 'toplevel_page_eda-site-settings' ), true ) ) {
+		return;
+	}
+	printf(
+		'<div class="notice notice-warning"><p>%s <a href="%s">%s</a></p></div>',
+		esc_html__( 'No enquiry email is set: website enquiries are stored under Enquiries but not emailed to anyone.', 'elite-auto-dealer' ),
+		esc_url( admin_url( 'admin.php?page=eda-site-settings' ) ),
+		esc_html__( 'Set the enquiry email in Site Settings', 'elite-auto-dealer' )
+	);
+}
+add_action( 'admin_notices', 'eda_enquiry_email_notice' );
 
 /**
  * Handle the form POST (admin-post.php?action=eda_enquiry), then redirect back to #enquiry

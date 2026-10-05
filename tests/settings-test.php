@@ -133,7 +133,7 @@ $eda_check( str_contains( $eda_footer, 'Aurelis Motors Test &amp; Co' ) && str_c
 
 // Emptying a contact field removes the theme mod, so the theme's fallback applies again.
 eda_save_site_settings( array_merge( $eda_values, array( 'eda_enquiry_email' => '' ) ) ); // phpcs:ignore WordPress.Arrays.ArrayDeclarationSpacing.AssociativeArrayFound
-$eda_check( ! array_key_exists( 'eda_enquiry_email', get_theme_mods() ), 'emptied email falls back to the administrator email' );
+$eda_check( ! array_key_exists( 'eda_enquiry_email', get_theme_mods() ), 'emptied email removes the setting (enquiries are then stored, not emailed)' );
 
 // ---------- No duplicate storage.
 $eda_new = array_diff( array_keys( wp_load_alloptions( true ) ), $eda_options );

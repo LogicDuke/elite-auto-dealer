@@ -1825,6 +1825,193 @@ textarea {
 	}
 }
 
+/* ---------- Footer legal links ---------- */
+
+.site-footer__legal-list {
+	display: flex;
+	flex-wrap: wrap;
+	gap: 0 1.5rem;
+	margin: 0;
+	padding: 0;
+	list-style: none;
+}
+
+/* ---------- Privacy preferences (inc/consent.php) ----------
+   Light-tone role tokens, so every palette (all contrast-gated) keeps it readable. The first
+   layer (.eda-consent) is printed only when an optional category exists. */
+
+.eda-consent,
+.eda-consent-panel {
+	border: 1px solid var(--eda-line);
+	border-radius: var(--radius-lg);
+	background: var(--eda-surface);
+	color: var(--eda-text);
+	font-size: 0.9375rem;
+	box-shadow: 0 24px 60px -28px color-mix(in srgb, var(--eda-scrim) 60%, transparent);
+}
+
+.eda-consent {
+	position: fixed;
+	z-index: 9500; /* Above the EDS demo switcher (9000), below EDS Consent's own layer. */
+	right: max(0.75rem, env(safe-area-inset-right));
+	bottom: max(0.75rem, env(safe-area-inset-bottom));
+	left: max(0.75rem, env(safe-area-inset-left));
+	max-height: calc(100dvh - 1.5rem);
+	overflow-y: auto;
+	padding: 1.25rem;
+	border-top: 2px solid var(--eda-strong);
+}
+
+.eda-consent__title {
+	margin: 0 0 0.5rem;
+	font-size: 1.125rem;
+	font-weight: 600;
+	letter-spacing: -0.01em;
+}
+
+.eda-consent__text,
+.eda-consent__category-text {
+	margin: 0 0 0.75rem;
+	color: var(--eda-text-muted);
+}
+
+.eda-consent__links {
+	display: flex;
+	flex-wrap: wrap;
+	gap: 0 1rem;
+	margin: 0 0 1rem;
+}
+
+.eda-consent__links a {
+	display: inline-flex;
+	align-items: center;
+	min-height: 2.75rem;
+	color: var(--eda-text);
+	text-underline-offset: 0.25em;
+}
+
+.eda-consent__actions {
+	display: flex;
+	flex-direction: column;
+	gap: 0.5rem;
+}
+
+.eda-consent__actions .button {
+	min-height: 2.75rem;
+	padding: 0 1rem;
+	white-space: nowrap;
+}
+
+.eda-consent__manage {
+	min-height: 2.75rem;
+	padding: 0;
+	border: 0;
+	background: none;
+	color: var(--eda-text);
+	font: inherit;
+	text-decoration: underline;
+	text-underline-offset: 0.25em;
+	cursor: pointer;
+}
+
+.eda-consent-panel {
+	width: min(36rem, calc(100vw - 2rem));
+	max-height: calc(100dvh - 2rem);
+	padding: 1.5rem;
+	overflow-y: auto;
+}
+
+.eda-consent-panel::backdrop {
+	background: color-mix(in srgb, var(--eda-scrim) 55%, transparent);
+}
+
+.eda-consent-panel .eda-consent__title {
+	padding-right: 2.75rem;
+}
+
+.eda-consent-panel__close {
+	position: absolute;
+	top: 0.75rem;
+	right: 0.75rem;
+	width: 2.75rem;
+	height: 2.75rem;
+	padding: 0;
+	border: 0;
+	border-radius: var(--radius);
+	background: none;
+	color: var(--eda-text);
+	font-size: 1.75rem;
+	line-height: 1;
+	cursor: pointer;
+}
+
+.eda-consent-panel__close:hover {
+	background: var(--eda-surface-alt);
+}
+
+.eda-consent__categories {
+	margin: 0 0 1rem;
+	padding: 0;
+	list-style: none;
+}
+
+.eda-consent__category {
+	display: flex;
+	gap: 1rem;
+	align-items: flex-start;
+	justify-content: space-between;
+	padding: 1rem 0;
+	border-top: 1px solid var(--eda-line);
+}
+
+.eda-consent__category:last-child {
+	border-bottom: 1px solid var(--eda-line);
+}
+
+.eda-consent__category-title {
+	margin: 0 0 0.25rem;
+	font-size: 1rem;
+	font-weight: 600;
+}
+
+.eda-consent__category-text {
+	margin: 0;
+}
+
+.eda-consent__switch {
+	flex: none;
+	width: 1.5rem;
+	height: 1.5rem;
+	margin: 0.125rem 0 0;
+	accent-color: var(--eda-button-bg);
+}
+
+@media (min-width: 40em) {
+	.eda-consent {
+		right: auto;
+		bottom: 1.5rem;
+		left: 1.5rem;
+		width: 26rem;
+		padding: 1.5rem;
+	}
+
+	/* Reject and Accept share a row at equal width; Manage / Save below. */
+	.eda-consent__actions {
+		display: grid;
+		grid-template-columns: repeat(2, minmax(0, 1fr));
+	}
+
+	.eda-consent__actions > :only-child,
+	.eda-consent__manage,
+	.eda-consent-panel [data-eds-consent-action="save"] {
+		grid-column: 1 / -1;
+	}
+
+	.eda-consent-panel {
+		padding: 2rem;
+	}
+}
+
 /* ---------- Reduced motion ---------- */
 
 @media (prefers-reduced-motion: reduce) {

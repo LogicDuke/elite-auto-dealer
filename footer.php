@@ -1,6 +1,6 @@
 <?php
 /**
- * Site footer: brand, navigation, contact (only configured details), legal.
+ * Site footer: brand, navigation, contact (only configured details), legal links and Cookie preferences.
  *
  * @package EliteAutoDealer
  */
@@ -63,7 +63,19 @@ $eda_contact  = get_page_by_path( 'contact' );
 
 		<div class="site-footer__legal">
 			<p>&copy; <?php echo esc_html( wp_date( 'Y' ) ); ?> <?php bloginfo( 'name' ); ?></p>
-			<?php the_privacy_policy_link(); ?>
+			<nav aria-label="<?php esc_attr_e( 'Legal', 'elite-auto-dealer' ); ?>">
+				<?php
+				wp_nav_menu(
+					array(
+						'theme_location' => 'legal',
+						'container'      => false,
+						'menu_class'     => 'site-footer__legal-list',
+						'fallback_cb'    => 'eda_legal_menu_fallback',
+						'depth'          => 1,
+					)
+				);
+				?>
+			</nav>
 		</div>
 	</div>
 </footer>

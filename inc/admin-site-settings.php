@@ -64,7 +64,7 @@ function eda_site_settings_fields() {
 		'eda_enquiry_email' => array(
 			'storage' => 'mod',
 			'label'   => __( 'Enquiry email', 'elite-auto-dealer' ),
-			'help'    => __( 'Enquiries from the website are sent to this address. Leave empty to use the site administrator’s email.', 'elite-auto-dealer' ),
+			'help'    => __( 'Enquiries from the website are sent to this address. If it is empty, enquiries are only stored under Enquiries and not emailed.', 'elite-auto-dealer' ),
 			'type'    => 'email',
 			'auto'    => 'email',
 		),
@@ -115,7 +115,7 @@ function eda_validate_site_settings( array $input ) {
 
 /**
  * Store validated values in their existing places. Only changed values are written; an emptied
- * theme mod is removed, so the theme's own fallbacks (e.g. the admin email) apply again.
+ * theme mod is removed, so the theme's own defaults apply again (no enquiry email: enquiries are stored, not emailed).
  *
  * @param array $values Clean values from eda_validate_site_settings().
  * @return string[] Keys that changed.
