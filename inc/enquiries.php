@@ -272,3 +272,54 @@ function eda_render_enquiry_meta_box( $post ) {
 		echo '<p><a href="' . esc_url( get_edit_post_link( $vehicle_id ) ) . '">' . esc_html__( 'Open vehicle', 'elite-auto-dealer' ) . '</a></p>';
 	}
 }
+
+/**
+ * Static export (Simply Static → Cloudflare Pages): admin-post.php and admin-ajax.php do not exist
+ * there, so exported enquiry forms post as JSON to the Pages Function cloudflare/functions/api/form.js
+ * (assets/js/enquiry.js, data-eda-static), which validates and answers "demo" without sending or
+ * storing anything. WordPress itself is unchanged. See docs/static-deployment.md.
+ *
+ * @return string Endpoint path (filter eda_static_form_endpoint).
+ */
+function eda_static_form_endpoint() {
+	return (string) apply_filters( 'eda_static_form_endpoint', '/api/form' );
+}
+
+/**
+ * Simply Static keeps excluded (wp-admin) form actions as they are; let admin-post.php through to
+ * eda_static_enquiry_form(), which replaces it.
+ *
+ * @param bool   $preserve Preserve the action.
+ * @param string $action   Action URL.
+ * @return bool
+ */
+function eda_static_preserve_form_action( $preserve, $action ) {
+	return str_contains( (string) wp_parse_url( (string) $action, PHP_URL_PATH ), '/admin-post.php' ) ? false : $preserve;
+}
+add_filter( 'simply_static_preserve_form_action', 'eda_static_preserve_form_action', 10, 2 );
+
+/**
+ * Exported pages: point the enquiry form at the static endpoint, with its status messages, and drop
+ * the WordPress-only parts (admin-post action, nonce, referer, nonce refresh URL).
+ *
+ * @param string $html Exported page.
+ * @return string
+ */
+function eda_static_enquiry_form( $html ) {
+	if ( ! is_string( $html ) || ! str_contains( $html, 'class="enquiry-form"' ) ) {
+		return $html;
+	}
+	$messages = array(
+		'demo'    => __( 'Thank you. This is a demonstration website with a fictional dealership: your enquiry was checked, but it was not sent to anyone or stored.', 'elite-auto-dealer' ),
+		'sent'    => __( 'Thank you. We have received your enquiry and will contact you soon.', 'elite-auto-dealer' ),
+		'invalid' => __( 'Your enquiry could not be sent. Please check your name, email and consent, then try again.', 'elite-auto-dealer' ),
+		'error'   => __( 'Your enquiry could not be sent. Please try again later.', 'elite-auto-dealer' ),
+	);
+	$html     = (string) preg_replace(
+		'/(<form class="enquiry-form" method="post") action="[^"]*admin-post\.php" data-nonce-url="[^"]*"/',
+		'$1 action="' . esc_attr( eda_static_form_endpoint() ) . '" data-eda-static data-eda-messages="' . esc_attr( wp_json_encode( $messages ) ) . '"',
+		$html
+	);
+	return (string) preg_replace( '/\s*<input type="hidden" (?:name="action" value="eda_enquiry"|id="eda_enquiry_nonce"[^>]*|name="_wp_http_referer"[^>]*)>/', '', $html );
+}
+add_filter( 'ss_after_replace_urls_in_html', 'eda_static_enquiry_form' );

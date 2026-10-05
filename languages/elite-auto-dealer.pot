@@ -9,7 +9,7 @@ msgstr ""
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"POT-Creation-Date: 2026-10-05T10:23:30+00:00\n"
+"POT-Creation-Date: 2026-10-05T13:29:42+00:00\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "X-Generator: WP-CLI 2.12.0\n"
 "X-Domain: elite-auto-dealer\n"
@@ -744,91 +744,91 @@ msgstr ""
 msgid "Language: translation needs your permission. Open privacy preferences"
 msgstr ""
 
-#: inc/consent.php:174
+#: inc/consent.php:188
 msgid "Cookie Policy"
 msgstr ""
 
-#: inc/consent.php:175
+#: inc/consent.php:189
 msgid "Privacy Notice"
 msgstr ""
 
-#: inc/consent.php:176
+#: inc/consent.php:190
 msgid "Legal Notice"
 msgstr ""
 
-#: inc/consent.php:225
+#: inc/consent.php:239
 msgid "Dealership address"
 msgstr ""
 
-#: inc/consent.php:228
+#: inc/consent.php:242
 msgid "Telephone"
 msgstr ""
 
-#: inc/consent.php:231
+#: inc/consent.php:245
 msgid "Email address"
 msgstr ""
 
-#: inc/consent.php:253
+#: inc/consent.php:267
 msgid "Cookie preferences"
 msgstr ""
 
-#: inc/consent.php:263
+#: inc/consent.php:277
 msgid "Reject optional"
 msgstr ""
 
-#: inc/consent.php:264
+#: inc/consent.php:278
 msgid "Accept optional"
 msgstr ""
 
-#: inc/consent.php:266
+#: inc/consent.php:280
 msgid "Save preferences"
 msgstr ""
 
 #. translators: %s: optional service, e.g. "Maps".
-#: inc/consent.php:282
+#: inc/consent.php:296
 #, php-format
 msgid "With your permission the site can also use: %s."
 msgstr ""
 
-#: inc/consent.php:286
+#: inc/consent.php:300
 msgid "Your privacy"
 msgstr ""
 
 #. translators: %s: one sentence per optional service.
-#: inc/consent.php:290
+#: inc/consent.php:304
 #, php-format
 msgid "Necessary storage is always active. %s Nothing optional starts until you choose, and you can change your mind at any time under “Cookie preferences”."
 msgstr ""
 
-#: inc/consent.php:296
+#: inc/consent.php:310
 msgid "Manage preferences"
 msgstr ""
 
-#: inc/consent.php:314
+#: inc/consent.php:328
 msgid "Close without changes"
 msgstr ""
 
-#: inc/consent.php:315
+#: inc/consent.php:329
 msgid "Privacy preferences"
 msgstr ""
 
-#: inc/consent.php:320
+#: inc/consent.php:334
 msgid "Choose what you allow. Necessary storage is always active; nothing optional is switched on until you choose it, and you can change your mind at any time under “Cookie preferences” in the footer."
 msgstr ""
 
-#: inc/consent.php:321
+#: inc/consent.php:335
 msgid "This website uses no analytics, advertising or other optional services, so there is nothing to accept or reject. It keeps only the small amount of browser storage described below."
 msgstr ""
 
-#: inc/consent.php:328
+#: inc/consent.php:342
 msgid "Necessary"
 msgstr ""
 
-#: inc/consent.php:329
+#: inc/consent.php:343
 msgid "Keeps the website working and, once you have chosen, remembers your privacy choice. On demonstration sites it also remembers the colour palette you preview with “Try Colors” (stored only in your browser). Staff who log in receive WordPress login cookies. Always active."
 msgstr ""
 
-#: inc/consent.php:348
+#: inc/consent.php:362
 msgid "Close"
 msgstr ""
 
@@ -973,6 +973,24 @@ msgstr ""
 
 #: inc/enquiries.php:272
 msgid "Open vehicle"
+msgstr ""
+
+#: inc/enquiries.php:313
+msgid "Thank you. This is a demonstration website with a fictional dealership: your enquiry was checked, but it was not sent to anyone or stored."
+msgstr ""
+
+#: inc/enquiries.php:314
+#: template-parts/enquiry-form.php:36
+msgid "Thank you. We have received your enquiry and will contact you soon."
+msgstr ""
+
+#: inc/enquiries.php:315
+#: template-parts/enquiry-form.php:38
+msgid "Your enquiry could not be sent. Please check your name, email and consent, then try again."
+msgstr ""
+
+#: inc/enquiries.php:316
+msgid "Your enquiry could not be sent. Please try again later."
 msgstr ""
 
 #: inc/enquiry-privacy.php:141
@@ -1493,14 +1511,6 @@ msgstr ""
 
 #: template-parts/enquiry-form.php:32
 msgid "Enquire about this vehicle"
-msgstr ""
-
-#: template-parts/enquiry-form.php:36
-msgid "Thank you. We have received your enquiry and will contact you soon."
-msgstr ""
-
-#: template-parts/enquiry-form.php:38
-msgid "Your enquiry could not be sent. Please check your name, email and consent, then try again."
 msgstr ""
 
 #: template-parts/enquiry-form.php:47

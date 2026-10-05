@@ -318,6 +318,23 @@ remove_filter( 'eda_enquiry_retention_months', $eda_six );
 wp_delete_post( $eda_old_wp, true );
 wp_delete_post( $eda_post_id, true );
 
+// ---------- Static export (Simply Static): the form posts to the Pages Function, not to WordPress.
+ob_start();
+get_template_part( 'template-parts/enquiry-form', null, array( 'type' => 'test_drive' ) );
+$eda_form = (string) ob_get_clean();
+$eda_check( str_contains( $eda_form, 'admin-post.php' ) && str_contains( $eda_form, 'data-nonce-url=' ), 'WordPress form unchanged: admin-post.php with nonce refresh' );
+$eda_check( ! eda_static_preserve_form_action( true, admin_url( 'admin-post.php' ) ) && eda_static_preserve_form_action( true, admin_url( 'options.php' ) ), 'Simply Static: admin-post.php form action released for the rewrite, other preserved actions kept' );
+// As exported: Simply Static has made the site URLs relative before the filter runs.
+$eda_static = eda_static_enquiry_form( '<main>' . str_replace( untrailingslashit( home_url() ), '', $eda_form ) . '</main>' );
+$eda_check( str_contains( $eda_static, '<form class="enquiry-form" method="post" action="/api/form" data-eda-static data-eda-messages="' ), 'exported form posts to /api/form (data-eda-static)' );
+$eda_check( ! preg_match( '/admin-post|admin-ajax|eda_enquiry_nonce|_wp_http_referer|value="eda_enquiry"/', $eda_static ), 'exported form: no admin-post, admin-ajax, nonce, referer or action field' );
+$eda_check( str_contains( $eda_static, 'name="enquiry[website]"' ) && str_contains( $eda_static, 'name="enquiry[consent]"' ) && str_contains( $eda_static, 'name="enquiry[vehicle_id]"' ), 'exported form keeps the honeypot, consent and vehicle fields' );
+$eda_messages = json_decode( html_entity_decode( preg_replace( '/^.*data-eda-messages="([^"]*)".*$/s', '$1', $eda_static ) ), true );
+$eda_check( is_array( $eda_messages ) && array( 'demo', 'sent', 'invalid', 'error' ) === array_keys( $eda_messages ) && str_contains( $eda_messages['demo'], 'not sent to anyone or stored' ), 'exported form carries its messages; the demo message says nothing was sent or stored' );
+$eda_check( '<p>x</p>' === eda_static_enquiry_form( '<p>x</p>' ), 'pages without the enquiry form are untouched' );
+$eda_js = (string) file_get_contents( EDA_DIR . '/assets/js/enquiry.js' ); // phpcs:ignore WordPress.WP.AlternativeFunctions.file_get_contents_file_get_contents -- local file.
+$eda_check( str_contains( $eda_js, 'data-eda-static' ) && str_contains( $eda_js, "'Content-Type': 'application/json'" ), 'enquiry.js submits static forms as JSON' );
+
 echo PHP_EOL . ( $eda_failures ? "$eda_failures FAILED" : 'ALL PASSED' ) . PHP_EOL;
 if ( $eda_failures ) {
 	exit( 1 );
