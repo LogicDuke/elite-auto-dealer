@@ -158,10 +158,13 @@ add_filter( 'wp_robots', 'eda_vehicle_listing_robots' );
 /**
  * Unfiltered listings: self-referencing canonical without tracking/unknown parameters.
  * Filtered listings get no canonical (noindex already applies; mixing both sends mixed signals).
- * Core already handles singular canonicals.
+ * Core already handles singular canonicals; the homepage (front-page.php, not a static page) gets
+ * its own here, as core prints none for it.
  */
 function eda_vehicle_listing_canonical() {
-	if ( eda_is_vehicle_listing() && ! eda_request_is_filtered() && have_posts() ) {
+	if ( is_front_page() && ! is_singular() && ! is_paged() ) {
+		echo '<link rel="canonical" href="' . esc_url( home_url( '/' ) ) . '">' . "\n";
+	} elseif ( eda_is_vehicle_listing() && ! eda_request_is_filtered() && have_posts() ) {
 		echo '<link rel="canonical" href="' . esc_url( eda_vehicle_listing_url() ) . '">' . "\n";
 	}
 }

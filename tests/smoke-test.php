@@ -332,6 +332,8 @@ $eda_check( str_contains( $eda_static, 'name="enquiry[website]"' ) && str_contai
 $eda_messages = json_decode( html_entity_decode( preg_replace( '/^.*data-eda-messages="([^"]*)".*$/s', '$1', $eda_static ) ), true );
 $eda_check( is_array( $eda_messages ) && array( 'demo', 'sent', 'invalid', 'error' ) === array_keys( $eda_messages ) && str_contains( $eda_messages['demo'], 'not sent to anyone or stored' ), 'exported form carries its messages; the demo message says nothing was sent or stored' );
 $eda_check( '<p>x</p>' === eda_static_enquiry_form( '<p>x</p>' ), 'pages without the enquiry form are untouched' );
+$eda_home = (string) wp_remote_retrieve_body( wp_remote_get( home_url( '/?utm_source=test' ) ) );
+$eda_check( 1 === substr_count( $eda_home, '<link rel="canonical"' ) && str_contains( $eda_home, '<link rel="canonical" href="' . esc_url( home_url( '/' ) ) . '">' ), 'homepage: one canonical, the clean home URL (core prints none for front-page.php)' );
 $eda_js = (string) file_get_contents( EDA_DIR . '/assets/js/enquiry.js' ); // phpcs:ignore WordPress.WP.AlternativeFunctions.file_get_contents_file_get_contents -- local file.
 $eda_check( str_contains( $eda_js, 'data-eda-static' ) && str_contains( $eda_js, "'Content-Type': 'application/json'" ), 'enquiry.js submits static forms as JSON' );
 
